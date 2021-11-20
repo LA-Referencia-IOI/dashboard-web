@@ -27,6 +27,9 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
         Route::put('settings/{user}', [SettingController::class, 'udpate'])->name('settings.update');
         Route::post('settings/change-menu', [SettingController::class, 'changeMenu'])->name('settings.changeMenu');
+
+        Route::put('image/{id}/upload', 'ImageController@upload')->name('image.upload');
+        Route::delete('image/destroy/{file}', 'ImageController@destroy')->name('image.destroy');
     });
 
     Auth::routes();

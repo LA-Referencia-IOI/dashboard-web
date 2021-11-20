@@ -36,6 +36,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function files()
+    {
+        return $this->belongsToMany(File::class)->orderBy('created_at', 'desc');
+    }
+
     public function settings($name = null)
     {
         if ($name) {
@@ -56,5 +61,14 @@ class User extends Authenticatable
         //     : null;
 
         return Carbon::parse($this->attributes['last_login_at'])->format('d/m/Y \à\s H:i:s') ?? null;
+    }
+
+    public function getProfilePicture()
+    {
+        $image = $this->files()
+            ->where('highlight', '=', 1)
+            ->first();
+
+        return isset($image) ? asset('storage/' . $image->name) : 'user-default.png';
     }
 }
