@@ -41,8 +41,8 @@
             <form action="{{ $login_url }}" method="post">
                 @csrf
                 <div class="form-group">
-                    <label for="email" class="sr-only">Email</label>
-                    <input type="email" name="email" class="form-control @error('email')mb-0 is-invalid @enderror"
+                    <label for="email">Email</label>
+                    <input id="email" type="email" name="email" class="form-control @error('email')mb-0 is-invalid @enderror"
                         value="{{ old('email') }}" placeholder="{{ __('adminlte::adminlte.email') }}" autofocus>
                     @error('email')
                         <span class="invalid-feedback" role="alert">
@@ -51,8 +51,9 @@
                     @enderror
                 </div>
                 <div class="form-group mb-4">
-                    <label for="password" class="sr-only">Password</label>
-                    <input type="password" name="password" class="form-control @error('password')mb-0 is-invalid @enderror"
+                    <label for="password">Password</label>
+                    <input id="password" type="password" name="password"
+                        class="form-control @error('password')mb-0 is-invalid @enderror"
                         placeholder="{{ __('adminlte::adminlte.password') }}">
                     @error('password')
                         <span class="invalid-feedback" role="alert">
