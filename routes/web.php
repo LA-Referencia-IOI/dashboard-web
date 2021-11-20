@@ -16,14 +16,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return redirect('login');
+Route::group(['middleware' => ['https.protocol']], function () {
+    Route::get('/', function () {
+        return redirect('login');
+    });
+
+    Route::group(['middleware' => ['auth'], 'namespace' => 'Dashboard', 'prefix' => 'dashboard'], function () {
+        Route::get('/', [HomeController::class, 'index'])->name('home.index');
+
+        Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
+        Route::put('settings/{user}', [SettingController::class, 'udpate'])->name('settings.update');
+        Route::post('settings/change-menu', [SettingController::class, 'changeMenu'])->name('settings.changeMenu');
+    });
+
+    Auth::routes();
 });
-
-Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
-
-Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
-Route::put('settings/{user}', [SettingController::class, 'udpate'])->name('settings.update');
-Route::post('settings/change-menu', [SettingController::class, 'changeMenu'])->name('settings.changeMenu');
-
-Auth::routes();
