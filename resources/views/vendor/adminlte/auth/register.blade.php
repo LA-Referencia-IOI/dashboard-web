@@ -34,49 +34,57 @@
                     {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
                 </div>
             </div>
-            <p class="login-card-description text-center">Informe suas credências para entrar</p>
+            <p class="login-card-description text-center">Informe suas credências para se cadastrar</p>
             <form action="{{ $register_url }}" method="post">
                 @csrf
                 <div class="form-group">
-                    <label for="name" class="sr-only">{{ __('adminlte::adminlte.full_name') }}</label>
-                    <input type="text" name="name" class="form-control @error('name')mb-0 is-invalid @enderror"
+                    <label for="name">
+                        {{ __('adminlte::adminlte.full_name') }}
+                        @error('name')
+                            <span class="invalid-feedback d-inline" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </label>
+                    <input id="name" type="text" name="name" class="form-control @error('name')mb-0 is-invalid @enderror"
                         value="{{ old('name') }}" placeholder="{{ __('adminlte::adminlte.full_name') }}" autofocus>
-                    @error('name')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
                 </div>
                 <div class="form-group">
-                    <label for="email" class="sr-only">{{ __('adminlte::adminlte.email') }}</label>
-                    <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
+                    <label for="email">
+                        {{ __('adminlte::adminlte.email') }}
+                        @error('email')
+                            <span class="invalid-feedback d-inline" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </label>
+                    <input id="email" type="email" name="email" class="form-control @error('email') is-invalid @enderror"
                         value="{{ old('email') }}" placeholder="{{ __('adminlte::adminlte.email') }}">
-                    @error('email')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
                 </div>
                 <div class="form-group mb-4">
-                    <label for="password" class="sr-only">Password</label>
+                    <label for="password">
+                        {{ __('adminlte::adminlte.password') }}
+                        @error('password')
+                            <span class="invalid-feedback d-inline" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </label>
                     <input type="password" name="password" class="form-control @error('password')mb-0 is-invalid @enderror"
                         placeholder="{{ __('adminlte::adminlte.password') }}">
-                    @error('password')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
                 </div>
                 <div class="form-group mb-4">
-                    <label for="password" class="sr-only">{{ __('adminlte::adminlte.retype_password') }}</label>
-                    <input type="password" name="password_confirmation"
+                    <label for="password_confirmation">
+                        {{ __('adminlte::adminlte.retype_password') }}
+                        @error('password_confirmation')
+                            <span class="invalid-feedback d-inline" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </label>
+                    <input id="password_confirmation" type="password" name="password_confirmation"
                         class="form-control @error('password_confirmation')mb-0 is-invalid @enderror"
                         placeholder="{{ __('adminlte::adminlte.retype_password') }}">
-                    @error('password_confirmation')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
                 </div>
                 <button type=submit
                     class="btn btn-block {{ config('adminlte.classes_auth_btn', 'btn-flat btn-primary') }}">
@@ -86,11 +94,6 @@
             </form>
             <a href="{{ $login_url }}"
                 class="forgot-password-link">{{ __('adminlte::adminlte.i_already_have_a_membership') }}</a>
-            <p class="login-card-footer-text">
-                <a href="{{ $register_url }}" class="text-reset">
-                    {{ __('adminlte::adminlte.register_a_new_membership') }}
-                </a>
-            </p>
             @include('vendor.adminlte.auth.footer-nav')
         </div>
     </div>
