@@ -18,7 +18,7 @@ return [
     'login_message' => 'Entre para iniciar uma nova sessão',
     'register_message' => 'Registrar um novo membro',
     'password_reset_message' => 'Recuperar senha',
-    'reset_password' => 'Recuperar senha',
+    'reset_password' => 'Redefinir senha',
     'send_password_reset_link' => 'Enviar link de recuperação de senha',
     'verify_message' => 'Sua conta precisa ser verificada',
     'verify_email_sent' => 'Um novo link de verificação foi enviado para o seu email.',

@@ -11,13 +11,11 @@
 @section('auth_header', __('adminlte::adminlte.password_reset_message'))
 
 @section('auth_body')
-    <form action="{{ $password_reset_url }}" method="post">
+    {{-- <form action="{{ $password_reset_url }}" method="post">
         @csrf
 
-        {{-- Token field --}}
         <input type="hidden" name="token" value="{{ $token }}">
 
-        {{-- Email field --}}
         <div class="input-group mb-3">
             <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
                 value="{{ old('email') }}" placeholder="{{ __('adminlte::adminlte.email') }}" autofocus>
@@ -35,7 +33,6 @@
             @enderror
         </div>
 
-        {{-- Password field --}}
         <div class="input-group mb-3">
             <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
                 placeholder="{{ __('adminlte::adminlte.password') }}">
@@ -53,7 +50,6 @@
             @enderror
         </div>
 
-        {{-- Password confirmation field --}}
         <div class="input-group mb-3">
             <input type="password" name="password_confirmation"
                 class="form-control @error('password_confirmation') is-invalid @enderror"
@@ -72,11 +68,60 @@
             @enderror
         </div>
 
-        {{-- Confirm password reset button --}}
         <button type="submit" class="btn btn-block {{ config('adminlte.classes_auth_btn', 'btn-flat btn-primary') }}">
             <span class="fas fa-sync-alt"></span>
             {{ __('adminlte::adminlte.reset_password') }}
         </button>
 
-    </form>
+    </form> --}}
+    <div class="col-md-5">
+        <img src="{{ asset('vendor/custom/images/reset.jpg') }}" alt="login" class="login-card-img">
+    </div>
+    <div class="col-md-7">
+        <div class="card-body">
+            <div class="brand-wrapper">
+                <div class="{{ $auth_type ?? 'login' }}-logo">
+                    <img src="{{ asset(config('adminlte.logo_img')) }}" class="logo">
+                    {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
+                </div>
+            </div>
+            <p class="login-card-description text-center">Informe sua nova senha</p>
+            <form action="{{ $password_reset_url }}" method="post">
+                @csrf
+                <input type="hidden" name="token" value="{{ $token }}">
+                <div class="form-group mb-4">
+                    <label for="password">
+                        {{ __('adminlte::adminlte.password') }}
+                        @error('password')
+                            <span class="invalid-feedback d-inline" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </label>
+                    <input id="password" type="password" name="password"
+                        class="form-control @error('password')mb-0 is-invalid @enderror"
+                        placeholder="{{ __('adminlte::adminlte.password') }}">
+                </div>
+                <div class="form-group mb-4">
+                    <label for="password_confirmation">
+                        {{ __('adminlte::adminlte.retype_password') }}
+                        @error('password_confirmation')
+                            <span class="invalid-feedback d-inline" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </label>
+                    <input id="password_confirmation" type="password" name="password_confirmation"
+                        class="form-control @error('password_confirmation')mb-0 is-invalid @enderror"
+                        placeholder="{{ __('adminlte::adminlte.retype_password') }}">
+                </div>
+                <button type=submit
+                    class="btn btn-block {{ config('adminlte.classes_auth_btn', 'btn-flat btn-primary') }}">
+                    <span class="fas fa-sync-alt"></span>
+                    {{ __('adminlte::adminlte.reset_password') }}
+                </button>
+            </form>
+            @include('vendor.adminlte.auth.footer-nav')
+        </div>
+    </div>
 @stop
