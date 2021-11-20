@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Dashboard\HomeController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +19,6 @@ Route::get('/', function () {
     return redirect('login');
 });
 
-Route::get('/dashboard', [App\Http\Controllers\Dashboard\HomeController::class, 'index'])->name('home');
+Route::get('/dashboard', [HomeController::class, 'index'])->name('home');
 
 Auth::routes();
