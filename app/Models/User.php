@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -17,7 +18,7 @@ class User extends Authenticatable
      *
      * @var string[]
      */
-    protected $fillable = ['profile', 'name', 'email', 'password'];
+    protected $fillable = ['profile', 'name', 'email', 'password', 'last_login_at', 'last_login_ip'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -46,5 +47,14 @@ class User extends Authenticatable
         } else {
             return $this->hasMany(Setting::class);
         }
+    }
+
+    public function getLastLoginAtAttribute()
+    {
+        // return $this->attributes['last_login_at'] != null
+        //     ? Carbon::parse($this->attributes['last_login_at'])->format('d/m/Y \à\s H:i:s')
+        //     : null;
+
+        return Carbon::parse($this->attributes['last_login_at'])->format('d/m/Y \à\s H:i:s') ?? null;
     }
 }
