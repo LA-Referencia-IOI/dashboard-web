@@ -8,7 +8,7 @@
 </div>
 
 @if (isset($showPasswordTip) && $showPasswordTip)
-    <h6 class="heading-small text-muted mb-4">Deseja mudar a senha? Preencha os campos Senha e Confirmação de senha logo
+    <h6 class="heading-small text-muted">Deseja mudar a senha? Preencha os campos Senha e Confirmação de senha logo
         abaixo. Não esqueça de clicar em Salvar.</h6>
 @endif
 
@@ -27,29 +27,12 @@
     </div>
 </div>
 
-<h6 class="heading-small text-muted mb-4">Informações básicas</h6>
+<h6 class="heading-small text-muted">Informações básicas</h6>
 <div class="row">
     <div class="col-md-12">
         <div class="form-group">
             {{ Form::label('name', 'Nome') }}
             {{ Form::text('name', null, ['class' => 'form-control']) }}
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="form-group">
-            {{ Form::label('date_birth', 'Data de nascimento') }}
-            <div class="input-group date">
-                <div class="input-group-addon">
-                    <i class="fa fa-calendar"></i>
-                </div>
-                {{ Form::text('date_birth', null, ['class' => 'form-control pull-right datepicker']) }}
-            </div>
-        </div>
-    </div>
-    <div class="col-md-12">
-        <div class="form-group">
-            {{ Form::label('address', 'Endereço') }}
-            {{ Form::text('address', null, ['class' => 'form-control']) }}
         </div>
     </div>
 </div>

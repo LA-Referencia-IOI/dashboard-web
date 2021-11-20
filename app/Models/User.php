@@ -63,12 +63,21 @@ class User extends Authenticatable
         return Carbon::parse($this->attributes['last_login_at'])->format('d/m/Y \à\s H:i:s') ?? null;
     }
 
+    public function getIdFromProfilePicture()
+    {
+        $image = $this->files()
+            ->where('highlight', '=', 1)
+            ->first();
+
+        return isset($image) ? $image->id : null;
+    }
+
     public function getProfilePicture()
     {
         $image = $this->files()
             ->where('highlight', '=', 1)
             ->first();
 
-        return isset($image) ? asset('storage/' . $image->name) : 'user-default.png';
+        return isset($image) ? asset('storage/' . $image->name) : asset('vendor/custom/images/user-default.png');
     }
 }

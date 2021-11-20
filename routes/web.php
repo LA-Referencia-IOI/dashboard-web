@@ -25,7 +25,7 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
         Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
-        Route::put('settings/{user}', [SettingController::class, 'udpate'])->name('settings.update');
+        Route::put('settings/{user}', [SettingController::class, 'update'])->name('settings.update');
         Route::post('settings/change-menu', [SettingController::class, 'changeMenu'])->name('settings.changeMenu');
 
         Route::put('image/{id}/upload', 'ImageController@upload')->name('image.upload');
