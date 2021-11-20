@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\UserType;
 use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -70,6 +71,11 @@ class User extends Authenticatable
             ->first();
 
         return isset($image) ? $image->id : null;
+    }
+
+    public function getProfileDescriptionAttribute()
+    {
+        return UserType::getDescription($this->profile);
     }
 
     public function getProfilePicture()

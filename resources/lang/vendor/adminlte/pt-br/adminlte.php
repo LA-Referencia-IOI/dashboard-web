@@ -3,7 +3,7 @@
 return [
     'privacy_policy' => 'Política de privacidade',
     'terms_of_use' => 'Termos de uso',
-    'full_name' => 'Nome completo',
+    'full_name' => 'Nome e sobrenome',
     'email' => 'Email',
     'password' => 'Senha',
     'retype_password' => 'Repita a senha',
