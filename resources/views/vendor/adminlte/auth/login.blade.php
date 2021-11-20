@@ -20,14 +20,18 @@
 
 @section('auth_header', __('adminlte::adminlte.login_message'))
 
+@section('css')
+    <style>
+        body {
+            background-color: {{ config('seed.login_background_color') }};
+        }
+
+    </style>
+@endsection
+
 @section('auth_body')
     <div class="col-md-5">
-        <img src="https://www.bootstrapdash.com/demo/login-template-free-2/assets/images/login.jpg" alt="login"
-            class="login-card-img">
-        {{-- <p class="text-white font-weight-medium text-center flex-grow align-self-end footer-link text-small">
-        Free <a href="https://www.bootstrapdash.com/" target="_blank" class="text-white">Bootstrap
-            dashboard templates</a> from Bootstrapdash
-    </p> --}}
+        <img src="{{ asset('vendor/custom/images/login.jpg') }}" alt="login" class="login-card-img">
     </div>
     <div class="col-md-7">
         <div class="card-body">
@@ -41,25 +45,29 @@
             <form action="{{ $login_url }}" method="post">
                 @csrf
                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input id="email" type="email" name="email" class="form-control @error('email')mb-0 is-invalid @enderror"
-                        value="{{ old('email') }}" placeholder="{{ __('adminlte::adminlte.email') }}" autofocus>
-                    @error('email')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
+                    <label for="email">{{ __('adminlte::adminlte.email') }}
+                        @error('email')
+                            <span class="invalid-feedback d-inline" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </label>
+                    <input id="email" type="email" name="email"
+                        class="form-control @error('email')mb-0 is-invalid @enderror" value="{{ old('email') }}"
+                        placeholder="{{ __('adminlte::adminlte.email') }}" autofocus>
                 </div>
                 <div class="form-group mb-4">
-                    <label for="password">Password</label>
+                    <label for="password">
+                        {{ __('adminlte::adminlte.password') }}
+                        @error('password')
+                            <span class="invalid-feedback d-inline" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </label>
                     <input id="password" type="password" name="password"
                         class="form-control @error('password')mb-0 is-invalid @enderror"
                         placeholder="{{ __('adminlte::adminlte.password') }}">
-                    @error('password')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
                 </div>
                 <button type=submit
                     class="btn btn-block {{ config('adminlte.classes_auth_btn', 'btn-flat btn-primary') }}">
@@ -74,10 +82,7 @@
                     {{ __('adminlte::adminlte.register_a_new_membership') }}
                 </a>
             </p>
-            <nav class="login-card-footer-nav">
-                <a href="#!">Terms of use.</a>
-                <a href="#!">Privacy policy</a>
-            </nav>
+            @include('vendor.adminlte.auth.footer-nav')
         </div>
     </div>
 @stop

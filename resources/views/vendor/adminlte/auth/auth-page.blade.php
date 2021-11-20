@@ -9,9 +9,9 @@
 @endif
 
 @section('adminlte_css')
+    <link href="{{ asset('vendor/custom/auth-page.css') }}" rel="stylesheet">
     @stack('css')
     @yield('css')
-    <link href="{{ asset('vendor/custom/auth-page.css') }}" rel="stylesheet">
 @stop
 
 {{-- @section('classes_body'){{ ($auth_type ?? 'login') . '-page' }}@stop --}}

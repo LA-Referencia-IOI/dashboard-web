@@ -13,14 +13,18 @@
 
 @section('auth_header', __('adminlte::adminlte.register_message'))
 
+@section('css')
+    <style>
+        body {
+            background-color: {{ config('seed.register_background_color') }};
+        }
+
+    </style>
+@endsection
+
 @section('auth_body')
     <div class="col-md-5">
-        <img src="https://www.bootstrapdash.com/demo/login-template-free-2/assets/images/login.jpg" alt="login"
-            class="login-card-img">
-        {{-- <p class="text-white font-weight-medium text-center flex-grow align-self-end footer-link text-small">
-    Free <a href="https://www.bootstrapdash.com/" target="_blank" class="text-white">Bootstrap
-        dashboard templates</a> from Bootstrapdash
-</p> --}}
+        <img src="{{ asset('vendor/custom/images/register.jpg') }}" alt="login" class="login-card-img">
     </div>
     <div class="col-md-7">
         <div class="card-body">
@@ -87,10 +91,7 @@
                     {{ __('adminlte::adminlte.register_a_new_membership') }}
                 </a>
             </p>
-            <nav class="login-card-footer-nav">
-                <a href="#!">Terms of use.</a>
-                <a href="#!">Privacy policy</a>
-            </nav>
+            @include('vendor.adminlte.auth.footer-nav')
         </div>
     </div>
 @stop
