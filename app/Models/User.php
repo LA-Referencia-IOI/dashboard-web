@@ -84,6 +84,6 @@ class User extends Authenticatable
             ->where('highlight', '=', 1)
             ->first();
 
-        return isset($image) ? asset('storage/' . $image->name) : asset('vendor/custom/images/user-default.png');
+        return isset($image) ? asset('storage/' . $image->name) : asset('assets/images/user-default.png');
     }
 }

@@ -9,7 +9,7 @@
 @endif
 
 @section('adminlte_css')
-    <link href="{{ asset('vendor/custom/auth-page.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/auth-page.css') }}" rel="stylesheet">
     @stack('css')
     @yield('css')
 @stop
