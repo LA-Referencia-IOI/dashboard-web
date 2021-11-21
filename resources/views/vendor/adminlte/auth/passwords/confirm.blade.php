@@ -22,7 +22,7 @@
 
 @section('auth_body')
     <div class="col-md-5">
-        <img src="{{ asset('assets/css/images/lock.jpg') }}" alt="login" class="login-card-img">
+        <img src="{{ asset('assets/images/lock.jpg') }}" alt="login" class="login-card-img">
     </div>
     <div class="col-md-7">
         <div class="card-body">

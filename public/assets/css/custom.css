@@ -1,0 +1,39 @@
+:root {
+    --seed-primary: #343a40;
+    --seed-secondary: #26282a;
+}
+
+.card-body, .card-footer {
+    background-color: #f7fafc;
+}
+
+.card-title {
+    font-family: inherit;
+    font-weight: 600;
+    line-height: 1.5;
+    color: #32325d;
+}
+
+.btn-custom {
+    color: white;
+    background-color: var(--seed-primary) !important;
+    border-color: var(--seed-primary) !important;
+}
+
+.btn-custom:hover {
+    color: white;
+    background-color: var(--seed-secondary) !important;
+    border-color: var(--seed-secondary) !important;
+}
+
+a {
+    color: var(--seed-primary);
+}
+
+a:hover,
+a:active,
+a:focus {
+    outline: none;
+    text-decoration: none;
+    color: var(--seed-secondary);
+}

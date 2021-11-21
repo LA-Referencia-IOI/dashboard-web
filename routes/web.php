@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboard\HomeController;
+use App\Http\Controllers\Dashboard\ImageController;
 use App\Http\Controllers\Dashboard\SettingController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -28,8 +29,8 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::put('settings/{user}', [SettingController::class, 'update'])->name('settings.update');
         Route::post('settings/change-menu', [SettingController::class, 'changeMenu'])->name('settings.changeMenu');
 
-        Route::put('image/{id}/upload', 'ImageController@upload')->name('image.upload');
-        Route::delete('image/destroy/{file}', 'ImageController@destroy')->name('image.destroy');
+        Route::put('image/{id}/upload', [ImageController::class, 'upload'])->name('image.upload');
+        Route::delete('image/destroy/{file}', [ImageController::class, 'destroy'])->name('image.destroy');
     });
 
     Auth::routes();

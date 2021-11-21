@@ -4,15 +4,16 @@
     <div class="row pt-4">
         <div class="col-md-4 col-sm-12 col-lg-4">
             <div class="card card-widget widget-user-2">
-                <div class="widget-user-header bg-secondary">
+                <div class="widget-user-header bg-default">
                     <div class="widget-user-image">
-                        <img class="img-circle" src="{{ Auth::user()->getProfilePicture() }}"
-                            alt="{{ Auth::user()->name }}" title="{{ Auth::user()->name }}">
+                        <img class="profile-user-img img-responsive img-circle"
+                            src="{{ Auth::user()->getProfilePicture() }}" alt="{{ Auth::user()->name }}"
+                            title="{{ Auth::user()->name }}">
                     </div>
                     <h3 class="widget-user-username">{{ Auth::user()->name }}</h3>
                     <h5 class="widget-user-desc">{{ Auth::user()->getProfileDescriptionAttribute() }}</h5>
                 </div>
-                <div class="card-footer p-0">
+                <div class="card-footer">
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a href="#" class="nav-link">
@@ -25,17 +26,17 @@
                             </a>
                         </li>
                     </ul>
-                    {{-- <div class="row">
-                        {{ Form::model(Auth::user(), ['route' => ['image.upload', Auth::user()->id], 'method' => 'PUT', 'enctype' => 'multipart/form-data', 'id' => 'frmUploadImage']) }}
-                        {{ Form::hidden('model', 'User') }}
-                        {{ Form::hidden('userId', Auth::user()->id) }}
-                        {{ Form::hidden('highlight', 1) }}
-                        <div class="custom-file">
-                            <input type="file" style="display: none" class="custom-file-input"
-                                onchange="uploadImage('#frmUploadImage')" name="file" id="fileUser"
-                                accept="image/x-png,image/jpeg">
+                    {{ Form::model(Auth::user(), ['route' => ['image.upload', Auth::user()->id], 'method' => 'PUT', 'enctype' => 'multipart/form-data', 'id' => 'frmUploadImage']) }}
+                    {{ Form::hidden('model', 'User') }}
+                    {{ Form::hidden('userId', Auth::user()->id) }}
+                    {{ Form::hidden('highlight', 1) }}
+                    <div class="custom-file">
+                        <input type="file" style="display: none" class="custom-file-input"
+                            onchange="uploadImage('#frmUploadImage')" name="file" id="fileUser"
+                            accept="image/x-png,image/jpeg">
+                        <div class="row">
                             <div class="{{ Auth::user()->getIdFromProfilePicture() ? 'col-md-9' : 'col-md-12' }}">
-                                <label class="btn btn-primary btn-block" for="fileUser" data-toggle="tooltip"
+                                <label class="btn btn-custom btn-block" for="fileUser" data-toggle="tooltip"
                                     data-placement="left" title="Resolução ideal: 800x800">Escolher imagem do
                                     perfil</label>
                             </div>
@@ -43,13 +44,13 @@
                                 @if (Auth::user()->getIdFromProfilePicture())
                                     <label class="btn btn-danger btn-block" data-toggle="tooltip" data-placement="right"
                                         title="Excluir imagem"
-                                        onclick="confirmDelete({{ Auth::user()->id }}, '{{ route('image.destroy', ['id' => Auth::user()->getIdFromProfilePicture()]) }}', 'User')"><i
+                                        onclick="confirmDelete({{ Auth::user()->id }}, '{{ route('image.destroy', ['file' => Auth::user()->getIdFromProfilePicture()]) }}', 'User')"><i
                                             class="fa fa-trash"></i></label>
                                 @endif
                             </div>
                         </div>
-                        {{ Form::close() }}
-                    </div> --}}
+                    </div>
+                    {{ Form::close() }}
                 </div>
             </div>
         </div>
@@ -82,7 +83,7 @@
                     ])
                 </div>
                 <div class="card-footer">
-                    <button type="submit" class="btn btn-secondary">Salvar dados</button>
+                    <button type="submit" class="btn btn-custom">Salvar dados</button>
                 </div>
                 {{ Form::close() }}
             </div>

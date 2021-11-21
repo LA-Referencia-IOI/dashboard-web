@@ -19,7 +19,11 @@ class ImageRepository
             DB::beginTransaction();
 
             $validator = Validator::make($request->all(), [
-                'file' => 'required|mimes:' . config('seed.profile_pic_mimes') . '|max:' . config('seed.max_size'),
+                'file' =>
+                    'required|mimes:' .
+                    config('seed.profile_pic_mimes') .
+                    '|max:' .
+                    config('seed.profile_pic_max_size'),
             ]);
 
             if ($validator->fails()) {
@@ -53,7 +57,7 @@ class ImageRepository
                 'type' => $request->file('file')->getMimeType(),
                 'name' => $nameFile,
                 'extension' => $request->file('file')->getClientOriginalExtension(),
-                'size' => $request->file('file')->getClientSize(),
+                'size' => $request->file('file')->getSize(),
                 'path' => '/',
                 'highlight' => $highlight,
             ]);
@@ -62,7 +66,7 @@ class ImageRepository
 
             DB::commit();
 
-            $upload = $request->file('file')->storeAs('/', $nameFile);
+            $upload = $request->file('file')->storeAs('/public' . '/', $nameFile);
 
             if ($upload) {
                 return [
