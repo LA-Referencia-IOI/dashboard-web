@@ -19,22 +19,22 @@ class UsersTableSeeder extends Seeder
 
         User::create([
             'profile' => UserType::Administrator,
-            'name' => 'Administrador',
-            'email' => 'admin@seed.com',
+            'name' => 'Administrator',
+            'email' => 'admin@darkpid.com',
             'password' => $password
         ]);
 
         User::create([
-            'profile' => UserType::Manager,
-            'name' => 'Gerente',
-            'email' => 'manager@seed.com',
+            'profile' => UserType::Instituition,
+            'name' => 'Instituition',
+            'email' => 'instituition@darkpid.com',
             'password' => $password
         ]);
 
         User::create([
             'profile' => UserType::User,
-            'name' => 'Usuário',
-            'email' => 'user@seed.com',
+            'name' => 'User',
+            'email' => 'user@darkpid.com',
             'password' => $password
         ]);
     }

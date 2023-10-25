@@ -1,38 +1,38 @@
 version: "2"
 
 volumes:
-  seedlara8-mysql-data:
+  dark-mysql-data:
     driver: local
 
-  seedlara8-redis-data:
+  dark-redis-data:
     driver: local
 
 services:
   mysql:
     image: mysql:5.7
-    container_name: seedlara8-mysql
+    container_name: dark-mysql
     volumes:
-      - seedlara8-mysql-data:/var/lib/mysql
+      - dark-mysql-data:/var/lib/mysql
     ports:
       - "3307:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=seedlara8
-      - MYSQL_DATABASE=seedlara8
-      - MYSQL_USER=seedlara8
-      - MYSQL_PASSWORD=seedlara8
+      - MYSQL_ROOT_PASSWORD=dark
+      - MYSQL_DATABASE=dark
+      - MYSQL_USER=dark
+      - MYSQL_PASSWORD=dark
 
   cache:
     image: redis:4.0
-    container_name: seedlara8-redis
+    container_name: dark-redis
     command: --appendonly yes
     volumes:
-      - seedlara8-redis-data:/data
+      - dark-redis-data:/data
     ports:
       - "6380:6379"
 
   app:
     image: ambientum/php:8.0-nginx
-    container_name: seedlara8-app
+    container_name: dark-app
     volumes:
       - .:/var/www/app
     ports:

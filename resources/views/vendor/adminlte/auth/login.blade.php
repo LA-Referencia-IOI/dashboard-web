@@ -30,10 +30,10 @@
 @endsection
 
 @section('auth_body')
-    <div class="col-md-5">
-        <img src="{{ asset('assets/images/login.jpg') }}" alt="login" class="login-card-img">
-    </div>
     <div class="col-md-7">
+        <img src="{{ asset('assets/images/login.png') }}" alt="login" class="login-card-img">
+    </div>
+    <div class="col-md-5">
         <div class="card-body">
             <div class="brand-wrapper">
                 <div class="{{ $auth_type ?? 'login' }}-logo">
@@ -41,7 +41,7 @@
                     {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
                 </div>
             </div>
-            <p class="login-card-description text-center">Informe suas credências para entrar</p>
+            <p class="login-card-description text-center">Enter your credentials to log in</p>
             <form action="{{ $login_url }}" method="post">
                 @csrf
                 <div class="form-group">
@@ -77,11 +77,11 @@
             </form>
             <a href="{{ $password_reset_url }}"
                 class="forgot-password-link">{{ __('adminlte::adminlte.i_forgot_my_password') }}</a>
-            <p class="login-card-footer-text">
+            <!-- <p class="login-card-footer-text">
                 <a href="{{ $register_url }}" class="text-reset">
                     {{ __('adminlte::adminlte.register_a_new_membership') }}
                 </a>
-            </p>
+            </p> -->
             @include('vendor.adminlte.auth.footer-nav')
         </div>
     </div>
