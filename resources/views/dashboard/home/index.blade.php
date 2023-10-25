@@ -17,51 +17,73 @@
             {{ session('message') }}
         </div>
     @endif
-
     <div class="row">
-        <div class="col-md-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-warning"><i class="far fa-comments"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-number">Features this dashboard</span>
-                    <span class="info-box-text">
-                    <ul>
-                        <li>Register new institutions.</li>
-                        <li>Create access keys for new institutions</li>
-                        <li>Create new dARK wallets</li>
-                        <li>See and load dARK balances</li>
-                    </ul>
-                    </span>
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-info">
+            <div class="inner">
+                <h3>Instituition<sup style="font-size: 20px"></sup> </h3>
+                <p>3</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-fw fa-cubes"></i>
+            </div>
+            <a href="" class="small-box-footer">See <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-success">
+            <div class="inner">
+                <h3>Nodes <sup style="font-size: 20px"> dARK Main</sup> </h3>
+
+                <p>5</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-fw fa-battery-three-quarters"></i>
+            </div>
+            <a href="#" class="small-box-footer">see <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-warning">
+            <div class="inner">
+                <h3>Nodes <sup style="font-size: 20px">dARK private</sup> </h3>
+
+                <p>2</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-fw fa-rss"></i>
+            </div>
+            <a href="#" class="small-box-footer">see <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <div class="small-box bg-danger">
+            <div class="inner">
+                <h3>Erros<sup style="font-size: 20px"></sup></h3>
+                <p>0</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-fw  fa-wrench"></i>
+            </div>
+            <a href="" class="small-box-footer">see <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="info-box">
+            <div class="info-box-content">
+                <div class="pad">
+                    <!-- Map will be created here -->
+                    <div id="mapid" style="height: 600px;"></div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- <div class="row">
-        <div class="col-md-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-info"><i class="far fa-user"></i></span>
-                <div class="info-box-content">
-                    <span class="info-box-number">Simulation</span>
-                    <span class="info-box-text">
-                        In this section, you can simulate the location of an end-user device and analyze the coverage.
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="info-box">
-                <div class="info-box-content">
-                    <div class="pad">
-                        <!-- Map will be created here -->
-                        <div id="mapid" style="height: 600px;"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
 
 @push('js')

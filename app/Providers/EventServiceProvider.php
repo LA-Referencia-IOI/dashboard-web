@@ -39,7 +39,7 @@ class EventServiceProvider extends ServiceProvider
 
             $event->menu->add([
                 'icon' => 'fas fa-cogs',
-                'text' => 'Meu perfil',
+                'text' => 'My profile',
                 'active' => ['dashboard/settings*'],
                 'route' => 'settings.index',
             ]);
