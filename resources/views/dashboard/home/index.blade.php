@@ -59,7 +59,7 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-danger">
             <div class="inner">
-                <h3>Erros<sup style="font-size: 20px"></sup></h3>
+                <h3>Errors<sup style="font-size: 20px"></sup></h3>
                 <p>0</p>
             </div>
             <div class="icon">
@@ -103,7 +103,7 @@
     
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© Version 0.1 dARK',
-        maxZoom: 4,
+        maxZoom: 6,
     }).addTo(map);
 
     L.marker([lat, lon]).addTo(map);

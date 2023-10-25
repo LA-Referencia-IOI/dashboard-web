@@ -11,7 +11,7 @@
             @endif
             @if ($errors->any())
                 <div class="alert alert-danger">
-                    <strong>Atenção!</strong>
+                    <strong>Attention!</strong>
                     <ul>
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -30,21 +30,21 @@
                             @isset($title)
                                 {{ $title }}
                             @else
-                                Informações do usuário
+                                User Information
                             @endisset
                         </h3>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
                         <h6 class="heading-small text-muted mb-4">
-                            Atenção!
+                            Attention!
                             <br>
                             <br>
 
                             @if (config('seed.username') == 'email')
-                                Os campos E-mail, Senha, Confirmação de senha e Nome são campos obrigatórios.
+                                Email, Password, Password Confirmation, and Name fields are mandatory.
                             @else
-                                Os campos Telefone, Senha, Confirmação de senha e Nome são campos obrigatórios.
+                                Phone, Password, Password Confirmation, and Name fields are mandatory.
                             @endif
 
                         </h6>
@@ -52,7 +52,7 @@
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
-                        {{ Form::submit('Salvar dados', ['class' => 'btn btn-custom']) }}
+                        {{ Form::submit('Save Data', ['class' => 'btn btn-custom']) }}
                     </div>
                 </div>
                 <!-- /.box -->

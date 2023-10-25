@@ -11,7 +11,7 @@
             @endif
             @if ($errors->any())
                 <div class="alert alert-danger">
-                    <strong>Atenção!</strong>
+                    <strong>Attention!</strong>
                     <ul>
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -30,37 +30,31 @@
                             @isset($title)
                                 {{ $title }}
                             @else
-                                Informações do usuário
+                                User Information
                             @endisset
                         </h3>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
                         <h6 class="heading-small text-muted mb-4">
-                            Atenção!
+                            Attention!
                             <br>
                             <br>
 
                             @if (config('seed.username') == 'email')
-                                Você está na página de edição do usuário. Somente os campos E-mail e Nome são obrigatórios.
+                                You are on the user edit page. Only Email and Name fields are mandatory.
                             @else
-                                Você está na página de edição do usuário. Somente os campos Telefone e Nome são obrigatórios.
+                                You are on the user edit page. Only Phone and Name fields are mandatory.
                             @endif
 
                         </h6>
-                        @if (!isset($isPatientRecord))
-                            <div class="form-group">
-                                {{ Form::label('', 'Perfil de acesso: ') }}
-                                <strong>{{ $user->getDescriptionProfile() }}</strong>
-                            </div>
-                        @endif
                         @include('dashboard.user.partials.form', [
                             'showPasswordTip' => true
                         ])
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">
-                        {{ Form::submit('Salvar dados', ['class' => 'btn btn-custom']) }}
+                        {{ Form::submit('Save Data', ['class' => 'btn btn-custom']) }}
                     </div>
                 </div>
                 <!-- /.box -->

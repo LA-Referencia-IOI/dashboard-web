@@ -86,4 +86,21 @@ class User extends Authenticatable
 
         return isset($image) ? asset('storage/' . $image->name) : asset('assets/images/user-default.png');
     }
+
+    public function getProfileAlias()
+    {
+        switch ($this->profile) {
+            case 0:
+                return 'Administrador';
+
+            case 1:
+                return 'Institutuion';
+
+            case 2:
+                return 'User';
+
+            default:
+                return 'Undefined';
+        }
+    }
 }
