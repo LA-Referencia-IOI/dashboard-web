@@ -25,7 +25,7 @@
                 <p>3</p>
             </div>
             <div class="icon">
-                <i class="fas fa-fw fa-cubes"></i>
+                <i class="fas fa-fw fa-building"></i>
             </div>
             <a href="" class="small-box-footer">See <i class="fas fa-arrow-circle-right"></i></a>
             </div>
@@ -33,12 +33,12 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-success">
             <div class="inner">
-                <h3>Nodes <sup style="font-size: 20px"> dARK Main</sup> </h3>
+                <h3>Networks<sup style="font-size: 20px"> dARK Main</sup> </h3>
 
                 <p>5</p>
             </div>
             <div class="icon">
-                <i class="fas fa-fw fa-battery-three-quarters"></i>
+                <i class="fas fa-fw  fa-flag-checkered"></i>
             </div>
             <a href="#" class="small-box-footer">see <i class="fas fa-arrow-circle-right"></i></a>
             </div>
@@ -46,12 +46,12 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-warning">
             <div class="inner">
-                <h3>Nodes <sup style="font-size: 20px">dARK private</sup> </h3>
+                <h3>Networks <sup style="font-size: 20px">dARK private</sup> </h3>
 
                 <p>2</p>
             </div>
             <div class="icon">
-                <i class="fas fa-fw fa-rss"></i>
+                <i class="fas fa-fw fa-spinner"></i>
             </div>
             <a href="#" class="small-box-footer">see <i class="fas fa-arrow-circle-right"></i></a>
             </div>

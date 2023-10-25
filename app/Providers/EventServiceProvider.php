@@ -41,7 +41,7 @@ class EventServiceProvider extends ServiceProvider
             ]);
             $event->menu->add([
                 'icon' => 'fas fa-cubes',
-                'text' => 'New Nodes',
+                'text' => 'Networks',
                 'route' => 'users.index',
             ]);
             $event->menu->add([
