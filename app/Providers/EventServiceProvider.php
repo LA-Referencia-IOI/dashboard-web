@@ -27,15 +27,15 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         Event::listen(BuildingMenu::class, function (BuildingMenu $event) {
-            $event->menu->add('MENU PRINCIPAL');
+            $event->menu->add('MENU');
 
             $event->menu->add([
                 'icon' => 'fas fa-home',
-                'text' => 'Início',
+                'text' => 'Home',
                 'route' => 'home.index',
             ]);
 
-            $event->menu->add('PERFIL');
+            $event->menu->add('PROFILE');
 
             $event->menu->add([
                 'icon' => 'fas fa-cogs',
