@@ -29,10 +29,20 @@
 
 <h6 class="heading-small text-muted">Informações básicas</h6>
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-8">
         <div class="form-group">
             {{ Form::label('name', 'Nome') }}
             {{ Form::text('name', null, ['class' => 'form-control']) }}
+        </div>
+    </div>
+    <div class="col-md-4">
+    <div class="form-group">
+            {{ Form::label('profile', 'Profile') }}
+            {{ Form::select('profile', [
+                '0' => 'Administrator',
+                '1' => 'Instituition',
+                '2' => 'User',
+            ], null, array('class' => 'form-control')) }}
         </div>
     </div>
 </div>
