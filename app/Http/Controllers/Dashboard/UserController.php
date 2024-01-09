@@ -37,11 +37,11 @@ class UserController extends Controller
 
         if ($user) {
             return redirect()
-                ->route('admin.users.index')
+                ->route('users.index')
                 ->with(['message' => 'Cadastrado realizado com sucesso.', 'code' => 'success']);
         } else {
             return redirect()
-                ->route('admin.user.create')
+                ->route('user.create')
                 ->with(['message' => 'Erro ao cadastrar. Tente novamente!', 'code' => 'danger']);
         }
     }
@@ -68,26 +68,27 @@ class UserController extends Controller
 
         if ($user) {
             return redirect()
-                ->route('admin.users.index')
+                ->route('users.index')
                 ->with(['message' => 'Edição realizada com sucesso.', 'code' => 'success']);
         } else {
             return redirect()
-                ->route('admin.user.create')
+                ->route('user.create')
                 ->with(['message' => 'Erro ao editar. Tente novamente!', 'code' => 'danger']);
         }
     }
 
     public function destroy(User $user)
     {
+
         $user->delete();
 
         if ($user) {
             return redirect()
-                ->route('admin.users.index')
+                ->route('users.index')
                 ->with(['message' => 'Ação de exclusão realizada com sucesso.', 'code' => 'success']);
         } else {
             return redirect()
-                ->route('admin.users.index')
+                ->route('users.index')
                 ->with(['message' => 'Erro ao excluir. Tente novamente!', 'code' => 'danger']);
         }
     }

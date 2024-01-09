@@ -31,7 +31,7 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::get('user/edit/{user}', [UserController::class, 'edit'])->name('users.edit');
         Route::post('user/create', [UserController::class, 'store'])->name('users.store');
         Route::put('user/{user}', [UserController::class, 'update'])->name('users.update');
-        Route::delete('user/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+        Route::delete('user/destroy/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
         Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
         Route::put('settings/{user}', [SettingController::class, 'update'])->name('settings.update');

@@ -29,7 +29,6 @@
                         <tr>
                             <th>Access Profile</th>
                             <th>Name</th>
-                            <th>Phone</th>
                             <th>Registration Date</th>
                             <th>Last Login</th>
                             <th>Actions</th>
@@ -40,12 +39,11 @@
                             <tr>
                                 <td>{{ $user->getProfileDescriptionAttribute() }}</td>
                                 <td>{{ $user->name }}</td>
-                                <td>{{ $user->phone }}</td>
-                                <td>{{ $user->created }}</td>
+                                <td>{!! $user->getRegistration() !!}</td>
                                 <td>{{ $user->last_login_at }}</td>
                                 <td>
                                     <a href="{{ route('users.edit', $user->id) }}" alt="Edit" title="Edit" class="btn btn-primary btn-sm"><i class="fa fa-pencil-alt"></i></a>
-                                    <button alt="Delete" title="Delete" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $user->id }})"><i class="fa fa-trash"></i></button>
+                                    <button alt="Delete" title="Delete" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $user->id }}, '{{ route('users.destroy', ['user' => $user->id]) }}')"><i class="fa fa-trash"></i></button>
                                 </td>
                             </tr>
                         @endforeach

@@ -26,31 +26,19 @@ class UserRequest extends FormRequest
         $rules = [
             'address' => 'max:191',
             'name' => 'required|max:191',
-            'date_birth' => 'nullable|date_format:d/m/Y'
+            'profile' => 'required|max:191',
         ];
 
         if (isset($this->user->id)) { // se tem id é edição
 
-            if (config('seed.username') == 'email') {
-                $rules['email'] = 'required|email|max:255|unique:users,email,' . $this->user->id;
-                $rules['phone'] = 'nullable|regex:/\(\d{2,}\) \d{4,}\-\d{4}/|unique:users,phone,' . $this->user->id;
-            } else {
-                $rules['email'] = 'nullable|email|max:255|unique:users,email,' . $this->user->id;
-                $rules['phone'] = 'required|regex:/\(\d{2,}\) \d{4,}\-\d{4}/|unique:users,phone,' . $this->user->id;
-            }
 
+            $rules['email'] = 'required|email|max:255|unique:users,email,' . $this->user->id;
+            $rules['profile'] = 'required|max:191';
             $rules['password'] = 'confirmed|nullable|min:6';
             $rules['password_confirmation'] = 'nullable|min:6|same:password';
         } else {
-
-            if (config('seed.username') == 'email') {
-                $rules['email'] = 'required|email|unique:users';
-                $rules['phone'] = 'nullable|regex:/\(\d{2,}\) \d{4,}\-\d{4}/|unique:users';
-            } else {
-                $rules['email'] = 'nullable|email|unique:users';
-                $rules['phone'] = 'required|regex:/\(\d{2,}\) \d{4,}\-\d{4}/|unique:users';
-            }
-
+            $rules['email'] = 'nullable|email|unique:users';
+            $rules['profile'] = 'required|max:191';
             $rules['password'] = 'confirmed|required|min:6';
             $rules['password_confirmation'] = 'required|min:6|same:password';
         }

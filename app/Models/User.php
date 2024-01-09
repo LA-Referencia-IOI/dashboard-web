@@ -64,6 +64,15 @@ class User extends Authenticatable
         return Carbon::parse($this->attributes['last_login_at'])->format('d/m/Y \à\s H:i:s') ?? null;
     }
 
+    public function getRegistration()
+    {
+        // return $this->attributes['last_login_at'] != null
+        //     ? Carbon::parse($this->attributes['last_login_at'])->format('d/m/Y \à\s H:i:s')
+        //     : null;
+
+        return Carbon::parse($this->attributes['created_at'])->format('d/m/Y \à\s H:i:s') ?? null;
+    }
+
     public function getIdFromProfilePicture()
     {
         $image = $this->files()

@@ -40,13 +40,7 @@
                             Attention!
                             <br>
                             <br>
-
-                            @if (config('seed.username') == 'email')
-                                Email, Password, Password Confirmation, and Name fields are mandatory.
-                            @else
-                                Phone, Password, Password Confirmation, and Name fields are mandatory.
-                            @endif
-
+                            Email, Password, Password Confirmation, and Name fields are mandatory.
                         </h6>
                         @include('dashboard.user.partials.form')
                     </div>
