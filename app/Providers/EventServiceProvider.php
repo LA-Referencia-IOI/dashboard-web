@@ -40,10 +40,15 @@ class EventServiceProvider extends ServiceProvider
                 'route' => 'users.index',
             ]);
             $event->menu->add([
-                'icon' => 'fas fa-cubes',
-                'text' => 'Networks',
-                'route' => 'users.index',
+                'icon' => 'fas fa-fw fa-building',
+                'text' => 'Institutions',
+                'route' => 'institutions.index',
             ]);
+            // $event->menu->add([
+            //     'icon' => 'fas fa-cubes',
+            //     'text' => 'Networks',
+            //     'route' => 'users.index',
+            // ]);
             $event->menu->add([
                 'icon' => 'fas fa-book',
                 'text' => 'Balances',
