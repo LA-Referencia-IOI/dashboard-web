@@ -69,6 +69,27 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            {{ Form::label('numberNodes', 'Number Nodes') }}
+            {{ Form::text('numberNodes', null, ['class' => 'form-control']) }}
+        </div>
+    </div>
+    <div class="col-md-6">
+    <div class="form-group">
+            {{ Form::label('typeNodes', 'Type Nodes') }}
+            {{ Form::select('typeNodes', [
+                '0' => 'Main dARK',
+                '1' => 'External Node in Main dARK',
+                '2' => 'Network Partner',
+                '3' => 'External Node in Network Partner'
+            ], null, array('class' => 'form-control')) }}
+        </div>
+    </div>
+    </div>
+</div>
+
 
 <div class="row">
     <div class="col-md-8">
@@ -85,6 +106,17 @@
                 '1' => 'University',
                 '2' => 'Library',
                 '3' => 'Others'
+            ], null, array('class' => 'form-control')) }}
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+    <div class="form-group">
+            {{ Form::label('status', 'Status') }}
+            {{ Form::select('status', [
+                '0' => 'Enabled',
+                '1' => 'Disabled'
             ], null, array('class' => 'form-control')) }}
         </div>
     </div>

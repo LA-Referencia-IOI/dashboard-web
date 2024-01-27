@@ -34,7 +34,7 @@
                                 <td>{{ $institution->email }}</td>
                                 <td>{{ $institution->responsible }}</td>
                                 <td>{{ $institution->numberNodes }}</td>
-                                <td>{{ $institution->status }}</td>
+                                <td>{!! $institution->getStatus() !!}</td>
                                 <td>
                                     <a href="{{ route('institutions.edit', $institution->id) }}" alt="Edit" title="Edit" class="btn btn-primary btn-sm"><i class="fa fa-pencil-alt"></i></a>
                                     <button alt="Delete" title="Delete" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $institution->id }}, '{{ route('institutions.destroy', ['institution' => $institution->id]) }}')"><i class="fa fa-trash"></i></button>

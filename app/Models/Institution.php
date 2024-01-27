@@ -40,5 +40,20 @@ class Institution extends Model
         return $type;
     }
 
+    public function getStatus()
+    {
+        
+        $status = $this->status;
+
+        if($status == 0){
+            return "<span class=\"badge badge-success\">Enabled</span>";
+        }else if($status == 1){
+            return "<span class=\"badge badge-danger\">Disabled</span>";
+        }else{
+            return "<span class=\"badge badge-warning\">Undefined</span>";
+        }
+        return $status;
+    }
+
 
 }
