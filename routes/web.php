@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\Dashboard\InstitutionController;
 use App\Http\Controllers\Dashboard\ImageController;
 use App\Http\Controllers\Dashboard\SettingController;
 use Illuminate\Support\Facades\Auth;
@@ -32,6 +33,13 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::post('user/create', [UserController::class, 'store'])->name('users.store');
         Route::put('user/{user}', [UserController::class, 'update'])->name('users.update');
         Route::delete('user/destroy/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+        Route::get('institutions', [InstitutionController::class, 'index'])->name('institutions.index');
+        Route::get('institution/create', [InstitutionController::class, 'create'])->name('institutions.create');
+        Route::get('institution/edit/{institution}', [InstitutionController::class, 'edit'])->name('institutions.edit');
+        Route::post('institution/create', [InstitutionController::class, 'store'])->name('institutions.store');
+        Route::put('institution/{institution}', [InstitutionController::class, 'update'])->name('institutions.update');
+        Route::delete('institution/destroy/{institution}', [InstitutionController::class, 'destroy'])->name('institutions.destroy');
 
         Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
         Route::put('settings/{user}', [SettingController::class, 'update'])->name('settings.update');
