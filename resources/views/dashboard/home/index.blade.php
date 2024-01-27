@@ -22,7 +22,7 @@
             <div class="small-box bg-info">
             <div class="inner">
                 <h3>Instituition<sup style="font-size: 20px"></sup> </h3>
-                <p>3</p>
+                <p>{!!$countInstitutions!!}</p>
             </div>
             <div class="icon">
                 <i class="fas fa-fw fa-building"></i>
@@ -89,12 +89,12 @@
 @push('js')
 <script src="https://cdn.jsdelivr.net/npm/leaflet/dist/leaflet.js"></script>
 <script>
-    const lat = '{{ isset($lat) ? $lat : -15.8040207 }}';
-    const lon = '{{ isset($lon) ? $lon : -47.8857621 }}';
+    const latitude = '{{ isset($latitude) ? $latitude : -15.8040207 }}';
+    const longitude = '{{ isset($longitude) ? $longitude : -47.8857621 }}';
     
-    var map = L.map('mapid').setView([lat, lon], 11);
+    var map = L.map('mapid').setView([latitude, longitude], 11);
 
-    var circle = L.circle([lat, lon], {
+    var circle = L.circle([latitude, longitude], {
         color: 'red',
         fillColor: '#f03',
         fillOpacity: 0.5,
@@ -106,9 +106,26 @@
         maxZoom: 6,
     }).addTo(map);
 
-    L.marker([lat, lon]).addTo(map);
+    L.marker([latitude, longitude]).addTo(map);
 
-    L.marker([lat, lon]).addTo(map)
+    L.marker([latitude, longitude]).addTo(map)
         .bindPopup("<b>IBICT</b>: <small>Instituto Brasileiro de Informação em Ciência e Tecnologia </small> ").openPopup();
+
+    const locations = @json($locations);
+    console.log(locations);
+
+    for (var i = 0; i < locations.length; i++) {
+        console.log(locations[i]["latitude"]);
+        L.marker([locations[i]["latitude"], locations[i]["longitude"]]).addTo(map)
+        .bindPopup("<b>Institution: </b>"+ locations[i]["name"] +"\n"+ "<b>Resp: </b>"+ locations[i]["responsible"]+ "\n" +
+          "<b>Email: </b>"+ locations[i]["email"]+"\n").openPopup();
+
+        // var circle = L.circle([locations[i]["lat"],locations[i]["lon"]], {
+        //       color: 'red',
+        //       fillColor: '#f03',
+        //       fillOpacity: 0.5,
+        //       radius: 300 // raio em metros
+        // }).addTo(map);
+    }
 </script>
 @endpush
