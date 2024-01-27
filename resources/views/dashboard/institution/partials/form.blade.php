@@ -1,3 +1,15 @@
+
+@if($institution->typeNodes == 0 || $institution->typeNodes == 1)
+<h6 class="heading-small text-muted">Code to access Main dARK</h6>
+<div class="row">
+    <div class="col-md-12">
+    <div class="form-group">
+            {{ Form::label('code', 'Id Code') }}
+            {{ Form::text('code', null, ['class' => 'form-control','readonly' => 'readonly']) }}
+        </div>
+    </div>
+</div>
+@endif
 <h6 class="heading-small text-muted">Basics informations</h6>
 <div class="row">
     <div class="col-md-6">

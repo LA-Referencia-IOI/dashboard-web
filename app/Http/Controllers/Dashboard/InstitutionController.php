@@ -15,6 +15,8 @@ class InstitutionController extends Controller
     {
         $total = Institution::count();
         $s = isset($request['s']) ? $request['s'] : null;
+
+        
         if ($s) {
             $institutions = Institution::where('name', 'LIKE', '%' . $s . '%')
                 ->orderBy('name')
