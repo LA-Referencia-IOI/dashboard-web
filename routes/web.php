@@ -41,6 +41,8 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::put('institution/{institution}', [InstitutionController::class, 'update'])->name('institutions.update');
         Route::delete('institution/destroy/{institution}', [InstitutionController::class, 'destroy'])->name('institutions.destroy');
 
+        Route::get('institutions/{institution}/blockchain-id', [InstitutionController::class, 'addIdBlockchain'])->name('institutions.add_id_blockchain');
+
         Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
         Route::put('settings/{user}', [SettingController::class, 'update'])->name('settings.update');
         Route::post('settings/change-menu', [SettingController::class, 'changeMenu'])->name('settings.changeMenu');

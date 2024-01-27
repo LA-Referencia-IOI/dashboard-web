@@ -21,6 +21,7 @@ class CreateInstitutionsTable extends Migration
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->string('responsible')->nullable();
+            $table->string('code')->nullable();
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
             $table->string('balance')->nullable();

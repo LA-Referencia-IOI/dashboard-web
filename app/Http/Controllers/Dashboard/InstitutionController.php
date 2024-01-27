@@ -37,11 +37,11 @@ class InstitutionController extends Controller
         if ($institution) {
             return redirect()
                 ->route('institutions.index')
-                ->with(['message' => 'Cadastrado realizado com sucesso.', 'code' => 'success']);
+                ->with(['message' => 'Successfully registered.', 'code' => 'success']);
         } else {
             return redirect()
                 ->route('institution.create')
-                ->with(['message' => 'Erro ao cadastrar. Tente novamente!', 'code' => 'danger']);
+                ->with(['message' => 'Error when registering. Try again!', 'code' => 'danger']);
         }
     }
 
@@ -62,11 +62,28 @@ class InstitutionController extends Controller
         if ($institution) {
             return redirect()
                 ->route('institutions.index')
-                ->with(['message' => 'Edição realizada com sucesso.', 'code' => 'success']);
+                ->with(['message' => 'Editing completed successfully.', 'code' => 'success']);
         } else {
             return redirect()
                 ->route('institution.create')
-                ->with(['message' => 'Erro ao editar. Tente novamente!', 'code' => 'danger']);
+                ->with(['message' => 'Error when editing. Try again!', 'code' => 'danger']);
+        }
+    }
+
+    public function addIdBlockchain(Institution $institution)
+    {
+        // Somente uma chave aletória
+        $codeHash = hash('sha256', $institution->latitude);
+        $institution->code = $codeHash;
+        $institution->update();
+       
+
+        if ($institution->code) {
+            return redirect()->back()
+                            ->with(['message' => 'Chave atribuída com sucesso. Coloque este código no firmware do dispositivo.', 'code' => 'success']);
+        } else {
+            return redirect()->route('institution.index')
+                             ->with(['message' => 'Erro ao registrar Dispositivo. Tente novamente!', 'code' => 'danger']);
         }
     }
 
@@ -78,11 +95,11 @@ class InstitutionController extends Controller
         if ($institution) {
             return redirect()
                 ->route('institutions.index')
-                ->with(['message' => 'Ação de exclusão realizada com sucesso.', 'code' => 'success']);
+                ->with(['message' => 'Deletion action completed successfully.', 'code' => 'success']);
         } else {
             return redirect()
                 ->route('institutions.index')
-                ->with(['message' => 'Erro ao excluir. Tente novamente!', 'code' => 'danger']);
+                ->with(['message' => 'Error deleting. Try again!', 'code' => 'danger']);
         }
     }
 

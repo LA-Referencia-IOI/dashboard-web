@@ -25,6 +25,7 @@ class Institution extends Model
         'plan',
         'country',
         'city',
+        'code',
         'state',
         'numberNodes',
         'typeNodes',
