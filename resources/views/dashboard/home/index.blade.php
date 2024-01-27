@@ -98,12 +98,12 @@
         color: 'red',
         fillColor: '#f03',
         fillOpacity: 0.5,
-        radius: 500
+        radius: 1000
     }).addTo(map);
     
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© Version 0.1 dARK',
-        maxZoom: 6,
+        attribution: '© Version 0.2 dARK',
+        maxZoom: 5,
     }).addTo(map);
 
     L.marker([latitude, longitude]).addTo(map);
@@ -118,14 +118,14 @@
         console.log(locations[i]["latitude"]);
         L.marker([locations[i]["latitude"], locations[i]["longitude"]]).addTo(map)
         .bindPopup("<b>Institution: </b>"+ locations[i]["name"] +"\n"+ "<b>Resp: </b>"+ locations[i]["responsible"]+ "\n" +
-          "<b>Email: </b>"+ locations[i]["email"]+"\n").openPopup();
+          "<b>Email: </b>"+ locations[i]["email"]+"\n"+ locations[i]["typeNodes"]+"\n").openPopup();
 
-        // var circle = L.circle([locations[i]["lat"],locations[i]["lon"]], {
-        //       color: 'red',
-        //       fillColor: '#f03',
-        //       fillOpacity: 0.5,
-        //       radius: 300 // raio em metros
-        // }).addTo(map);
+        var circle = L.circle([locations[i]["latitude"],locations[i]["longitude"]], {
+              color: 'red',
+              fillColor: '#f03',
+              fillOpacity: 0.5,
+              radius: 300 // raio em metros
+        }).addTo(map);
     }
 </script>
 @endpush

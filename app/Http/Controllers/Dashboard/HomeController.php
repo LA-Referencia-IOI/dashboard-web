@@ -29,6 +29,7 @@ class HomeController extends Controller
                 'name' => $institution['name'],
                 'responsible' => $institution['responsible'],
                 'email' => $institution['email'],
+                'typeNodes' => $institution->getTypeNodes(),
             ];
         })->toArray();
         $locations = collect($locations);
