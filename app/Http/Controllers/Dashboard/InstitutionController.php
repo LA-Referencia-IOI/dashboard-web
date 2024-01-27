@@ -82,10 +82,10 @@ class InstitutionController extends Controller
 
         if ($institution->code) {
             return redirect()->back()
-                            ->with(['message' => 'Chave atribuída com sucesso. Coloque este código no firmware do dispositivo.', 'code' => 'success']);
+                            ->with(['message' => 'Key assigned successfully..', 'code' => 'success']);
         } else {
             return redirect()->route('institution.index')
-                             ->with(['message' => 'Erro ao registrar Dispositivo. Tente novamente!', 'code' => 'danger']);
+                             ->with(['message' => 'Error registering Device. Try again!', 'code' => 'danger']);
         }
     }
 

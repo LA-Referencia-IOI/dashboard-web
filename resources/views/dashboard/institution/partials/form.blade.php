@@ -1,5 +1,6 @@
 
-@if($institution->typeNodes == 0 || $institution->typeNodes == 1)
+
+@if(isset ($institution->typeNodes) == 0 || isset ($institution->typeNodes) == 1)
 <h6 class="heading-small text-muted">Code to access Main dARK</h6>
 <div class="row">
     <div class="col-md-12">
@@ -49,8 +50,8 @@
     </div>
     <div class="col-md-6">
         <div class="form-group">
-            {{ Form::label('City', 'City') }}
-            {{ Form::text('City', null, ['class' => 'form-control']) }}
+            {{ Form::label('country', 'Country') }}
+            {{ Form::text('country', null, ['class' => 'form-control']) }}
         </div>
     </div>
     <div class="col-md-6">
