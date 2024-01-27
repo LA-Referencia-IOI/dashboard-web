@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Enums\UserType;
+use App\Enums\InstitutionType;
 use Carbon\Carbon;
 
 class Institution extends Model
@@ -31,4 +32,13 @@ class Institution extends Model
         'status',
         'description'
     ];
+
+    public function getTypeAlias()
+    {
+        $type = InstitutionType::getDescription($this->type);
+
+        return $type;
+    }
+
+
 }

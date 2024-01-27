@@ -57,8 +57,6 @@ class InstitutionController extends Controller
 
         $data = $request->all();
 
-        dd($dat,$request);
-
         $institution->fill($data)->update();
 
         if ($institution) {

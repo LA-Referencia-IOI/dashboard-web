@@ -79,8 +79,8 @@
     </div>
     <div class="col-md-4">
     <div class="form-group">
-            {{ Form::label('profile', 'Profile') }}
-            {{ Form::select('profile', [
+            {{ Form::label('type', 'Type') }}
+            {{ Form::select('type', [
                 '0' => 'Government',
                 '1' => 'University',
                 '2' => 'Library',

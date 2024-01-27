@@ -30,7 +30,7 @@
                         @forelse($institutions as $institution)
                             <tr>
                                 <td>{{ $institution->name }}</td>
-                                <td>{{ $institution->type }}</td>
+                                <td>{{ $institution->getTypeAlias() }}</td>
                                 <td>{{ $institution->email }}</td>
                                 <td>{{ $institution->responsible }}</td>
                                 <td>{{ $institution->numberNodes }}</td>

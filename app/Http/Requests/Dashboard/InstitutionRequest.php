@@ -26,7 +26,7 @@ class InstitutionRequest extends FormRequest
 
         $rules = [
             'name' => 'required|max:255',
-            'profile' => 'required|max:255',
+            'type' => 'required|max:255',
             'latitude' => 'required|max:255',
             'longitude' => 'required|max:255',
             'responsible' => 'required|max:255',
@@ -39,7 +39,7 @@ class InstitutionRequest extends FormRequest
     {
         return [
             'name' => 'Name',
-            'profile' => 'Profile',
+            'type' => 'Type',
             'latitude' => 'Latitude',
             'longitude' => 'Longitude',
             'responsible' => 'Responsible',
