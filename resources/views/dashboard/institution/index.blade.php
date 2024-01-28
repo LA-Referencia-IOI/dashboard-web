@@ -17,6 +17,7 @@
                 <table class="table">
                     <thead class="thead-light">
                         <tr>
+                            <th>ID</th>
                             <th>Name</th>
                             <th>Type</th>
                             <th>Email</th>
@@ -29,6 +30,7 @@
                     <tbody>
                         @forelse($institutions as $institution)
                             <tr>
+                                <td>{{ $institution->id }}</td>
                                 <td>{{ $institution->name }}</td>
                                 <td>{{ $institution->getTypeAlias() }}</td>
                                 <td>{{ $institution->email }}</td>
