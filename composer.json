@@ -18,7 +18,7 @@
     "laravel/tinker": "^2.5",
     "laravel/ui": "^3.3",
     "laravelcollective/html": "^6.2",
-    "leaflet/leaflet": "^1.9.4",
+    "leaflet/leaflet": "*", 
     "nesbot/carbon": "^2.54"
   },
   "require-dev": {
