@@ -13,7 +13,7 @@ class NetworkController extends Controller
     public function checkingAccess(Request $request)
     {
         try {
-            $institution = Institution::where('id', '=', $request['id'])->first();
+            $institution = Institution::where('id', '=', $request['id'])->first(); 
 
             if(!$institution){
                 return response()->json([
