@@ -18,7 +18,7 @@
     @php($password_reset_url = $password_reset_url ? url($password_reset_url) : '')
 @endif
 
-@section('auth_header', __('adminlte::adminlte.login_message'))
+@section('auth_header', __('adminlte::adminlte.login_message')) 
 
 @section('css')
     <style>
@@ -75,8 +75,8 @@
                     {{ __('adminlte::adminlte.sign_in') }}
                 </button>
             </form>
-            <a href="{{ $password_reset_url }}"
-                class="forgot-password-link">{{ __('adminlte::adminlte.i_forgot_my_password') }}</a>
+            <!-- <a href="{{ $password_reset_url }}"
+                class="forgot-password-link">{{ __('adminlte::adminlte.i_forgot_my_password') }}</a> -->
             <!-- <p class="login-card-footer-text">
                 <a href="{{ $register_url }}" class="text-reset">
                     {{ __('adminlte::adminlte.register_a_new_membership') }}
