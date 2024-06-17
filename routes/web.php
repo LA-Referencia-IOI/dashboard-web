@@ -24,6 +24,7 @@ Route::group(['middleware' => ['https.protocol']], function () {
     //     // return redirect('login');
     // });
     Route::get('/', [SiteController::class, 'index'])->name('site.index');
+    Route::get('/documentation', [SiteController::class, 'documentation'])->name('site.documentation');
 
     Route::group(['middleware' => ['auth'], 'namespace' => 'Dashboard', 'prefix' => 'dashboard'], function () {
         Route::get('/login', [HomeController::class, 'index'])->name('home.index');

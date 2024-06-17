@@ -10,4 +10,9 @@ class SiteController extends Controller
     {
         return view('lanpage.index');
     }
+
+    public function documentation()
+    {
+        return view('lanpage.documentation');
+    }
 }

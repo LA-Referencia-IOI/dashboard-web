@@ -56,10 +56,10 @@
                 <a class="nav-link" href="about.html"> About</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="service.html">Services</a>
+                <a class="nav-link" href="https://github.com/dark-pid">Github</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="price.html">Documentation</a>
+                <a class="nav-link" href="{{route('site.documentation')}}">Documentation</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="contact.html">Contact Us</a>
@@ -86,116 +86,41 @@
     <!-- slider section -->
     <section class="slider_section ">
       <div id="customCarousel1" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <div class="container ">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="detail-box">
-                    <h1>
-                    Assigning decentralized   <br>
-                    persistent identifiers ARK
-                    </h1>
-                    <p>
-                    Using blockchain technology and inspired by the ARK, we assign decentralized persistent identifiers to objects on the internet.</p>
-                    <div class="btn-box">
-                      <a href="" class="btn-1">
-                        Read More
-                      </a>
-                      <a href="" class="btn-2">
-                        Contact Us
-                      </a>
-                    </div>
-                  </div>
+
+        <div class="container ">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="detail-box">
+                <h1>
+                Assigning decentralized   <br>
+                persistent identifiers ARK
+                </h1>
+                <p>
+                Using blockchain technology and inspired by the ARK, we assign decentralized persistent identifiers to objects on the internet.</p>
+                <div class="btn-box">
+                  <a href="" class="btn-1">
+                    Read More
+                  </a>
+                  <a href="" class="btn-2">
+                    Contact Us
+                  </a>
                 </div>
-                <div class="col-md-6">
-                  <div class="row">
-                    <div class=" col-lg-10 mx-auto">
-                      <div class="img-box">
-                        <img src="{{ asset('frontEnd')}}/images/slider-img.png" alt="">
-                      </div>
-                    </div>
+                <br> <br>
+                <h1>
+                  dARK PIDs: 1.050.203
+                </h1>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="row">
+                <div class=" col-lg-10 mx-auto">
+                  <div class="img-box">
+                    <img src="{{ asset('frontEnd')}}/images/slider-img.png" alt="">
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="carousel-item">
-            <div class="container ">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="detail-box">
-                    <h1>
-                      Fast & Secure <br>
-                      Web Hosting
-                    </h1>
-                    <p>
-                      Anything embarrassing hidden in the middle of text. All the Lorem Ipsuanything embarrassing hidden in the middle of text. All the Lorem Ipsumm </p>
-                    <div class="btn-box">
-                      <a href="" class="btn-1">
-                        Read More
-                      </a>
-                      <a href="" class="btn-2">
-                        Contact Us
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="row">
-                    <div class=" col-lg-10 mx-auto">
-                      <div class="img-box">
-                        <img src="{{ asset('frontEnd')}}/images/slider-img.png" alt="">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <div class="container ">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="detail-box">
-                    <h1>
-                      Fast & Secure <br>
-                      Web Hosting
-                    </h1>
-                    <p>
-                      Anything embarrassing hidden in the middle of text. All the Lorem Ipsuanything embarrassing hidden in the middle of text. All the Lorem Ipsumm </p>
-                    <div class="btn-box">
-                      <a href="" class="btn-1">
-                        Read More
-                      </a>
-                      <a href="" class="btn-2">
-                        Contact Us
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="row">
-                    <div class=" col-lg-10 mx-auto">
-                      <div class="img-box">
-                        <img src="{{ asset('frontEnd')}}/images/slider-img.png" alt="">
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="carousel_btn-box">
-          <a class="carousel-control-prev" href="#customCarousel1" role="button" data-slide="prev">
-            <i class="fa fa-angle-left" aria-hidden="true"></i>
-            <span class="sr-only">Previous</span>
-          </a>
-          <a class="carousel-control-next" href="#customCarousel1" role="button" data-slide="next">
-            <i class="fa fa-angle-right" aria-hidden="true"></i>
-            <span class="sr-only">Next</span>
-          </a>
         </div>
       </div>
     </section>
@@ -221,10 +146,10 @@
             </div>
             <div class="detail-box">
               <h4>
-                Shared Hosting
+                Assign PIDs
               </h4>
               <p>
-                Generators on the Internet tend to repeat predefined chunks as necessary
+                Assign decentralized persistent identifiers
               </p>
               <a href="">
                 Read More
@@ -241,10 +166,10 @@
             </div>
             <div class="detail-box">
               <h4>
-                Dedicated Hosting
+               PID Resolver
               </h4>
               <p>
-                Generators on the Internet tend to repeat predefined chunks as necessary
+              Solve the pids leading up to the registered object
               </p>
               <a href="">
                 Read More
@@ -261,10 +186,10 @@
             </div>
             <div class="detail-box">
               <h4>
-                Cloud Hosting
+              Decentralized storage
               </h4>
               <p>
-                Generators on the Internet tend to repeat predefined chunks as necessary
+              Fault-tolerant and with high query availability
               </p>
               <a href="">
                 Read More
@@ -281,10 +206,10 @@
             </div>
             <div class="detail-box">
               <h4>
-                VPS Hosting
+              Collaborative network
               </h4>
               <p>
-                Generators on the Internet tend to repeat predefined chunks as necessary
+              Institutions can be part of the network by sharing infrastructure
               </p>
               <a href="">
                 Read More
@@ -301,10 +226,10 @@
             </div>
             <div class="detail-box">
               <h4>
-                Wordpress Hosting
+              Integration with DSpace
               </h4>
               <p>
-                Generators on the Internet tend to repeat predefined chunks as necessary
+              Easy integration module with DPSpace 
               </p>
               <a href="">
                 Read More
@@ -321,10 +246,10 @@
             </div>
             <div class="detail-box">
               <h4>
-                Domain Name
+              Metrics and data. 
               </h4>
               <p>
-                Generators on the Internet tend to repeat predefined chunks as necessary
+              The platform also has an API for obtaining metrics on stored publications.
               </p>
               <a href="">
                 Read More
@@ -524,7 +449,7 @@
   <!-- price section -->
 
   <!-- client section -->
-  <section class="client_section layout_padding">
+  <!-- <section class="client_section layout_padding">
     <div class="container">
       <div class="heading_container heading_center">
         <h2>
@@ -656,15 +581,15 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
   <!-- end client section -->
 
   <!-- contact section -->
-  <section class="contact_section layout_padding-bottom">
+  <section class="contact_section layout_padding">
     <div class="container">
       <div class="heading_container heading_center">
         <h2>
-          Get In Touch
+          Contact us
         </h2>
       </div>
       <div class="row">
@@ -803,8 +728,7 @@
   <footer class="footer_section">
     <div class="container">
       <p>
-        &copy; <span id="displayYear"></span> All Rights Reserved By
-        <a href="https://html.design/">Free Html Templates</a>
+        &copy; <span id="displayYear"></span> All Rights Reserved By <b>dARK Network</b>
       </p>
     </div>
   </footer>
