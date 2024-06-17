@@ -71,10 +71,10 @@
                   <i class="fa fa-search" aria-hidden="true"></i>
                 </button>
               </form> -->
-              <a href="">
-                <i class="fa fa-phone" aria-hidden="true"></i>
+              <a href="{{route('home.index')}}">
+                <i class="fa fa-user" aria-hidden="true"></i>
                 <span>
-                  Call : +01 123455678990
+                  Login
                 </span>
               </a>
             </div>
@@ -353,7 +353,7 @@
               </h2>
             </div>
             <p>
-              Words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks </p>
+            dARK is the format of a network of institutions that support science and scientific dissemination by providing an infrastructure for assigning and resolving persistent identifiers.  </p>
             <a href="">
               Read More
             </a>
@@ -391,10 +391,10 @@
           <div class="detail-box">
             <div class="heading_container">
               <h2>
-                Let us manage your server
+              See how easy it is to join the network
               </h2>
               <p>
-                Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore
+              Connect a server to the dARK network and become part of the resolver infrastructure and support open scientific dissemination.
               </p>
             </div>
             <a href="">
@@ -410,8 +410,8 @@
 
   <!-- price section -->
 
-  <section class="price_section layout_padding">
-    <div class="container">
+  <!-- <section class="price_section layout_padding">
+    <div class="container"> 
       <div class="heading_container heading_center">
         <h2>
           Our Pricing
@@ -519,12 +519,12 @@
         </div>
       </div>
     </div>
-  </section>
+  </section>  -->
 
   <!-- price section -->
 
   <!-- client section -->
-  <section class="client_section ">
+  <section class="client_section layout_padding">
     <div class="container">
       <div class="heading_container heading_center">
         <h2>
