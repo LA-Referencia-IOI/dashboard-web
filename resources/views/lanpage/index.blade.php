@@ -30,6 +30,28 @@
   <!-- responsive style -->
   <link href="{{ asset('frontEnd')}}/css/responsive.css" rel="stylesheet" />
 
+  <style>
+    .fieldset {
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 4px;
+        margin-bottom: 10px;
+    }
+
+    .legend {
+        font-size: 16px;
+        border: 0px;
+        margin: 0px;
+        padding: 0px 10px;
+        width: auto;
+    }
+
+
+    input {
+      margin: 0.4rem;
+    }
+  </style>
+
 </head>
 
 <body>
@@ -49,28 +71,14 @@
 
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav  ml-auto">
-              <li class="nav-item active">
-                <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="about.html"> About</a>
-              </li>
               <li class="nav-item">
                 <a class="nav-link" href="https://github.com/dark-pid">Github</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="{{route('site.documentation')}}">Documentation</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="contact.html">Contact Us</a>
-              </li>
             </ul>
             <div class="quote_btn-container">
-              <!-- <form class="form-inline">
-                <button class="btn   nav_search-btn" type="submit">
-                  <i class="fa fa-search" aria-hidden="true"></i>
-                </button>
-              </form> -->
               <a href="{{route('home.index')}}">
                 <i class="fa fa-user" aria-hidden="true"></i>
                 <span>
@@ -98,17 +106,26 @@
                 <p>
                 Using blockchain technology and inspired by the ARK, we assign decentralized persistent identifiers to objects on the internet.</p>
                 <div class="btn-box">
-                  <a href="" class="btn-1">
-                    Read More
+                  <a href="#" class="btn-1">
+                    Contact us
                   </a>
-                  <a href="" class="btn-2">
-                    Contact Us
+                  <a href="https://zenodo.org/records/7686101" class="btn-2" target="_blank">
+                    White Paper
                   </a>
                 </div>
                 <br> <br>
-                <h1>
-                  dARK PIDs: 1.050.203
-                </h1>
+                <fieldset class="fieldset">
+                  <legend> dARK in Numbers</legend>
+
+                  <input type="radio" id="kraken" name="monster" value="K" />
+                  <label for="kraken">dARK PIDs: 1.050.203</label><br />
+
+                  <input type="radio" id="sasquatch" name="monster" value="S" />
+                  <label for="sasquatch">Blocks minered: #202.593</label><br />
+
+                  <input type="radio" id="sasquatch" name="monster" value="S" />
+                  <label for="sasquatch">Partners: 11</label><br />
+                </fieldset>
               </div>
             </div>
             <div class="col-md-6">
@@ -130,11 +147,14 @@
   <!-- service section -->
 
   <section class="service_section layout_padding">
+   
     <div class="container">
       <div class="heading_container heading_center">
-        <h2>
-          Our Services
-        </h2>
+      <div class="col-md-10 ">
+        <div class="img-box">
+          <img src="{{ asset('frontEnd')}}/images/logo-removebg.png"  style="width: 300px; height: 300px;"alt="">
+        </div>
+      </div>
       </div>
     </div>
     <div class="container ">
@@ -151,7 +171,7 @@
               <p>
                 Assign decentralized persistent identifiers
               </p>
-              <a href="">
+              <a href="{{route('site.documentation')}}">
                 Read More
                 <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
 
@@ -171,7 +191,7 @@
               <p>
               Solve the pids leading up to the registered object
               </p>
-              <a href="">
+              <a href="{{route('site.documentation')}}">
                 Read More
                 <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
 
@@ -191,7 +211,7 @@
               <p>
               Fault-tolerant and with high query availability
               </p>
-              <a href="">
+              <a href="{{route('site.documentation')}}">
                 Read More
                 <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
 
@@ -211,7 +231,7 @@
               <p>
               Institutions can be part of the network by sharing infrastructure
               </p>
-              <a href="">
+              <a href="{{route('site.documentation')}}">
                 Read More
                 <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
 
@@ -231,7 +251,7 @@
               <p>
               Easy integration module with DPSpace 
               </p>
-              <a href="">
+              <a href="{{route('site.documentation')}}">
                 Read More
                 <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
 
@@ -251,7 +271,7 @@
               <p>
               The platform also has an API for obtaining metrics on stored publications.
               </p>
-              <a href="">
+              <a href="{{route('site.documentation')}}">
                 Read More
                 <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
 
