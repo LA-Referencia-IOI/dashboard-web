@@ -29,6 +29,7 @@ namespace PHPSTORM_META {
             'Illuminate\Bus\Dispatcher' => \Illuminate\Bus\Dispatcher::class,
             'Illuminate\Cache\RateLimiter' => \Illuminate\Cache\RateLimiter::class,
             'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
+            'Illuminate\Console\Scheduling\ScheduleClearCacheCommand' => \Illuminate\Console\Scheduling\ScheduleClearCacheCommand::class,
             'Illuminate\Console\Scheduling\ScheduleFinishCommand' => \Illuminate\Console\Scheduling\ScheduleFinishCommand::class,
             'Illuminate\Console\Scheduling\ScheduleListCommand' => \Illuminate\Console\Scheduling\ScheduleListCommand::class,
             'Illuminate\Console\Scheduling\ScheduleRunCommand' => \Illuminate\Console\Scheduling\ScheduleRunCommand::class,
@@ -211,6 +212,7 @@ namespace PHPSTORM_META {
             'Illuminate\Bus\Dispatcher' => \Illuminate\Bus\Dispatcher::class,
             'Illuminate\Cache\RateLimiter' => \Illuminate\Cache\RateLimiter::class,
             'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
+            'Illuminate\Console\Scheduling\ScheduleClearCacheCommand' => \Illuminate\Console\Scheduling\ScheduleClearCacheCommand::class,
             'Illuminate\Console\Scheduling\ScheduleFinishCommand' => \Illuminate\Console\Scheduling\ScheduleFinishCommand::class,
             'Illuminate\Console\Scheduling\ScheduleListCommand' => \Illuminate\Console\Scheduling\ScheduleListCommand::class,
             'Illuminate\Console\Scheduling\ScheduleRunCommand' => \Illuminate\Console\Scheduling\ScheduleRunCommand::class,
@@ -393,6 +395,7 @@ namespace PHPSTORM_META {
             'Illuminate\Bus\Dispatcher' => \Illuminate\Bus\Dispatcher::class,
             'Illuminate\Cache\RateLimiter' => \Illuminate\Cache\RateLimiter::class,
             'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
+            'Illuminate\Console\Scheduling\ScheduleClearCacheCommand' => \Illuminate\Console\Scheduling\ScheduleClearCacheCommand::class,
             'Illuminate\Console\Scheduling\ScheduleFinishCommand' => \Illuminate\Console\Scheduling\ScheduleFinishCommand::class,
             'Illuminate\Console\Scheduling\ScheduleListCommand' => \Illuminate\Console\Scheduling\ScheduleListCommand::class,
             'Illuminate\Console\Scheduling\ScheduleRunCommand' => \Illuminate\Console\Scheduling\ScheduleRunCommand::class,
@@ -575,6 +578,7 @@ namespace PHPSTORM_META {
             'Illuminate\Bus\Dispatcher' => \Illuminate\Bus\Dispatcher::class,
             'Illuminate\Cache\RateLimiter' => \Illuminate\Cache\RateLimiter::class,
             'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
+            'Illuminate\Console\Scheduling\ScheduleClearCacheCommand' => \Illuminate\Console\Scheduling\ScheduleClearCacheCommand::class,
             'Illuminate\Console\Scheduling\ScheduleFinishCommand' => \Illuminate\Console\Scheduling\ScheduleFinishCommand::class,
             'Illuminate\Console\Scheduling\ScheduleListCommand' => \Illuminate\Console\Scheduling\ScheduleListCommand::class,
             'Illuminate\Console\Scheduling\ScheduleRunCommand' => \Illuminate\Console\Scheduling\ScheduleRunCommand::class,
@@ -757,6 +761,7 @@ namespace PHPSTORM_META {
             'Illuminate\Bus\Dispatcher' => \Illuminate\Bus\Dispatcher::class,
             'Illuminate\Cache\RateLimiter' => \Illuminate\Cache\RateLimiter::class,
             'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
+            'Illuminate\Console\Scheduling\ScheduleClearCacheCommand' => \Illuminate\Console\Scheduling\ScheduleClearCacheCommand::class,
             'Illuminate\Console\Scheduling\ScheduleFinishCommand' => \Illuminate\Console\Scheduling\ScheduleFinishCommand::class,
             'Illuminate\Console\Scheduling\ScheduleListCommand' => \Illuminate\Console\Scheduling\ScheduleListCommand::class,
             'Illuminate\Console\Scheduling\ScheduleRunCommand' => \Illuminate\Console\Scheduling\ScheduleRunCommand::class,
@@ -939,6 +944,7 @@ namespace PHPSTORM_META {
             'Illuminate\Bus\Dispatcher' => \Illuminate\Bus\Dispatcher::class,
             'Illuminate\Cache\RateLimiter' => \Illuminate\Cache\RateLimiter::class,
             'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
+            'Illuminate\Console\Scheduling\ScheduleClearCacheCommand' => \Illuminate\Console\Scheduling\ScheduleClearCacheCommand::class,
             'Illuminate\Console\Scheduling\ScheduleFinishCommand' => \Illuminate\Console\Scheduling\ScheduleFinishCommand::class,
             'Illuminate\Console\Scheduling\ScheduleListCommand' => \Illuminate\Console\Scheduling\ScheduleListCommand::class,
             'Illuminate\Console\Scheduling\ScheduleRunCommand' => \Illuminate\Console\Scheduling\ScheduleRunCommand::class,
@@ -1121,6 +1127,7 @@ namespace PHPSTORM_META {
             'Illuminate\Bus\Dispatcher' => \Illuminate\Bus\Dispatcher::class,
             'Illuminate\Cache\RateLimiter' => \Illuminate\Cache\RateLimiter::class,
             'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
+            'Illuminate\Console\Scheduling\ScheduleClearCacheCommand' => \Illuminate\Console\Scheduling\ScheduleClearCacheCommand::class,
             'Illuminate\Console\Scheduling\ScheduleFinishCommand' => \Illuminate\Console\Scheduling\ScheduleFinishCommand::class,
             'Illuminate\Console\Scheduling\ScheduleListCommand' => \Illuminate\Console\Scheduling\ScheduleListCommand::class,
             'Illuminate\Console\Scheduling\ScheduleRunCommand' => \Illuminate\Console\Scheduling\ScheduleRunCommand::class,
@@ -1303,6 +1310,7 @@ namespace PHPSTORM_META {
             'Illuminate\Bus\Dispatcher' => \Illuminate\Bus\Dispatcher::class,
             'Illuminate\Cache\RateLimiter' => \Illuminate\Cache\RateLimiter::class,
             'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
+            'Illuminate\Console\Scheduling\ScheduleClearCacheCommand' => \Illuminate\Console\Scheduling\ScheduleClearCacheCommand::class,
             'Illuminate\Console\Scheduling\ScheduleFinishCommand' => \Illuminate\Console\Scheduling\ScheduleFinishCommand::class,
             'Illuminate\Console\Scheduling\ScheduleListCommand' => \Illuminate\Console\Scheduling\ScheduleListCommand::class,
             'Illuminate\Console\Scheduling\ScheduleRunCommand' => \Illuminate\Console\Scheduling\ScheduleRunCommand::class,
@@ -1485,6 +1493,7 @@ namespace PHPSTORM_META {
             'Illuminate\Bus\Dispatcher' => \Illuminate\Bus\Dispatcher::class,
             'Illuminate\Cache\RateLimiter' => \Illuminate\Cache\RateLimiter::class,
             'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
+            'Illuminate\Console\Scheduling\ScheduleClearCacheCommand' => \Illuminate\Console\Scheduling\ScheduleClearCacheCommand::class,
             'Illuminate\Console\Scheduling\ScheduleFinishCommand' => \Illuminate\Console\Scheduling\ScheduleFinishCommand::class,
             'Illuminate\Console\Scheduling\ScheduleListCommand' => \Illuminate\Console\Scheduling\ScheduleListCommand::class,
             'Illuminate\Console\Scheduling\ScheduleRunCommand' => \Illuminate\Console\Scheduling\ScheduleRunCommand::class,
@@ -1667,6 +1676,7 @@ namespace PHPSTORM_META {
             'Illuminate\Bus\Dispatcher' => \Illuminate\Bus\Dispatcher::class,
             'Illuminate\Cache\RateLimiter' => \Illuminate\Cache\RateLimiter::class,
             'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
+            'Illuminate\Console\Scheduling\ScheduleClearCacheCommand' => \Illuminate\Console\Scheduling\ScheduleClearCacheCommand::class,
             'Illuminate\Console\Scheduling\ScheduleFinishCommand' => \Illuminate\Console\Scheduling\ScheduleFinishCommand::class,
             'Illuminate\Console\Scheduling\ScheduleListCommand' => \Illuminate\Console\Scheduling\ScheduleListCommand::class,
             'Illuminate\Console\Scheduling\ScheduleRunCommand' => \Illuminate\Console\Scheduling\ScheduleRunCommand::class,
@@ -1849,6 +1859,7 @@ namespace PHPSTORM_META {
             'Illuminate\Bus\Dispatcher' => \Illuminate\Bus\Dispatcher::class,
             'Illuminate\Cache\RateLimiter' => \Illuminate\Cache\RateLimiter::class,
             'Illuminate\Console\Scheduling\Schedule' => \Illuminate\Console\Scheduling\Schedule::class,
+            'Illuminate\Console\Scheduling\ScheduleClearCacheCommand' => \Illuminate\Console\Scheduling\ScheduleClearCacheCommand::class,
             'Illuminate\Console\Scheduling\ScheduleFinishCommand' => \Illuminate\Console\Scheduling\ScheduleFinishCommand::class,
             'Illuminate\Console\Scheduling\ScheduleListCommand' => \Illuminate\Console\Scheduling\ScheduleListCommand::class,
             'Illuminate\Console\Scheduling\ScheduleRunCommand' => \Illuminate\Console\Scheduling\ScheduleRunCommand::class,
@@ -2013,6 +2024,10 @@ namespace PHPSTORM_META {
         ]));
 
 
+    override(\Illuminate\Foundation\Testing\Concerns\InteractsWithContainer::mock(0), map(["" => "@&\Mockery\MockInterface"]));
+    override(\Illuminate\Foundation\Testing\Concerns\InteractsWithContainer::partialMock(0), map(["" => "@&\Mockery\MockInterface"]));
+    override(\Illuminate\Foundation\Testing\Concerns\InteractsWithContainer::instance(0), type(1));
+    override(\Illuminate\Foundation\Testing\Concerns\InteractsWithContainer::spy(0), map(["" => "@&\Mockery\MockInterface"]));
     override(\Illuminate\Support\Arr::add(0), type(0));
     override(\Illuminate\Support\Arr::except(0), type(0));
     override(\Illuminate\Support\Arr::first(0), elementType(0));
