@@ -9,6 +9,7 @@
     @endif
     <a href="{{ route('institutions.create') }}" class="btn btn-custom btn-sm" style="margin-bottom: 10px;">NEW INSTITUTION</a>
     <div class="box">
+    <div class="box-header with-border">
         <div class="box-header with-border">
             <h4 class="box-title">Institutions List</h4>
         </div>

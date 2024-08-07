@@ -2,6 +2,7 @@
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\Dashboard\AccountController;
 use App\Http\Controllers\Dashboard\InstitutionController;
 use App\Http\Controllers\Dashboard\ImageController;
 use App\Http\Controllers\Dashboard\SettingController;
@@ -44,6 +45,13 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::delete('institution/destroy/{institution}', [InstitutionController::class, 'destroy'])->name('institutions.destroy');
 
         Route::get('institutions/{institution}/blockchain-id', [InstitutionController::class, 'addIdBlockchain'])->name('institutions.add_id_blockchain');
+
+        Route::get('accounts', [AccountController::class, 'index'])->name('accounts.index');
+        Route::get('account/create', [AccountController::class, 'create'])->name('accounts.create');
+        Route::get('account/edit/{account}', [AccountController::class, 'edit'])->name('accounts.edit');
+        Route::post('account/create', [AccountController::class, 'store'])->name('accounts.store');
+        Route::put('account/{account}', [AccountController::class, 'update'])->name('accounts.update');
+        Route::delete('account/destroy/{account}', [AccountController::class, 'destroy'])->name('accounts.destroy');
 
         Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
         Route::put('settings/{user}', [SettingController::class, 'update'])->name('settings.update');
