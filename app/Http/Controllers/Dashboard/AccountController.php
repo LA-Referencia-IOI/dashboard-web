@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use App\Http\Requests\Dashboard\AccountRequest;
 use App\Models\User;
 use App\Models\Account;
@@ -86,5 +87,40 @@ class AccountController extends Controller
                 ->route('accounts.index')
                 ->with(['message' => 'Error deleting. Try again!', 'code' => 'danger']);
         }
+    }
+
+
+    public function createWallet(Account $account)
+    {
+        $acc = $account;
+
+        $data = [
+            'name' => $acc->organization_name,
+            'mail' =>  $acc->contact_email,
+            'naan' =>  $acc->naan,
+            'default_payload_schema' =>  $acc->payload_schema
+        ];
+        $url = env('CREATE_WALLET');
+
+        try {
+            $response = Http::post($url, $data);
+        
+            if ($response->successful()) {
+                $d = $response->json();
+                dd($d);
+                return redirect()
+                    ->route('accounts.index')
+                    ->with(['message' => 'Creating action completed successfully.', 'code' => 'success']);
+            } else {
+                return redirect()
+                    ->route('accounts.index')
+                    ->with(['message' => 'Error creating. Try again!', 'code' => 'danger']);
+            }
+        } catch (\Throwable $th) {
+            return redirect()
+                    ->route('accounts.index')
+                    ->with(['message' => 'Error in connect to API, try again later', 'code' => 'danger']);
+        }
+        
     }
 }

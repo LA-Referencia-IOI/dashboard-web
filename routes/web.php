@@ -52,6 +52,7 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::post('account/create', [AccountController::class, 'store'])->name('accounts.store');
         Route::put('account/{account}', [AccountController::class, 'update'])->name('accounts.update');
         Route::delete('account/destroy/{account}', [AccountController::class, 'destroy'])->name('accounts.destroy');
+        Route::get('account/wallet/{account}', [AccountController::class, 'createWallet'])->name('accounts.account-create');
 
         Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
         Route::put('settings/{user}', [SettingController::class, 'update'])->name('settings.update');

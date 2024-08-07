@@ -10,7 +10,7 @@
     <a href="{{ route('accounts.create') }}" class="btn btn-custom btn-sm" style="margin-bottom: 10px;">NEW ACCOUNT</a>
     <div class="box">
         <div class="box-header with-border">
-            <h4 class="box-title">accounts List</h4>
+            <h4 class="box-title">Accounts</h4>
         </div>
         <div class="box-body no-padding">
             <div class="table-responsive">
@@ -36,6 +36,7 @@
                                 <td>{{ $account->balance }}</td>
                                 <td>{{ $account->wallet }}</td>
                                 <td>
+                                <a href="{{ route('accounts.account-create', $account->id) }}" alt="Create Account" title="Create Account" class="btn btn-success btn-sm"><i class="fa  fa-upload"></i></a>
                                     <button alt="Delete" title="Delete" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $account->id }}, '{{ route('accounts.destroy', ['account' => $account->id]) }}')"><i class="fa fa-trash"></i></button>
                                 </td>
                             </tr>
