@@ -41,7 +41,7 @@
                                 <td>{!! $institution->getStatus() !!}</td>
                                 <td>{{ $institution->created_at }}</td>
                                 <td>
-                                @if (!$institution->code && $institution->typeNodes == 0 || $institution->typeNodes == 1)
+                                @if (!$institution->code)
                                     <a href="{{ route('institutions.add_id_blockchain', $institution->id) }}" alt="key dARK" title="key dARK" class="btn btn-success btn-sm"><i class="fa  fa-key"></i></a>
                                 @endif 
                                     <a href="{{ route('institutions.edit', $institution->id) }}" alt="Edit" title="Edit" class="btn btn-primary btn-sm"><i class="fa fa-pencil-alt"></i></a>
