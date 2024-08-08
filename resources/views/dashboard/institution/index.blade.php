@@ -23,7 +23,6 @@
                             <th>Type</th>
                             <th>Email</th>
                             <th>Responsible</th>
-                            <th>Nº nodes</th>
                             <th>Status</th>
                             <th>Create at</th>
                             <th>Actions</th>
@@ -37,7 +36,6 @@
                                 <td>{{ $institution->getTypeAlias() }}</td>
                                 <td>{{ $institution->email }}</td>
                                 <td>{{ $institution->responsible }}</td>
-                                <td>{{ $institution->numberNodes }}</td>
                                 <td>{!! $institution->getStatus() !!}</td>
                                 <td>{{ $institution->created_at }}</td>
                                 <td>
