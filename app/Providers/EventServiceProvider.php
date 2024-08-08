@@ -44,11 +44,6 @@ class EventServiceProvider extends ServiceProvider
                 'text' => 'Institutions',
                 'route' => 'institutions.index',
             ]);
-            // $event->menu->add([
-            //     'icon' => 'fas fa-cubes',
-            //     'text' => 'Networks',
-            //     'route' => 'users.index',
-            // ]);
             $event->menu->add([
                 'icon' => 'fas fa-book',
                 'text' => 'Balances',
@@ -56,15 +51,20 @@ class EventServiceProvider extends ServiceProvider
             ]);
             $event->menu->add([
                 'icon' => 'fas fa-user-plus',
-                'text' => 'Wallets',
-                'route' => 'users.index',
+                'text' => 'Accounts',
+                'route' => 'accounts.index',
             ]);
-            $event->menu->add([
-                'icon' => 'fa fa-signal',
-                'text' => 'Metrics',
-                'route' => 'users.index',
+            // $event->menu->add([
+            //     'icon' => 'fa fa-signal',
+            //     'text' => 'Metrics',
+            //     'route' => 'users.index',
+            // ]);
+            $event->menu->add('BLOCKCHAIN');
+                        $event->menu->add([
+                'icon' => 'fas fa-cubes',
+                'text' => 'Network',
+                'route' => 'blockchains.index',
             ]);
-
             $event->menu->add('PROFILE');
 
             $event->menu->add([

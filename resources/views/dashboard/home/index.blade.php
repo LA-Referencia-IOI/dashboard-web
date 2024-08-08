@@ -33,27 +33,27 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-success">
             <div class="inner">
-                <h3>Networks<sup style="font-size: 20px"> dARK Main</sup> </h3>
+                <h3>Networks<sup style="font-size: 20px"> Up</sup> </h3>
 
-                <p>5</p>
+                <p>{!!$upCount!!}</p>
             </div>
             <div class="icon">
                 <i class="fas fa-fw  fa-flag-checkered"></i>
             </div>
-            <a href="#" class="small-box-footer">see <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="{{route('blockchains.index')}}" class="small-box-footer">see <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
         <div class="col-lg-3 col-6">
             <div class="small-box bg-warning">
             <div class="inner">
-                <h3>Networks <sup style="font-size: 20px">dARK private</sup> </h3>
+                <h3>Networks <sup style="font-size: 20px">Down</sup> </h3>
 
-                <p>2</p>
+                <p>{!!$downCount!!}</p>
             </div>
             <div class="icon">
                 <i class="fas fa-fw fa-spinner"></i>
             </div>
-            <a href="#" class="small-box-footer">see <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="{{route('blockchains.index')}}" class="small-box-footer">see <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
         <div class="col-lg-3 col-6">
@@ -103,7 +103,7 @@
     
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© Version 0.2 dARK',
-        maxZoom: 7,
+        maxZoom: 4,
     }).addTo(map);
 
     L.marker([latitude, longitude]).addTo(map);

@@ -605,7 +605,7 @@
   <!-- end client section -->
 
   <!-- contact section -->
-  <section class="contact_section layout_padding">
+  <!-- <section class="contact_section layout_padding">
     <div class="container">
       <div class="heading_container heading_center">
         <h2>
@@ -638,7 +638,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
   <!-- end contact section -->
 
   <!-- info section -->
@@ -646,7 +646,7 @@
   <section class="info_section layout_padding2">
     <div class="container">
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-12">
           <div class="info_contact">
             <h4>
               Address
@@ -667,7 +667,7 @@
               <a href="">
                 <i class="fa fa-envelope" aria-hidden="true"></i>
                 <span>
-                  demo@gmail.com
+                  dark@ibict.br
                 </span>
               </a>
             </div>
@@ -687,7 +687,7 @@
             </a>
           </div>
         </div>
-        <div class="col-md-3">
+        <!-- <div class="col-md-3">
           <div class="info_link_box">
             <h4>
               Links
@@ -715,8 +715,8 @@
               </a>
             </div>
           </div>
-        </div>
-        <div class="col-md-3">
+        </div> -->
+        <!-- <div class="col-md-3">
           <div class="info_detail">
             <h4>
               Info
@@ -725,8 +725,8 @@
               necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful
             </p>
           </div>
-        </div>
-        <div class="col-md-3 mb-0">
+        </div> -->
+        <!-- <div class="col-md-3 mb-0">
           <h4>
             Subscribe
           </h4>
@@ -736,7 +736,7 @@
               Subscribe
             </button>
           </form>
-        </div>
+        </div> -->
       </div>
     </div>
   </section>
