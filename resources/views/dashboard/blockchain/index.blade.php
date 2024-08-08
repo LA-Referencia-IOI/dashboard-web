@@ -23,6 +23,7 @@
                             <th>Local</th>
                             <th>Status</th>
                             <th>Description</th>
+                            <th>Liveness</th> <!-- Nova coluna "Liveness" -->
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -35,11 +36,16 @@
                                 <td>{{ $blockchain->local }}</td>
                                 <td>{{ $blockchain->status }}</td>
                                 <td>{{ $blockchain->description }}</td>
+                                <td class="liveness" data-url="{{ $blockchain->url }}">Checking...</td> <!-- Modificado para usar URL -->
                                 <td>
                                     <button alt="Delete" title="Delete" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $blockchain->id }}, '{{ route('blockchains.destroy', ['blockchain' => $blockchain->id]) }}')"><i class="fa fa-trash"></i></button>
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="8">No blockchains found</td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -48,4 +54,54 @@
               {{ ($blockchains != null)? $blockchains->links(): null }}
         </div>
     </div>
+@stop
+
+@section('js')
+    <script>
+        function checkLiveness() {
+            $('.liveness').each(function() {
+                var row = $(this);
+                var url = row.data('url');
+                
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status && response.status === 'UP') {
+                            row.text('Up').removeClass('status-down').addClass('status-up');
+                        } else {
+                            row.text('Down').removeClass('status-up').addClass('status-down');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error fetching liveness status:", status, error);
+                        row.text('Error').removeClass('status-up').addClass('status-down');
+                    }
+                });
+            });
+        }
+
+
+
+        $(document).ready(function() {
+            // Check liveness every minute (60000 milliseconds)
+            setInterval(checkLiveness, 60000);
+            // Initial check
+            checkLiveness();
+        });
+    </script>
+@stop
+@section('css')
+<style>
+    .status-up {
+        color: green;
+        font-weight: bold;
+    }
+
+    .status-down {
+        color: red;
+        font-weight: bold;
+    }
+</style>
 @stop

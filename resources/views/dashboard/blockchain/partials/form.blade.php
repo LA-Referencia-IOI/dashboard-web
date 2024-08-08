@@ -46,5 +46,14 @@
             </div>
         </div>
     </div>
+    <div class="form-group">
+            {{ Form::label('url', 'Url') }}
+            {{ Form::text('url', null, ['class' => 'form-control']) }}
+        </div>
+        <div class="form-group">
+            {{ Form::label('enodes', 'Enodes (To use , to separate)') }}
+            {{ Form::text('enodes', null, ['class' => 'form-control']) }}
+        </div>
 </div>
+
 

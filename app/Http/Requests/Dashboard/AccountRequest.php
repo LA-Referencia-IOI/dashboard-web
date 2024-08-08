@@ -30,6 +30,7 @@ class AccountRequest extends FormRequest
             'payload_schema' => 'required|max:255',
             'contact_email' => 'required|email|max:255',
             'institution_id' => 'required|max:255',
+            'url' => 'required|max:255',
         ];
         return $rules;
     }
@@ -41,7 +42,8 @@ class AccountRequest extends FormRequest
             'contact_email' => 'Email',
             'naan' => 'Naan',
             'payload_schema' => 'Payload_schema',
-            'institution_id' => 'Institution ID'
+            'institution_id' => 'Institution ID',
+            'url' => 'URL'
         ];
     }
 }

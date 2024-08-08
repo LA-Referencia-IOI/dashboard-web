@@ -15,7 +15,9 @@ class Blockchain extends Model
         'number_nodes',
         'local',
         'status',
-        'description'
+        'description',
+        'url',
+        'enodes'
     ];
 }
 

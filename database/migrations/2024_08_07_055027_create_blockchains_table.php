@@ -21,6 +21,9 @@ class CreateBlockchainsTable extends Migration
             $table->string('number_nodes')->nullable();
             $table->string('local')->nullable();
             $table->string('status')->nullable();
+            $table->string('url')->nullable();
+            $table->text('enodes')->nullable();
+            $table->text('ports')->nullable();
             $table->text('description')->nullable();
         });
     }
