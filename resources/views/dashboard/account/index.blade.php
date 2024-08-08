@@ -23,6 +23,7 @@
                             <th>Shoulder</th>
                             <th>Balance</th>
                             <th>Wallet</th>
+                            <th>Prv. Key</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -35,8 +36,11 @@
                                 <td>{{ $account->shoulder }}</td>
                                 <td>{{ $account->balance }}</td>
                                 <td>{{ $account->address }}</td>
+                                <td>{{ $account->private_key }}</td>
                                 <td>
-                                <a href="{{ route('accounts.account-create', $account->id) }}" alt="Create Account" title="Create Account" class="btn btn-success btn-sm"><i class="fa  fa-upload"></i></a>
+                                    @if(!$account->shoulder)
+                                        <a href="{{ route('accounts.account-create', $account->id) }}" alt="Create Account" title="Create Account" class="btn btn-success btn-sm"><i class="fa  fa-upload"></i></a>
+                                    @endif    
                                     <button alt="Delete" title="Delete" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $account->id }}, '{{ route('accounts.destroy', ['account' => $account->id]) }}')"><i class="fa fa-trash"></i></button>
                                 </td>
                             </tr>
