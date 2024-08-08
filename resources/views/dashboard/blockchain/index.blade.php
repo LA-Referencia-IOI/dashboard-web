@@ -36,7 +36,12 @@
                                 <td>{{ $blockchain->local }}</td>
                                 <td>{{ $blockchain->status }}</td>
                                 <td>{{ $blockchain->description }}</td>
-                                <td class="liveness" data-url="{{ $blockchain->url }}">Checking...</td> <!-- Modificado para usar URL -->
+                                @if($blockchain->url)
+                                    <td class="liveness" data-url="{{ $blockchain->url }}">Checking...</td> <!-- Modificado para usar URL -->
+                                @else
+                                    <td> --- </td>
+                                @endif
+                                
                                 <td>
                                     <button alt="Delete" title="Delete" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $blockchain->id }}, '{{ route('blockchains.destroy', ['blockchain' => $blockchain->id]) }}')"><i class="fa fa-trash"></i></button>
                                 </td>
