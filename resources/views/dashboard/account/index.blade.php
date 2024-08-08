@@ -34,7 +34,7 @@
                                 <td>{{ $account->naan }}</td>
                                 <td>{{ $account->shoulder }}</td>
                                 <td>{{ $account->balance }}</td>
-                                <td>{{ $account->wallet }}</td>
+                                <td>{{ $account->address }}</td>
                                 <td>
                                 <a href="{{ route('accounts.account-create', $account->id) }}" alt="Create Account" title="Create Account" class="btn btn-success btn-sm"><i class="fa  fa-upload"></i></a>
                                     <button alt="Delete" title="Delete" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $account->id }}, '{{ route('accounts.destroy', ['account' => $account->id]) }}')"><i class="fa fa-trash"></i></button>
