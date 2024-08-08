@@ -35,7 +35,7 @@
             <div class="inner">
                 <h3>Networks<sup style="font-size: 20px"> Up</sup> </h3>
 
-                <p>5</p>
+                <p>{!!$upCount!!}</p>
             </div>
             <div class="icon">
                 <i class="fas fa-fw  fa-flag-checkered"></i>
@@ -48,7 +48,7 @@
             <div class="inner">
                 <h3>Networks <sup style="font-size: 20px">Down</sup> </h3>
 
-                <p>2</p>
+                <p>{!!$downCount!!}</p>
             </div>
             <div class="icon">
                 <i class="fas fa-fw fa-spinner"></i>
