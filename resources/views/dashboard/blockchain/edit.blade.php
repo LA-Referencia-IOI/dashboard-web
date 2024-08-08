@@ -20,14 +20,14 @@
                 </ul>
             </div>
         @endif
-        {{ Form::model($account, ['route' => ['accounts.update', $account->id], 'method' => 'PUT']) }}
+        {{ Form::model($blockchain, ['route' => ['blockchains.update', $blockchain->id], 'method' => 'PUT']) }}
             <div class="card-body">
                 <h6 class="heading-small text-muted mb-4">
                     <strong>Atenção!</strong>
                     <br>
                     Todos os campos obrigatórios.
                 </h6>
-                @include('dashboard.account.partials.form')
+                @include('dashboard.blockchain.partials.form')
             </div>
             <div class="card-footer">
                 {{ Form::submit('Salvar dados', ['class' => 'btn btn-custom']) }}

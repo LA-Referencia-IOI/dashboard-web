@@ -3,6 +3,7 @@ use App\Http\Controllers\SiteController;
 use App\Http\Controllers\Dashboard\HomeController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\AccountController;
+use App\Http\Controllers\Dashboard\BlockchainController;
 use App\Http\Controllers\Dashboard\InstitutionController;
 use App\Http\Controllers\Dashboard\ImageController;
 use App\Http\Controllers\Dashboard\SettingController;
@@ -53,6 +54,14 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::put('account/{account}', [AccountController::class, 'update'])->name('accounts.update');
         Route::delete('account/destroy/{account}', [AccountController::class, 'destroy'])->name('accounts.destroy');
         Route::get('account/wallet/{account}', [AccountController::class, 'createWallet'])->name('accounts.account-create');
+
+        Route::get('blockchains', [BlockchainController::class, 'index'])->name('blockchains.index');
+        Route::get('blockchain/create', [BlockchainController::class, 'create'])->name('blockchains.create');
+        Route::get('blockchain/edit/{blockchain}', [BlockchainController::class, 'edit'])->name('blockchains.edit');
+        Route::post('blockchain/create', [BlockchainController::class, 'store'])->name('blockchains.store');
+        Route::put('blockchain/{blockchain}', [BlockchainController::class, 'update'])->name('blockchains.update');
+        Route::delete('blockchain/destroy/{blockchain}', [BlockchainController::class, 'destroy'])->name('blockchains.destroy');
+
 
         Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
         Route::put('settings/{user}', [SettingController::class, 'update'])->name('settings.update');

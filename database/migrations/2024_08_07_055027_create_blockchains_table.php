@@ -16,19 +16,12 @@ class CreateBlockchainsTable extends Migration
         Schema::create('blockchains', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedBigInteger('institution_id');
+            $table->string('institution_id')->nullable();
             $table->string('type')->nullable();
             $table->string('number_nodes')->nullable();
             $table->string('local')->nullable();
-
-
-
-            $table
-                ->foreign('institution_id')
-                ->references('id')
-                ->on('institutions')
-                ->onUpdate('cascade')
-                ->onDelete('cascade');
+            $table->string('status')->nullable();
+            $table->text('description')->nullable();
         });
     }
 
