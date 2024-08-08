@@ -103,7 +103,7 @@
     
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© Version 0.2 dARK',
-        maxZoom: 4,
+        maxZoom: 7,
     }).addTo(map);
 
     L.marker([latitude, longitude]).addTo(map);
