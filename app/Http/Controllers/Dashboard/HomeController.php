@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use App\Models\Institution;
+use App\Models\Blockchain;
 
 class HomeController extends Controller
 {

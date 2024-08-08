@@ -54,11 +54,11 @@ class EventServiceProvider extends ServiceProvider
                 'text' => 'Accounts',
                 'route' => 'accounts.index',
             ]);
-            $event->menu->add([
-                'icon' => 'fa fa-signal',
-                'text' => 'Metrics',
-                'route' => 'users.index',
-            ]);
+            // $event->menu->add([
+            //     'icon' => 'fa fa-signal',
+            //     'text' => 'Metrics',
+            //     'route' => 'users.index',
+            // ]);
             $event->menu->add('BLOCKCHAIN');
                         $event->menu->add([
                 'icon' => 'fas fa-cubes',

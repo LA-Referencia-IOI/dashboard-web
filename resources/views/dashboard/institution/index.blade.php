@@ -25,6 +25,7 @@
                             <th>Responsible</th>
                             <th>Nº nodes</th>
                             <th>Status</th>
+                            <th>Create at</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -38,6 +39,7 @@
                                 <td>{{ $institution->responsible }}</td>
                                 <td>{{ $institution->numberNodes }}</td>
                                 <td>{!! $institution->getStatus() !!}</td>
+                                <td>{{ $institution->created_at }}</td>
                                 <td>
                                 @if (!$institution->code && $institution->typeNodes == 0 || $institution->typeNodes == 1)
                                     <a href="{{ route('institutions.add_id_blockchain', $institution->id) }}" alt="key dARK" title="key dARK" class="btn btn-success btn-sm"><i class="fa  fa-key"></i></a>
