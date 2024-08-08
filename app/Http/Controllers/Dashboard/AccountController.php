@@ -107,7 +107,21 @@ class AccountController extends Controller
         
             if ($response->successful()) {
                 $d = $response->json();
-                dd($d);
+                $account->checkin_date = $d->checkin_date;
+                $account->auth_id = $d->auth_id;
+                $account->contact_email = $d->contact_email;
+                $account->naan = $d->naan;
+                $account->organization_name = $d->organization_name;
+                $account->payload_schema = $d->payload_schema;
+                $account->address = $d->address;
+                $account->balance = $d->balance;
+                $account->private_key = $d->private_key;
+                $account->shoulder = $d->shoulder;
+                $account->dnam_auth_id = $d->dnam_auth_id;
+                $account->noid_len = $d->noid_len;
+                $account->noidprovider_addr = $d->noidprovider_addr;
+                $account->update();
+
                 return redirect()
                     ->route('accounts.index')
                     ->with(['message' => 'Creating action completed successfully.', 'code' => 'success']);
