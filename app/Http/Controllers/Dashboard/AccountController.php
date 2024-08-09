@@ -89,6 +89,11 @@ class AccountController extends Controller
         }
     }
 
+    public function cardProfile(Account $account)
+    {
+        return view($this->viewPath . 'card-profile', ['account' => $account]);
+    }
+
 
     public function createWallet(Account $account)
     {
