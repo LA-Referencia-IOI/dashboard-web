@@ -34,7 +34,7 @@
                                 <td>{{ $account->naan }}</td>
                                 <td>{{ $account->shoulder }}</td>
                                 <td>{{ $account->balance }}</td>
-                                <td>{{ $account->address }}</td>
+                                <td>{{ $account->address }}</td> 
                                 <td>
                                     @if(!$account->shoulder)
                                         <a href="{{ route('accounts.account-create', $account->id) }}" alt="Create Account" title="Create Account" class="btn btn-success btn-sm"><i class="fa  fa-upload"></i></a>
