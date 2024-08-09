@@ -23,7 +23,6 @@
                             <th>Shoulder</th>
                             <th>Balance</th>
                             <th>Wallet</th>
-                            <th>Prv. Key</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -36,7 +35,6 @@
                                 <td>{{ $account->shoulder }}</td>
                                 <td>{{ $account->balance }}</td>
                                 <td>{{ $account->address }}</td>
-                                <td>{{ $account->private_key }}</td>
                                 <td>
                                     @if(!$account->shoulder)
                                         <a href="{{ route('accounts.account-create', $account->id) }}" alt="Create Account" title="Create Account" class="btn btn-success btn-sm"><i class="fa  fa-upload"></i></a>
