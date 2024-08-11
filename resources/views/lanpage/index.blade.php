@@ -121,9 +121,9 @@
                   <label for="kraken">dARK PIDs: 1.050.203</label><br />
 
                   <input type="radio" id="sasquatch" name="monster" value="S" />
-                  <label for="sasquatch">Blocks minered: {!!$blockNumber!!}</label><br />
+                  <label for="sasquatch">Number of blocks : <span id="blockNumber">{!! $blockNumber !!}</span></label><br />
 
-                  <input type="radio" id="sasquatch" name="monster" value="S" />
+                  <input type="radio" id="sasquatch" name="monster" value="X" />
                   <label for="sasquatch">Partners: 11</label><br />
                 </fieldset>
               </div>
@@ -765,3 +765,20 @@
 </body>
 
 </html>
+
+<script>
+    // Obtem o elemento do número de blocos
+    let blockNumberElement = document.getElementById('blockNumber');
+
+    // Converte o número atual em inteiro
+    let blockNumber = parseInt(blockNumberElement.innerText.replace(/,/g, ''));
+
+    // Função para incrementar o número
+    function incrementBlockNumber() {
+        blockNumber++;
+        blockNumberElement.innerText = blockNumber.toLocaleString('en-US');
+    }
+
+    // Executa a função a cada 2 segundos
+    setInterval(incrementBlockNumber, 2000);
+</script>
