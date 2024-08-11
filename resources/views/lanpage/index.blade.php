@@ -121,7 +121,7 @@
                   <label for="kraken">dARK PIDs: 1.050.203</label><br />
 
                   <input type="radio" id="sasquatch" name="monster" value="S" />
-                  <label for="sasquatch">Blocks minered: #202.593</label><br />
+                  <label for="sasquatch">Blocks minered: {!!$blockNumber!!}</label><br />
 
                   <input type="radio" id="sasquatch" name="monster" value="S" />
                   <label for="sasquatch">Partners: 11</label><br />
