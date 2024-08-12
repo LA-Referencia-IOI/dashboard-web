@@ -223,7 +223,7 @@ class AccountController extends Controller
     public function getBalance(Account $account)
     {
         $url = env('API_DASHBOARD');
-            $url2 = $url.'/get-balance/'.$account->address;
+        $url2 = $url.'/get-balance/'.$account->address;
 
             
         try {
@@ -231,6 +231,7 @@ class AccountController extends Controller
             $response2 = Http::get($url2);
             
             if($response2['balance']){
+
                 $account->balance = $response2['balance'];
                 $account->update();
 
