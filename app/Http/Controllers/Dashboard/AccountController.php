@@ -19,7 +19,9 @@ class AccountController extends Controller
 
         $manager = 'no';
 
-        $m = Account::where('profile', '==', 0);
+        $m = Account::where('profile', '===', 0)->first();
+
+
 
         if($m){
             $manager = 'yes';
