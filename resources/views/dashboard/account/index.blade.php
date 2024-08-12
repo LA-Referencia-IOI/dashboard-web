@@ -31,8 +31,6 @@
                             <th>Name</th>
                             <th>Profile</th>
                             <th>Email</th>
-                            <th>Naan</th>
-                            <th>Shoulder</th>
                             <th>Balance</th>
                             <th>Wallet</th>
                             <th>Action</th>
@@ -42,12 +40,15 @@
                         @forelse($accounts as $account)
                             <tr>
                                 <td>{{ $account->organization_name }}</td>
-                                <td>{{ $account->profile }}</td>
+                                <td>{{ $account->getProfileAlias() }}</td>
                                 <td>{{ $account->contact_email }}</td>
-                                <td>{{ $account->naan }}</td>
-                                <td>{{ $account->shoulder }}</td>
                                 <td>{{ $account->balance }}</td>
-                                <td>{{ $account->address }}</td> 
+                                <td>
+                                <span id="wallet"> {{ $account->address }} </span>
+                                    <button class="btn btn-sm btn-info" onclick="copyToClipboard('#wallet')">
+                                        <i class="fa fa-copy"></i>   Copy
+                                    </button>
+                                </td> 
                                 <td>
                                     @if(!$account->shoulder)
                                         <a href="{{ route('accounts.account-create', $account->id) }}" alt="Create Account" title="Create Account" class="btn btn-success btn-sm"><i class="fa  fa-upload"></i></a>
@@ -119,6 +120,16 @@
             </div>
         </div>
     </div>
+<script>
+    function copyToClipboard(element) {
+        var $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val($(element).text()).select();
+        document.execCommand("copy");
+        $temp.remove();
+        alert('Copied to clipboard!');
+    }
+</script>
 @stop
 
 @section('js')

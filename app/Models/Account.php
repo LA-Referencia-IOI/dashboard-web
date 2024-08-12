@@ -31,6 +31,23 @@ class Account extends Model
         'status'
     ];
 
+    public function getProfileAlias()
+    {
+        switch ($this->profile) {
+            case 0:
+                return 'Manager';
+
+            case 1:
+                return 'Partner';
+
+            case 2:
+                return 'Others';
+
+            default:
+                return 'Undefined';
+        }
+    }
+
 }
 
             
