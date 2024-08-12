@@ -223,7 +223,7 @@ class AccountController extends Controller
     public function getBalance(Account $account)
     {
         $url = env('API_DASHBOARD');
-            $url2 = $url.'/balance/'.$account->address;
+            $url2 = $url.'/get-balance/'.$account->address;
 
             
         try {
