@@ -182,42 +182,61 @@ class AccountController extends Controller
 
        
         $accountManager = Account::where('profile', '==', 0)->first();
-        
 
-        $account = Account::where('address', '==',$request['adress'])->first();
+        
 
         $accFrom = $accountManager->address;
         $accPK = $accountManager->private_key;
 
+        $url = env('API_DASHBOARD');
+        $url = $url.'/recharge/'.$accFrom.'/'.$accPK.'/'.$request['address'].'/'.$request['balance'];
+
         try {
-
-            $url = env('API_DASHBOARD');
-            $url = $url.'/recharge/'.$accFrom.'/'.$accPK.'/'.$request['address'].'/'.$request['balance'];
-
             $response = Http::get($url);
-            if ($response['success'] == true) {
 
-                $url = env('API_DASHBOARD');
-                $url2 = $url.'/balance/'.$request['address'];
-                $response2 = Http::get($url2);
-
-                if($response2['balance']){
-                    $account->balance = $response2['balance'];
-                    $account->update();
-                }
+            if($response->successful()){
+                sleep(3);
+            }else {
 
                 return redirect()
                     ->route('accounts.index')
-                    ->with(['message' => 'Creating action completed successfully.', 'code' => 'success']);
-            } else {
-                return redirect()->route('accounts.index')
-                    ->with(['message' => 'Error creating. Try again!', 'code' => 'danger']);
+                    ->with(['message' => 'Error when transferring funds. Try again!', 'code' => 'danger']);
             }
+            
+            
         } catch (\Throwable $th) {
-            return redirect()->route('accounts.index')
-                    ->with(['message' => 'Error creating. Try again!', 'code' => 'danger']);
+            return response()->json(['success' => false, 'message' => 'Account not found']);
         }
 
+       
+        $account = Account::where('address', '==',$request['address'])->first();
+
+        if($account){
+            $url = env('API_DASHBOARD');
+            $url2 = $url.'/get-balance'.'/'.$request['address'];
+    
+            $response2 = Http::get($url2);
+    
+            if($response2->successful()){
+                $account->balance = $response2['balance'];
+                $account->update();
+    
+                return redirect()
+                    ->route('accounts.index')
+                    ->with(['message' => 'Updated balance.', 'code' => 'success']);
+            }else {
+    
+                return redirect()
+                    ->route('accounts.index')
+                    ->with(['message' => 'Error showing updated balance, but the transaction was successful! ', 'code' => 'warning']);
+            }
+        }else{
+            return redirect()
+                ->route('accounts.index')
+                ->with(['message' => 'Updated balance, But click on the button to see the updated balance. ', 'code' => 'warning']);
+        }
+
+       
         
     }
 
@@ -238,7 +257,7 @@ class AccountController extends Controller
 
                 return redirect()
                     ->route('accounts.index')
-                    ->with(['message' => 'Balance successfully.', 'code' => 'success']);
+                    ->with(['message' => 'Updated balance.', 'code' => 'success']);
             }else{
                 return redirect()->route('accounts.index')
                     ->with(['message' => 'Error in connect with api. Try again!', 'code' => 'danger']);
@@ -246,7 +265,7 @@ class AccountController extends Controller
 
         } catch (\Throwable $th) {
             return redirect()->route('accounts.index')
-                    ->with(['message' => 'Error creating. Try again!', 'code' => 'danger']);
+                    ->with(['message' => 'Error in get balance. Try again!', 'code' => 'danger']);
         } 
         
     }

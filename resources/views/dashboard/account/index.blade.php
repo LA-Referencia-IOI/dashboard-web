@@ -120,6 +120,11 @@
                 </div>
             </div>
         </div>
+        <div id="loader" style="display: none;">
+            <div class="spinner-border text-primary" role="status" style="width: 4rem; height: 4rem;">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
     </div>
 <script>
     function copyToClipboard(element) {
@@ -167,11 +172,33 @@
         let address = document.getElementById('fundsAddress').value;
         let balance = document.getElementById('balance').value;
 
-        // Construa a URL com os parâmetros de consulta
+        document.getElementById('loader').style.display = 'block';
+
         let url = `{{ route("accounts.transfer_funds") }}?address=${encodeURIComponent(address)}&balance=${encodeURIComponent(balance)}`;
 
-        // Redireciona para a URL construida
         window.location.href = url;
+        
+        setTimeout(function() {
+            document.getElementById('loader').style.display = 'none';
+        }, 3000); 
+
+       
+
     });
+</script>
+@stop
+@section('css')
+<script>
+#loader {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+}
 </script>
 @stop
