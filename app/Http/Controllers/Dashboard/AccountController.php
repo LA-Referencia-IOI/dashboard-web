@@ -192,7 +192,7 @@ class AccountController extends Controller
         try {
 
             $url = env('API_DASHBOARD');
-            $url = $url.'/recharge/'.$accFrom.'/'.$accPK.'/'.$request['address'].$request['balance'];
+            $url = $url.'/recharge/'.$accFrom.'/'.$accPK.'/'.$request['address'].'/'.$request['balance'];
 
             $response = Http::get($url);
             if ($response['success'] == true) {
