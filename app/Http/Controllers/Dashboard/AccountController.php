@@ -182,6 +182,7 @@ class AccountController extends Controller
 
        
         $accountManager = Account::where('profile', '==', 0)->first();
+        
 
         $account = Account::where('address', '==',$request['adress'])->first();
 
@@ -191,7 +192,7 @@ class AccountController extends Controller
         try {
 
             $url = env('API_DASHBOARD');
-            $url = $url.'/recharge/'.$accFrom.'/'.$accPK.'/'.$request['adress'].$request['balance'];
+            $url = $url.'/recharge/'.$accFrom.'/'.$accPK.'/'.$request['address'].$request['balance'];
 
             $response = Http::get($url);
             if ($response['success'] == true) {
