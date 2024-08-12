@@ -44,10 +44,7 @@
                                 <td>{{ $account->contact_email }}</td>
                                 <td>{{ $account->getBalance() }}</td>
                                 <td>
-                                <span id="wallet"> {{ $account->address }} </span>
-                                    <button class="btn btn-sm btn-info" onclick="copyToClipboard('#wallet')">
-                                        <i class="fa fa-copy"></i>   Copy
-                                    </button>
+                                    {{ $account->address }}
                                 </td> 
                                 <td>
                                     @if(!$account->shoulder)
@@ -126,16 +123,6 @@
             </div>
         </div>
     </div>
-<script>
-    function copyToClipboard(element) {
-        var $temp = $("<input>");
-        $("body").append($temp);
-        $temp.val($(element).text()).select();
-        document.execCommand("copy");
-        $temp.remove();
-        alert('Copied to clipboard!');
-    }
-</script>
 @stop
 
 @section('js')
