@@ -56,6 +56,7 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::get('account/wallet/{account}', [AccountController::class, 'createWallet'])->name('accounts.account-create');
         Route::get('account/card-profile/{account}', [AccountController::class,'cardProfile'])->name('accounts.card_profile');
         Route::post('account/manager', [AccountController::class, 'accountManager'])->name('accounts.manager');
+        Route::get('account/transfer-funds', [AccountController::class, 'transferFunds'])->name('accounts.transfer_funds');
         
 
         Route::get('blockchains', [BlockchainController::class, 'index'])->name('blockchains.index');

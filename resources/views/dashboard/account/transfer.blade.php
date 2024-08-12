@@ -113,7 +113,7 @@
                             <label for="balance">Balance:</label>
                             <input type="number" step="0.01" class="form-control" id="balance" name="balance" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Transfer</button>
+                        <button type="transfer" class="btn btn-primary">Transfer</button>
                     </form>
                 </div>
             </div>
@@ -123,43 +123,34 @@
 
 @section('js')
 <script>
-    document.getElementById('accountManagerForm').addEventListener('submit', function(event) {
+    document.getElementById('transferFundsForm').addEventListener('transfer', function(event) {
         event.preventDefault();
-        
-        let address = document.getElementById('managerAddress').value;
-        let token = document.querySelector('input[name="_token"]').value;
 
-        fetch('{{ route("accounts.manager") }}', {
+        let address = document.getElementById('fundsAddress').value;
+        console.log(address);
+        let balance = document.getElementById('balance').value;
+        let token = document.querySelector('input[name="_token"]').value;
+        console.log(balance);
+
+        fetch('{{ route("accounts.transfer_funds") }}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': token
             },
-            body: JSON.stringify({ address: address })
+            body: JSON.stringify({ address: address, balance: balance })
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Account manager updated successfully');
-                $('#accountManagerModal').modal('hide'); 
+                alert('Funds transferred successfully');
+                $('#transferFundsModal').modal('hide'); 
             } else {
-                alert('Error updating account manager');
+                alert('Error transferring funds');
             }
         })
         .catch(error => console.error('Error:', error));
     });
 
-    document.getElementById('transferFundsForm').addEventListener('submit', function(event) {
-        event.preventDefault();
 
-        let address = document.getElementById('fundsAddress').value;
-        let balance = document.getElementById('balance').value;
-
-        // Construa a URL com os parâmetros de consulta
-        let url = `{{ route("accounts.transfer_funds") }}?address=${encodeURIComponent(address)}&balance=${encodeURIComponent(balance)}`;
-
-        // Redireciona para a URL construida
-        window.location.href = url;
-    });
-</script>
 @stop

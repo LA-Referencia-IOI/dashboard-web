@@ -24,8 +24,8 @@ class AccountController extends Controller
         if($m){
             $manager = 'yes';
         }
-        
-        $accounts = Account::orderBy('organization_name')->paginate(config('pagination.default'));
+
+        $accounts = Account::orderBy('profile')->paginate(config('pagination.default'));
 
         return view($this->viewPath . 'index', compact('accounts', 'total', 'manager'));
     }
@@ -169,4 +169,37 @@ class AccountController extends Controller
        
         
     }
+
+    public function transferFunds(Request $request)
+    {
+       
+        $request->validate([
+            'address' => 'required|string',
+            'balance' => 'required|numeric|min:0.01', 
+        ]);
+
+       
+        $accountManager = Account::where('profile', $request->profile)->first();
+
+        $account = Account::where('address', $request->address)->first();
+        dd($account);
+
+
+        try {
+            if ($account) {
+            
+                $account->balance += $request->balance;
+                $account->update();
+    
+                return response()->json(['success' => true]);
+            } else {
+                return response()->json(['success' => false, 'message' => 'Account not found']);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['success' => false, 'message' => 'Error, try again']);
+        }
+
+        
+    }
+
 }
