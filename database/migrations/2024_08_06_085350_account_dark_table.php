@@ -1,5 +1,5 @@
 <?php
-
+use App\Enums\AccountType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,7 +16,7 @@ class AccountDarkTable extends Migration
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-
+            $table->smallInteger('profile')->default(AccountType::Partner);
             $table->string('checkin_date')->nullable();
             $table->string('auth_id')->nullable();
             $table->string('contact_email')->nullable();

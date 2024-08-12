@@ -28,8 +28,7 @@ class AccountRequest extends FormRequest
             'organization_name' => 'required|max:255',
             'naan' => 'required|max:255',
             'payload_schema' => 'required|max:255',
-            'contact_email' => 'required|email|max:255',
-            'institution_id' => 'required|max:255'
+            'contact_email' => 'required|email|max:255'
         ];
         return $rules;
     }
@@ -40,8 +39,7 @@ class AccountRequest extends FormRequest
             'organization_name' => 'Name',
             'contact_email' => 'Email',
             'naan' => 'Naan',
-            'payload_schema' => 'Payload_schema',
-            'institution_id' => 'Institution ID'
+            'payload_schema' => 'Payload_schema'
         ];
     }
 }
