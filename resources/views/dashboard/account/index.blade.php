@@ -55,6 +55,7 @@
                                     @endif
                                     @if($account->shoulder)
                                     <a href="{{ route('accounts.card_profile', $account->id) }}" alt="see" title="see" class="btn btn-info btn-sm"><i class="fa  fa-eye"></i></a>
+                                    <a href="{{ route('accounts.get_balance', $account->id) }}" alt="see" title="see" class="btn btn-info btn-sm"><i class="fa  fa-spinner"></i></a>
                                     @endif        
                                     <button alt="Delete" title="Delete" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $account->id }}, '{{ route('accounts.destroy', ['account' => $account->id]) }}')"><i class="fa fa-trash"></i></button>
                                 </td>

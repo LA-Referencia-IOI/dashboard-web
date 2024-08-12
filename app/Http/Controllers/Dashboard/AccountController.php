@@ -197,9 +197,9 @@ class AccountController extends Controller
             if ($response['success'] == true) {
 
                 $url = env('API_DASHBOARD');
-                $url2 = $url.'/balance/'.$request['adress'];
+                $url2 = $url.'/balance/'.$request['address'];
                 $response2 = Http::get($url2);
-                
+
                 if($response2['balance']){
                     $account->balance = $response2['balance'];
                     $account->update();
@@ -217,6 +217,35 @@ class AccountController extends Controller
                     ->with(['message' => 'Error creating. Try again!', 'code' => 'danger']);
         }
 
+        
+    }
+
+    public function getBalance(Account $account)
+    {
+        $url = env('API_DASHBOARD');
+            $url2 = $url.'/balance/'.$account->address;
+
+            
+        try {
+
+            $response2 = Http::get($url2);
+            
+            if($response2['balance']){
+                $account->balance = $response2['balance'];
+                $account->update();
+
+                return redirect()
+                    ->route('accounts.index')
+                    ->with(['message' => 'Balance successfully.', 'code' => 'success']);
+            }else{
+                return redirect()->route('accounts.index')
+                    ->with(['message' => 'Error in connect with api. Try again!', 'code' => 'danger']);
+            }
+
+        } catch (\Throwable $th) {
+            return redirect()->route('accounts.index')
+                    ->with(['message' => 'Error creating. Try again!', 'code' => 'danger']);
+        } 
         
     }
 
