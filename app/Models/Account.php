@@ -48,6 +48,14 @@ class Account extends Model
         }
     }
 
+    public function getBalance(){
+        $balance = $this->balance;
+
+        $formattedBalance = sprintf('%.2e', $balance);
+        $formattedBalance = str_replace(['e+', 'e-'], ['x10^', 'x10^-'], $formattedBalance);
+        return $formattedBalance;
+    }
+
 }
 
             

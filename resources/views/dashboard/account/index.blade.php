@@ -42,7 +42,7 @@
                                 <td>{{ $account->organization_name }}</td>
                                 <td>{{ $account->getProfileAlias() }}</td>
                                 <td>{{ $account->contact_email }}</td>
-                                <td>{{ $account->balance }}</td>
+                                <td>{{ $account->getBalance() }}</td>
                                 <td>
                                 <span id="wallet"> {{ $account->address }} </span>
                                     <button class="btn btn-sm btn-info" onclick="copyToClipboard('#wallet')">
