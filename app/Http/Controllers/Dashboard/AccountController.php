@@ -8,24 +8,26 @@ use Illuminate\Support\Facades\Http;
 use App\Http\Requests\Dashboard\AccountRequest;
 use App\Models\User;
 use App\Models\Account;
+use App\Enums\AccountType;
 
 class AccountController extends Controller
 {
     private $viewPath = 'dashboard.account.';
-    public function index(Request $request)
+    public function index()
     {
         $total = Account::count();
-        $s = isset($request['s']) ? $request['s'] : null;
 
-        
-        if ($s) {
-            $accounts = Account::where('organization_name', 'LIKE', '%' . $s . '%')
-                ->orderBy('organization_name')
-                ->paginate(config('pagination.default'));
-        }else{
-            $accounts = Account::orderBy('organization_name')->paginate(config('pagination.default'));
+        $manager = 'no';
+
+        $m = Account::where('profile', '==', 0);
+
+        if($m){
+            $manager = 'yes';
         }
-        return view($this->viewPath . 'index', compact('accounts', 'total', 's'));
+
+        $accounts = Account::orderBy('profile')->paginate(config('pagination.default'));
+
+        return view($this->viewPath . 'index', compact('accounts', 'total', 'manager'));
     }
     public function create()
     {
@@ -140,4 +142,68 @@ class AccountController extends Controller
         }
         
     }
+
+    public function accountManager(Request $request)
+    {
+       
+        $request->validate([
+            'address' => 'required|string',
+        ]);
+
+        try {
+            $account = Account::where('address', $request->address)->first();
+
+            if ($account) {
+            
+                $account->profile = AccountType::Manager;
+                $account->update();
+
+                return response()->json(['success' => true]);
+            } else {
+                return response()->json(['success' => false, 'message' => 'Account not found']);
+            }
+        } catch (\Throwable $th) {
+            return response()->json(['success' => false, 'message' => 'Error in create manager, try again. ']);
+        }
+
+       
+        
+    }
+
+    public function transferFunds(Request $request)
+    {
+        // /recharge/:account_from/:key_from/:account_to/:dark
+        $request->validate([
+            'address' => 'required|string',
+            'balance' => 'required|numeric|min:0.01', 
+        ]);
+
+       
+        $accountManager = Account::where('profile', '==', 0)->first();
+
+        $accFrom = $accountManager->address;
+        $accPK = $accountManager->private_key;
+
+        try {
+
+            $url = env('API_DASHBOARD');
+                $url = $url.'/recharge/'.$accFrom.'/'.$accPK.'/'.$request['adress'].$request['balance'];
+
+                $response = Http::get($url);
+            if ($response['success'] == true) {
+                return redirect()
+                    ->route('accounts.index')
+                    ->with(['message' => 'Creating action completed successfully.', 'code' => 'success']);
+            } else {
+                return redirect()->route('accounts.index')
+                    ->with(['message' => 'Error creating. Try again!', 'code' => 'danger']);
+            }
+        } catch (\Throwable $th) {
+            return redirect()->route('accounts.index')
+                    ->with(['message' => 'Error creating. Try again!', 'code' => 'danger']);
+        }
+
+        
+    }
+
 }
