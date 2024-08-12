@@ -183,16 +183,28 @@ class AccountController extends Controller
        
         $accountManager = Account::where('profile', '==', 0)->first();
 
+        $account = Account::where('address', '==',$request['adress'])->first();
+
         $accFrom = $accountManager->address;
         $accPK = $accountManager->private_key;
 
         try {
 
             $url = env('API_DASHBOARD');
-                $url = $url.'/recharge/'.$accFrom.'/'.$accPK.'/'.$request['adress'].$request['balance'];
+            $url = $url.'/recharge/'.$accFrom.'/'.$accPK.'/'.$request['adress'].$request['balance'];
 
-                $response = Http::get($url);
+            $response = Http::get($url);
             if ($response['success'] == true) {
+
+                $url = env('API_DASHBOARD');
+                $url2 = $url.'/balance/'.$request['adress'];
+                $response2 = Http::get($url2);
+                
+                if($response2['balance']){
+                    $account->balance = $response2['balance'];
+                    $account->update();
+                }
+
                 return redirect()
                     ->route('accounts.index')
                     ->with(['message' => 'Creating action completed successfully.', 'code' => 'success']);
