@@ -755,11 +755,11 @@
   <!-- footer section -->
 
   <!-- jQery -->
-  <script src="/home/edilson/Workspace/dARK/web-dark/public/assets/js/jquery-3.4.1.min.js"></script>
+  <script src="{{ asset('frontEnd')}}/js/jquery-3.4.1.min.js"></script>
   <!-- bootstrap js -->
-  <script src="/home/edilson/Workspace/dARK/web-dark/public/assets/js/js/bootstrap.js"></script>
+  <script src="{{ asset('frontEnd')}}/js/js/bootstrap.js"></script>
   <!-- custom js -->
-  <script src="/home/edilson/Workspace/dARK/web-dark/public/assets/js/js/custom.js"></script>
+  <script src="{{ asset('frontEnd')}}/js/js/custom.js"></script>
 
 
 </body>
