@@ -118,7 +118,7 @@
                   <legend> dARK in Numbers</legend>
 
                   <input type="radio" id="kraken" name="monster" value="K" />
-                  <label for="kraken">dARK PIDs: 1.050.203</label><br />
+                  <label for="kraken">dARK PIDs: {!! $numberDark!!}</label><br />
 
                   <input type="radio" id="sasquatch" name="monster" value="S" />
                   <label for="sasquatch">Number of blocks : <span id="blockNumber">{!! $blockNumber !!}</span></label><br />
