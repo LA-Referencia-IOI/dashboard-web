@@ -19,7 +19,7 @@
     @endif
     <div class="row">
         <div class="col-lg-3 col-6">
-            <div class="small-box bg-info">
+            <div class="small-box bg-purple">
             <div class="inner">
                 <h3>Instituition<sup style="font-size: 20px"></sup> </h3>
                 <p>{!!$countInstitutions!!}</p>
@@ -31,11 +31,11 @@
             </div>
         </div>
         <div class="col-lg-3 col-6">
-            <div class="small-box bg-success">
+            <div class="small-box bg-purple">
             <div class="inner">
-                <h3>Networks<sup style="font-size: 20px"> Up</sup> </h3>
+                <h3>dARKs<sup style="font-size: 20px"> pids</sup> </h3>
 
-                <p>{!!$upCount!!}</p>
+                <p>{!!$numberDark!!}</p>
             </div>
             <div class="icon">
                 <i class="fas fa-fw  fa-flag-checkered"></i>
@@ -44,11 +44,11 @@
             </div>
         </div>
         <div class="col-lg-3 col-6">
-            <div class="small-box bg-warning">
+            <div class="small-box bg-purple">
             <div class="inner">
-                <h3>Networks <sup style="font-size: 20px">Down</sup> </h3>
+                <h3>Block<sup style="font-size: 20px"> last</sup> </h3>
 
-                <p>{!!$downCount!!}</p>
+                <p>{!!$blockNumber!!}</p>
             </div>
             <div class="icon">
                 <i class="fas fa-fw fa-spinner"></i>

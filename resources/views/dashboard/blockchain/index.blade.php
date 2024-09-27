@@ -66,26 +66,51 @@
         function checkLiveness() {
             $('.liveness').each(function() {
                 var row = $(this);
-                var url = row.data('url');
-                
-                $.ajax({
-                    url: url,
-                    method: 'GET',
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.status && response.status === 'UP') {
-                            row.text('Up').removeClass('status-down').addClass('status-up');
-                        } else {
-                            row.text('Down').removeClass('status-up').addClass('status-down');
+                var originalUrl = row.data('url');
+
+                // Validate the original URL
+                if (!originalUrl.startsWith('http://') && !originalUrl.startsWith('https://')) {
+                    console.error("Invalid URL:", originalUrl);
+                    row.text('Invalid URL').removeClass('status-up').addClass('status-down');
+                    return;
+                }
+
+                // Function to attempt AJAX request with a given URL
+                function attemptRequest(url) {
+                    $.ajax({
+                        url: url,
+                        method: 'GET',
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.status && response.status === 'UP') {
+                                row.text('Up').removeClass('status-down').addClass('status-up');
+                            } else {
+                                row.text('Down').removeClass('status-up').addClass('status-down');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error fetching liveness status:", status, error);
+                            // Switch protocol if the current attempt failed
+                            if (url.startsWith('http://')) {
+                                attemptRequest(url.replace('http://', 'https://'));
+                            } else if (url.startsWith('https://')) {
+                                attemptRequest(url.replace('https://', 'http://'));
+                            } else {
+                                row.text('Error').removeClass('status-up').addClass('status-down');
+                            }
                         }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error fetching liveness status:", status, error);
-                        row.text('Error').removeClass('status-up').addClass('status-down');
-                    }
-                });
+                    });
+                }
+
+                // Append ':8545/liveness' to the URL
+                var urlWithPath = originalUrl + ':8545/liveness';
+
+                // Start the first attempt
+                attemptRequest(urlWithPath);
             });
         }
+
+
 
 
 
