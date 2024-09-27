@@ -27,23 +27,39 @@ class BlockchainController extends Controller
 
     public function fetchLogs()
     {
-       
-        $logPath = env('LOG_NODE1');
+        $logPath = "/var/logs/node1.log";
 
-       
-        $logs = [];
-        if (file_exists($logPath)) {
-            $logs = explode("\n", shell_exec("tail -n 100 $logPath"));
+        // Verifica se o arquivo existe
+        if (!file_exists($logPath)) {
+            die("Log file does not exist or path is incorrect: $logPath");
         }
 
-        
+        // Verifica as permissões de arquivo
+        if (!is_readable($logPath)) {
+            die("Log file is not readable: $logPath");
+        }
+
+        // Tenta ler o conteúdo do arquivo
+        $logs = shell_exec("tail -n 100 $logPath");
+        if ($logs === null) {
+            die("Error executing tail command for file: $logPath");
+        }
+
+        // Se tudo estiver correto, continua processando os logs
+        $logsArray = explode("\n", trim($logs));
+        if (empty($logsArray)) {
+            return 'No logs found or empty log file.';
+        }
+
         $logHtml = '';
-        foreach ($logs as $line) {
+        foreach ($logsArray as $line) {
             $logHtml .= '<div class="log-line">' . htmlspecialchars($line) . '</div>';
         }
 
         return $logHtml;
+
     }
+
 
     public function create()
     {
