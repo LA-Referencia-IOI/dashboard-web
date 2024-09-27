@@ -66,6 +66,8 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::post('blockchain/create', [BlockchainController::class, 'store'])->name('blockchains.store');
         Route::put('blockchain/{blockchain}', [BlockchainController::class, 'update'])->name('blockchains.update');
         Route::delete('blockchain/destroy/{blockchain}', [BlockchainController::class, 'destroy'])->name('blockchains.destroy');
+        Route::get('blockchain/logs', [BlockchainController::class, 'showLogs'])->name('blockchains.log');
+        Route::get('blockchain/logs/fetch', [BlockchainController::class, 'fetchLogs'])->name('blockchain.logs_fetch');
 
 
         Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
@@ -74,6 +76,8 @@ Route::group(['middleware' => ['https.protocol']], function () {
 
         Route::put('image/{id}/upload', [ImageController::class, 'upload'])->name('image.upload');
         Route::delete('image/destroy/{file}', [ImageController::class, 'destroy'])->name('image.destroy');
+
+       
     });
 
     Auth::routes();

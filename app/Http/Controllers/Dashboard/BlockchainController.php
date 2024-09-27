@@ -18,6 +18,33 @@ class BlockchainController extends Controller
         $blockchains = Blockchain::orderBy('type')->paginate(config('pagination.default'));
         return view($this->viewPath . 'index', compact('blockchains'));
     }
+
+    public function showLogs()
+    {
+
+        return view($this->viewPath .'monitor');
+    }
+
+    public function fetchLogs()
+    {
+       
+        $logPath = env('LOG_NODE1');
+
+       
+        $logs = [];
+        if (file_exists($logPath)) {
+            $logs = explode("\n", shell_exec("tail -n 100 $logPath"));
+        }
+
+        
+        $logHtml = '';
+        foreach ($logs as $line) {
+            $logHtml .= '<div class="log-line">' . htmlspecialchars($line) . '</div>';
+        }
+
+        return $logHtml;
+    }
+
     public function create()
     {
        
@@ -80,5 +107,9 @@ class BlockchainController extends Controller
                 ->with(['message' => 'Error deleting. Try again!', 'code' => 'danger']);
         }
     }
+
+    
+
+    
 
 }

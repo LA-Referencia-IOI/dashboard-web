@@ -8,6 +8,7 @@
         </div>
     @endif
     <a href="{{ route('blockchains.create') }}" class="btn btn-custom btn-sm" style="margin-bottom: 10px;">NEW NETWORK</a>
+    <a href="{{ route('blockchains.log') }}" class="btn btn-custom btn-sm" style="margin-bottom: 10px;">BLOCKCHAIN LOG</a>
     <div class="box">
         <div class="box-header with-border">
             <h4 class="box-title">blockchains</h4>
