@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Dashboard\BlockchainRequest;
 use App\Models\User;
 use App\Models\Blockchain;
+use Illuminate\Support\Facades\Http;
 
 class BlockchainController extends Controller
 {
@@ -18,6 +19,51 @@ class BlockchainController extends Controller
         $blockchains = Blockchain::orderBy('type')->paginate(config('pagination.default'));
         return view($this->viewPath . 'index', compact('blockchains'));
     }
+
+    public function showLogs()
+    {
+
+        return view($this->viewPath .'monitor');
+    }
+
+    public function fetchLogs()
+    {
+        // URL da API que retorna os logs
+        $apiUrl = "http://dark-01.dark-pid.net:5000/monitor-logs";
+
+        try {
+            // Faz a requisição GET à API
+            $response = Http::get($apiUrl);
+            // Verifica se a requisição foi bem-sucedida
+            if ($response->failed()) {
+                die("Error fetching logs from API: " . $response->status());
+            }
+
+            // Obtém o conteúdo da resposta como texto
+            $logs = $response->body();
+
+            // Converte os logs em array de linhas
+            $logsArray = explode("\n", trim($logs));
+            if (empty($logsArray)) {
+                return 'No logs found or empty response from API.';
+            }
+
+            // Gera o HTML para exibir os logs
+            $logHtml = '';
+            foreach ($logsArray as $line) {
+                $logHtml .= '<div class="log-line">' . htmlspecialchars($line) . '</div>';
+            }
+
+            return $logHtml;
+
+        } catch (\Exception $e) {
+            die("Error fetching logs from API: " . $e->getMessage());
+        }
+    }
+
+
+
+
     public function create()
     {
        
@@ -80,5 +126,9 @@ class BlockchainController extends Controller
                 ->with(['message' => 'Error deleting. Try again!', 'code' => 'danger']);
         }
     }
+
+    
+
+    
 
 }

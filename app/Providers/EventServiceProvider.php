@@ -60,10 +60,15 @@ class EventServiceProvider extends ServiceProvider
             //     'route' => 'users.index',
             // ]);
             $event->menu->add('BLOCKCHAIN');
-                        $event->menu->add([
+            $event->menu->add([
                 'icon' => 'fas fa-cubes',
                 'text' => 'Network',
                 'route' => 'blockchains.index',
+            ]);
+            $event->menu->add([
+                'icon' => 'fas fa-desktop',
+                'text' => 'Logs',
+                'route' => 'blockchains.log',
             ]);
             $event->menu->add('PROFILE');
 
