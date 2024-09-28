@@ -8,8 +8,8 @@
         </div>
     @endif
 
-    <h1>Log Monitor</h1>
-    <div id="log-container" class="log-container" style="width: 100%; height: 500px; overflow-y: scroll; background-color: #f4f4f4; border: 1px solid #ccc;">
+    <h1>Log Monitor - Node RPC</h1>
+    <div id="log-container" class="log-container" style="width: 100%; height: 500px; overflow-y: scroll; background-color: #363638; border: 1px solid #ccc; white-space: pre-wrap; word-wrap: break-word; color: white;">
         <!-- Logs will be loaded here via AJAX -->
     </div>
 @stop
@@ -45,8 +45,8 @@
     <style>
         .log-line {
             font-family: monospace;
-            white-space: pre;
+            white-space: pre-wrap; /* Allows for wrapping of text */
+            color: white; /* Set log text color to white */
         }
     </style>
 @stop
-

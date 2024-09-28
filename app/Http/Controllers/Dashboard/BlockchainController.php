@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Dashboard\BlockchainRequest;
 use App\Models\User;
 use App\Models\Blockchain;
+use Illuminate\Support\Facades\Http;
 
 class BlockchainController extends Controller
 {
@@ -27,38 +28,40 @@ class BlockchainController extends Controller
 
     public function fetchLogs()
     {
-        $logPath = "/var/logs/node1.log";
+        // URL da API que retorna os logs
+        $apiUrl = "http://dark-01.dark-pid.net:5000/monitor-logs";
 
-        // Verifica se o arquivo existe
-        if (!file_exists($logPath)) {
-            die("Log file does not exist or path is incorrect: $logPath");
+        try {
+            // Faz a requisição GET à API
+            $response = Http::get($apiUrl);
+            // Verifica se a requisição foi bem-sucedida
+            if ($response->failed()) {
+                die("Error fetching logs from API: " . $response->status());
+            }
+
+            // Obtém o conteúdo da resposta como texto
+            $logs = $response->body();
+
+            // Converte os logs em array de linhas
+            $logsArray = explode("\n", trim($logs));
+            if (empty($logsArray)) {
+                return 'No logs found or empty response from API.';
+            }
+
+            // Gera o HTML para exibir os logs
+            $logHtml = '';
+            foreach ($logsArray as $line) {
+                $logHtml .= '<div class="log-line">' . htmlspecialchars($line) . '</div>';
+            }
+
+            return $logHtml;
+
+        } catch (\Exception $e) {
+            die("Error fetching logs from API: " . $e->getMessage());
         }
-
-        // Verifica as permissões de arquivo
-        if (!is_readable($logPath)) {
-            die("Log file is not readable: $logPath");
-        }
-
-        // Tenta ler o conteúdo do arquivo
-        $logs = shell_exec("tail -n 100 $logPath");
-        if ($logs === null) {
-            die("Error executing tail command for file: $logPath");
-        }
-
-        // Se tudo estiver correto, continua processando os logs
-        $logsArray = explode("\n", trim($logs));
-        if (empty($logsArray)) {
-            return 'No logs found or empty log file.';
-        }
-
-        $logHtml = '';
-        foreach ($logsArray as $line) {
-            $logHtml .= '<div class="log-line">' . htmlspecialchars($line) . '</div>';
-        }
-
-        return $logHtml;
-
     }
+
+
 
 
     public function create()
