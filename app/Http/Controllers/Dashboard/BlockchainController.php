@@ -29,7 +29,7 @@ class BlockchainController extends Controller
     public function fetchLogs()
     {
         // URL da API que retorna os logs
-        $apiUrl = "http://dark-01.dark-pid.net:5000/monitor-logs";
+        $apiUrl = "http://api-01.dark-pid.net/monitor-logs";
 
         try {
             // Faz a requisição GET à API

@@ -104,7 +104,7 @@
                 }
 
                 // Append ':8545/liveness' to the URL
-                var urlWithPath = originalUrl + ':8545/liveness';
+                var urlWithPath = originalUrl; // + '/liveness';
 
                 // Start the first attempt
                 attemptRequest(urlWithPath);
