@@ -67,6 +67,7 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::put('blockchain/{blockchain}', [BlockchainController::class, 'update'])->name('blockchains.update');
         Route::delete('blockchain/destroy/{blockchain}', [BlockchainController::class, 'destroy'])->name('blockchains.destroy');
         Route::get('blockchain/logs', [BlockchainController::class, 'showLogs'])->name('blockchains.log');
+        Route::get('blockchain/backup-blockchain', [BlockchainController::class, 'backup'])->name('blockchains.backup_blockchain');
         Route::get('blockchain/logs/fetch', [BlockchainController::class, 'fetchLogs'])->name('blockchain.logs_fetch');
 
 

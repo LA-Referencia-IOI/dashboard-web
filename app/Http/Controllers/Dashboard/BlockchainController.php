@@ -8,6 +8,7 @@ use App\Http\Requests\Dashboard\BlockchainRequest;
 use App\Models\User;
 use App\Models\Blockchain;
 use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
 
 class BlockchainController extends Controller
 {
@@ -61,7 +62,50 @@ class BlockchainController extends Controller
         }
     }
 
+    public function backup()
+    {
+        $apiUrl = "http://api-01.dark-pid.net/backup-bc";
+        $pathQuerry = "?path=/home/ubuntu/backup-darkpid"; 
 
+        $endpoint = $apiUrl.$pathQuerry;
+        // dd($endpoint);
+
+        try {
+    
+            $response = Http::get($endpoint);
+            // checking the request
+            if ($response->failed()) {
+                die("Error fetching logs from API: " . $response->status());
+            }
+
+            // Obtém o conteúdo da resposta como texto
+            $resp = $response->json();
+
+            $totalFiles = $resp["totalFiles"];
+
+            $lastModified = $resp["lastModified"];
+
+            $lastModified = Carbon::parse($lastModified);
+
+            $lastModified = $lastModified->format('F d, Y H:i:s') . ' UTC+0'; 
+
+            $folderSizeMB = $resp["folderSizeMB"];
+
+            $folderSizeGB = $folderSizeMB / 1024;
+
+            $folderSizeMB = number_format($folderSizeGB, 2);
+                
+        } catch (\Exception $e) {
+            // die("Error fetching logs from API: " . $e->getMessage());
+            $totalFiles = 'undefined';
+
+            $lastModified = 'undefined';
+
+            $folderSizeMB = 'undefined';
+        }
+
+        return view($this->viewPath .'backup', compact('totalFiles', 'lastModified', 'folderSizeMB'));
+    }
 
 
     public function create()
