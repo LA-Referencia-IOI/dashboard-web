@@ -70,6 +70,11 @@ class EventServiceProvider extends ServiceProvider
                 'text' => 'Logs',
                 'route' => 'blockchains.log',
             ]);
+            $event->menu->add([
+                'icon' => 'fas fa-database',
+                'text' => 'Backup',
+                'route' => 'blockchains.backup_blockchain',
+            ]);
             $event->menu->add('PROFILE');
 
             $event->menu->add([
