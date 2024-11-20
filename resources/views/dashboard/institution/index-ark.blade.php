@@ -8,6 +8,8 @@
         </div>
     @endif
     <a href="{{ route('institutions.create-ark') }}" class="btn btn-custom btn-sm" style="margin-bottom: 10px;">NEW ARK REGISTRATION</a>
+    <a href="{{ route('institutions.export-ark-txt') }}" class="btn btn-custom btn-sm" style="margin-bottom: 10px;">EXPORT TXT</a>
+
     <div class="box">
     <div class="box-header with-border">
         <div class="box-header with-border">

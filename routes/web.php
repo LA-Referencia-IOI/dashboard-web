@@ -51,6 +51,7 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::get('ark/create-ark', [ArkController::class, 'create'])->name('institutions.create-ark');
         Route::post('ark/create-ark', [ArkController::class, 'store'])->name('institutions.store-ark');
         Route::delete('ark/destroy/{ark}', [ArkController::class, 'destroy'])->name('institutions.destroy-ark');
+        Route::get('ark/txt', [ArkController::class, 'exportTxt'])->name('institutions.export-ark-txt');
 
         Route::get('institutions/{institution}/blockchain-id', [InstitutionController::class, 'addIdBlockchain'])->name('institutions.add_id_blockchain');
 
