@@ -25,7 +25,9 @@
                             <th>When</th>
                             <th>Where</th>
                             <th>How</th>
-                            <th>Create at</th>
+                            <th>Why</th>
+                            <th>Contact</th>
+                            <th>Address</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -37,7 +39,9 @@
                                 <td>{{ $ark->when }}</td>
                                 <td>{{ $ark->where }}</td>
                                 <td>{{ $ark->how }}</td>
-                                <td>{{ $ark->created_at }}</td>
+                                <td>{{ $ark->why }}</td>
+                                <td>{{ $ark->contact }}</td>
+                                <td>{{ $ark->address }}</td>
                                 <td>                        
                                     <button alt="Delete" title="Delete" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $ark->id }}, '{{ route('institutions.destroy-ark', ['ark' => $ark->id]) }}')"><i class="fa fa-trash"></i></button>
                                 </td>
