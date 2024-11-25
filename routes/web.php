@@ -6,6 +6,7 @@ use App\Http\Controllers\Dashboard\AccountController;
 use App\Http\Controllers\Dashboard\BlockchainController;
 use App\Http\Controllers\Dashboard\InstitutionController;
 use App\Http\Controllers\Dashboard\ImageController;
+use App\Http\Controllers\Dashboard\ArkController;
 use App\Http\Controllers\Dashboard\SettingController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -44,6 +45,13 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::post('institution/create', [InstitutionController::class, 'store'])->name('institutions.store');
         Route::put('institution/{institution}', [InstitutionController::class, 'update'])->name('institutions.update');
         Route::delete('institution/destroy/{institution}', [InstitutionController::class, 'destroy'])->name('institutions.destroy');
+
+
+        Route::get('arks', [ArkController::class, 'index'])->name('institutions.index-ark');
+        Route::get('ark/create-ark', [ArkController::class, 'create'])->name('institutions.create-ark');
+        Route::post('ark/create-ark', [ArkController::class, 'store'])->name('institutions.store-ark');
+        Route::delete('ark/destroy/{ark}', [ArkController::class, 'destroy'])->name('institutions.destroy-ark');
+        Route::get('ark/txt', [ArkController::class, 'exportTxt'])->name('institutions.export-ark-txt');
 
         Route::get('institutions/{institution}/blockchain-id', [InstitutionController::class, 'addIdBlockchain'])->name('institutions.add_id_blockchain');
 
