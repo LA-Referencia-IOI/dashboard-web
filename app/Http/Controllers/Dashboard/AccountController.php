@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Http;
 use App\Http\Requests\Dashboard\AccountRequest;
 use App\Models\User;
 use App\Models\Account;
+use App\Models\Institution;
 use App\Enums\AccountType;
 
 class AccountController extends Controller
@@ -31,9 +32,15 @@ class AccountController extends Controller
 
         return view($this->viewPath . 'index', compact('accounts', 'total', 'manager'));
     }
-    public function create()
+    public function create($institutionId)
     {
-       
+        if($institutionId){
+            $institution = Institution::find($institutionId);
+            return view($this->viewPath . 'create', compact('institution'));
+        } else {
+        $institution = null;
+    }
+
         return view($this->viewPath . 'create');
     }
 

@@ -42,6 +42,7 @@
                                 @if (!$institution->code)
                                     <a href="{{ route('institutions.add_id_blockchain', $institution->id) }}" alt="key dARK" title="key dARK" class="btn btn-success btn-sm"><i class="fa  fa-key"></i></a>
                                 @endif 
+                                    <a href="{{ route('accounts.create', $institution->id) }}" alt="Account" title="Account" class="btn btn-warning btn-sm"><i class="fas fa-user-plus"></i></a>
                                     <a href="{{ route('institutions.edit', $institution->id) }}" alt="Edit" title="Edit" class="btn btn-primary btn-sm"><i class="fa fa-pencil-alt"></i></a>
                                     <button alt="Delete" title="Delete" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $institution->id }}, '{{ route('institutions.destroy', ['institution' => $institution->id]) }}')"><i class="fa fa-trash"></i></button>
                                 </td>

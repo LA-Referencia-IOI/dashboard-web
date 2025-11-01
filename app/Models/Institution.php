@@ -73,6 +73,8 @@ class Institution extends Model
             return "<span class=\"badge badge-success\">Enabled</span>";
         }else if($status == 1){
             return "<span class=\"badge badge-danger\">Disabled</span>";
+        }else if($status == 3){
+            return "<span class=\"badge badge-info\">Enabled and with account</span>";
         }else{
             return "<span class=\"badge badge-warning\">Undefined</span>";
         }

@@ -7,7 +7,6 @@
             {{ session('message') }}
         </div>
     @endif
-    <a href="{{ route('accounts.create') }}" class="btn btn-custom btn-sm" style="margin-bottom: 10px;">NEW ACCOUNT</a>
 
     @if($manager == 'no')
         <button type="button" class="btn btn-custom btn-sm" style="margin-bottom: 10px;" data-toggle="modal" data-target="#accountManagerModal">
