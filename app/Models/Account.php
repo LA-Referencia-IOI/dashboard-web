@@ -8,6 +8,7 @@ use App\Enums\UserType;
 use App\Enums\AccountType;
 use App\Enums\InstitutionType;
 use Carbon\Carbon;
+use App\Models\Institution;
 
 class Account extends Model
 {
@@ -28,7 +29,8 @@ class Account extends Model
         'dnam_auth_id',
         'noid_len',
         'noidprovider_addr',
-        'status'
+        'status',
+        'institution_id'
     ];
 
     public function getProfileAlias()
@@ -55,6 +57,12 @@ class Account extends Model
         $formattedBalance = str_replace(['e+', 'e-'], ['x10^', 'x10^-'], $formattedBalance);
         return $formattedBalance;
     }
+
+    public function institution()
+    {
+        return $this->belongsTo(Institution::class, 'institution_id', 'id');
+    }
+
 
 }
 

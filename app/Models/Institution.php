@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Enums\UserType;
 use App\Enums\InstitutionType;
 use Carbon\Carbon;
+use App\Models\Account;
+
 
 class Institution extends Model
 {
@@ -73,11 +75,29 @@ class Institution extends Model
             return "<span class=\"badge badge-success\">Enabled</span>";
         }else if($status == 1){
             return "<span class=\"badge badge-danger\">Disabled</span>";
+        }else if($status == 3){
+            return "<span class=\"badge badge-info\">Enabled and with account</span>";
         }else{
             return "<span class=\"badge badge-warning\">Undefined</span>";
         }
         return $status;
     }
 
+
+
+    public function account()
+    {
+        return $this->hasOne(Account::class, 'institution_id', 'id');
+    }
+
+    public function getNaan()
+    {
+        return $this->account ? $this->account->naan : null;
+    }
+
+    public function getShoulder()
+    {
+        return $this->account ? $this->account->shoulder : null;
+    }
 
 }

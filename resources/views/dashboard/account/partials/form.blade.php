@@ -5,13 +5,21 @@
     <div class="col-md-6">
         <div class="form-group">
             {{ Form::label('organization_name', 'Name') }}
-            {{ Form::text('organization_name', null, ['class' => 'form-control']) }}
+            {{ Form::text(
+                'organization_name',
+                old('organization_name', $institution->name ?? null),
+                ['class' => 'form-control', 'readonly' => isset($institution)]
+            ) }}
         </div>
     </div>
     <div class="col-md-6">
         <div class="form-group">
             {{ Form::label('contact_email', 'Email') }}
-            {{ Form::text('contact_email', null, ['class' => 'form-control']) }}
+            {{ Form::email(
+                'contact_email',
+                old('contact_email', $institution->email ?? null),
+                ['class' => 'form-control', 'readonly' => isset($institution)]
+            ) }}
         </div>
     </div>
 </div>
@@ -20,13 +28,22 @@
     <div class="col-md-3">
         <div class="form-group">
             {{ Form::label('naan', 'Naan') }}
-            {{ Form::text('naan', null, ['class' => 'form-control']) }}
+            {{ Form::text(
+                'naan',
+                old('naan', $institution->getNaan()),
+                ['class' => 'form-control']
+            ) }}
+
         </div>
     </div>
     <div class="col-md-3">
         <div class="form-group">
             {{ Form::label('institution_id', 'Institution ID') }}
-            {{ Form::text('institution_id', null, ['class' => 'form-control']) }}
+            {{ Form::text(
+                'institution_id',
+                old('institution_id', $institution->id ?? null),
+                ['class' => 'form-control', 'readonly' => isset($institution)]
+            ) }}
         </div>
     </div>
     <div class="col-md-6">
