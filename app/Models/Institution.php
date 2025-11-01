@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use App\Enums\UserType;
 use App\Enums\InstitutionType;
 use Carbon\Carbon;
+use App\Models\Account;
+
 
 class Institution extends Model
 {
@@ -81,5 +83,21 @@ class Institution extends Model
         return $status;
     }
 
+
+
+    public function account()
+    {
+        return $this->hasOne(Account::class, 'institution_id', 'id');
+    }
+
+    public function getNaan()
+    {
+        return $this->account ? $this->account->naan : null;
+    }
+
+    public function getShoulder()
+    {
+        return $this->account ? $this->account->shoulder : null;
+    }
 
 }

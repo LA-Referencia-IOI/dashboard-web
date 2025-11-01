@@ -28,6 +28,7 @@
                     <thead class="thead-light">
                         <tr>
                             <th>Name</th>
+                            <th>Naan</th>
                             <th>Profile</th>
                             <th>Email</th>
                             <th>Balance</th>
@@ -38,7 +39,8 @@
                     <tbody>
                         @forelse($accounts as $account)
                             <tr>
-                                <td>{{ $account->organization_name }}</td>
+                                <td>{{ $account->organization_name }} | {{$account->institution_id}}</td>
+                                <td>{{ $account->naan }}</td>
                                 <td>{{ $account->getProfileAlias() }}</td>
                                 <td>{{ $account->contact_email }}</td>
                                 <td>{{ $account->getBalance() }}</td>

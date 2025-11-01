@@ -28,7 +28,12 @@
     <div class="col-md-3">
         <div class="form-group">
             {{ Form::label('naan', 'Naan') }}
-            {{ Form::text('naan', null, ['class' => 'form-control']) }}
+            {{ Form::text(
+                'naan',
+                old('naan', $institution->getNaan()),
+                ['class' => 'form-control']
+            ) }}
+
         </div>
     </div>
     <div class="col-md-3">

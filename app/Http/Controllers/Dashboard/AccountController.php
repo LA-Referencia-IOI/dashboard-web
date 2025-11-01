@@ -36,9 +36,12 @@ class AccountController extends Controller
     {
         if($institutionId){
             $institution = Institution::find($institutionId);
-            return view($this->viewPath . 'create', compact('institution'));
+            $account = new Account(); 
+            return view($this->viewPath . 'create', compact('institution', 'account'));
         } else {
         $institution = null;
+        $account = new Account(); 
+        return view($this->viewPath . 'create', compact('institution', 'account'));
     }
 
         return view($this->viewPath . 'create');
@@ -61,12 +64,18 @@ class AccountController extends Controller
 
     public function edit(Account $account)
     {
-       
-        return view($this->viewPath . 'edit', ['account' => $account]);
+        $institution = $account->institution ?? null;
+
+        dd($account->naan);
+
+        return view($this->viewPath . 'edit', compact('account', 'institution'));
     }
+
 
     public function update(AccountRequest $request, Account $account)
     {
+        dd($account);
+
         $data = [];
 
         $data = $request->all();

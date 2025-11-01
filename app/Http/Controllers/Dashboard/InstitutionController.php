@@ -18,17 +18,20 @@ class InstitutionController extends Controller
 
         
         if ($s) {
-            $institutions = Institution::where('name', 'LIKE', '%' . $s . '%')
+            $institutions = Institution::with('account')
+                ->where('name', 'LIKE', '%' . $s . '%')
                 ->orderBy('name')
                 ->paginate(config('pagination.default'));
-        }else{
-            $institutions = Institution::orderBy('name')->paginate(config('pagination.default'));
+        } else {
+            $institutions = Institution::with('account')
+                ->orderBy('name')
+                ->paginate(config('pagination.default'));
         }
+
         return view($this->viewPath . 'index', compact('institutions', 'total', 's'));
     }
     public function create()
     {
-       
         return view($this->viewPath . 'create');
     }
 
@@ -49,7 +52,6 @@ class InstitutionController extends Controller
 
     public function edit(Institution $institution)
     {
-       
         return view($this->viewPath . 'edit', ['institution' => $institution]);
     }
 
@@ -74,7 +76,6 @@ class InstitutionController extends Controller
 
     public function addIdBlockchain(Institution $institution)
     {
-        // Somente uma chave aletória
         $codeHash = hash('sha256', $institution->latitude);
         $institution->code = $codeHash;
         $institution->update();
