@@ -49,6 +49,31 @@ class ArkController extends Controller
         }
     }
 
+    public function edit(ArkRequest $request)
+    {
+        dd("here");
+        return view($this->viewPath . 'edit', ['ark' => $ark]);
+    }
+
+    public function update(ArkRequest $request, Ark $ark)
+    {
+        $data = [];
+
+        $data = $request->all();
+
+        $ark->fill($data)->update();
+
+        if ($ark) {
+            return redirect()
+                ->route('institutions.index-ark')
+                ->with(['message' => 'Editing completed successfully.', 'code' => 'success']);
+        } else {
+            return redirect()
+                ->route('institutions.create-ark')
+                ->with(['message' => 'Error when editing. Try again!', 'code' => 'danger']);
+        }
+    }
+
     public function destroy(Ark $ark)
     {
 

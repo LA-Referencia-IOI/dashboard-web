@@ -9,14 +9,34 @@ class Ark extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'who',
-        'what',
-        'when',
-        'where',
-        'how',
-        'why',
-        'contact',
-        'address'
-    ];
+protected $fillable = [
+    'who',
+    'what',
+    'when',
+    'where',
+    'how',
+    'why',
+    'contact',
+    'address',
+    'target_url',
+    'target_http_code',
+    'who_name_native',
+    'who_acronym',
+    'who_location',
+    'na_orgtype',
+    'na_policy',
+    'na_tenure',
+    'na_policy_url',
+    'test_identifier',
+    'service_provider',
+    'purpose',
+    'rtype',
+    'contact_unit',
+    'contact_tenure',
+    'contact_phone',
+    'alternate_contact',
+    'comments',
+    'provider',
+];
+
 }
