@@ -32,7 +32,11 @@ class ArkController extends Controller
     {
        $currentDateTime = now()->setTimezone('UTC')->format('Y-m-d\TH:i:sP'); // pre-filling the when field in form ark.  
 
-        return view($this->viewPath . 'create-ark', compact('currentDateTime'));
+        $resolverUrl = env('RESOLVER_URL');
+
+        $targetUrl = $resolverUrl . '/ark:/${content}';
+
+        return view($this->viewPath . 'create-ark', compact('currentDateTime', 'resolverUrl', 'targetUrl'));
     }
 
     public function store(ArkRequest $request)

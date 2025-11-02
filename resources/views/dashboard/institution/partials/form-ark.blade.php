@@ -19,7 +19,7 @@
         <div class="col-md-4">
             <div class="form-group">
                 {{ Form::label('where', 'Where') }}
-                {{ Form::text('where', old('where', $ark->where ?? null), ['class' => 'form-control']) }}
+                {{ Form::text('where', old('where', $ark->where ?? $resolverUrl), ['class' => 'form-control', 'readonly' => true]) }}
             </div>
         </div>
     </div>
@@ -91,7 +91,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 {{ Form::label('target_url', 'Target URL') }}
-                {{ Form::text('target_url', old('target_url', $ark->target_url ?? null), ['class' => 'form-control']) }}
+                {{ Form::text('target_url', old('target_url', $ark->target_url ?? $targetUrl), ['class' => 'form-control', 'readonly' => true]) }}
             </div>
         </div>
         <div class="col-md-6">
