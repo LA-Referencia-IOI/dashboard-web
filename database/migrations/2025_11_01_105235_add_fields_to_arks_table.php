@@ -21,7 +21,8 @@ class AddFieldsToArksTable extends Migration
 
             $table->string('who_name_native')->nullable();
             $table->string('who_acronym')->nullable();
-            $table->json('who_location')->nullable();
+            $table->json('who_location_lat')->nullable();
+            $table->json('who_location_lon')->nullable();
 
 
             $table->string('na_orgtype')->nullable();

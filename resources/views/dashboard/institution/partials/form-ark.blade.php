@@ -65,11 +65,17 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                {{ Form::label('who_location', 'Who Location (JSON)') }}
-                {{ Form::text('who_location', old('who_location', $ark->who_location ?? null), ['class' => 'form-control']) }}
+                {{ Form::label('who_location_lat', 'Who Location (LAT)') }}
+                {{ Form::text('who_location_lat', old('who_location_lat', $ark->who_location_lat ?? null), ['class' => 'form-control']) }}
             </div>
         </div>
         <div class="col-md-6">
+            <div class="form-group">
+                {{ Form::label('who_location_lon', 'Who Location (LON)') }}
+                {{ Form::text('who_location_lon', old('who_location_lon', $ark->who_location_lon ?? null), ['class' => 'form-control']) }}
+            </div>
+        </div>
+        <div class="col-md-12">
             <div class="form-group">
                 {{ Form::label('who_address', 'Who Address') }}
                 {{ Form::text('who_address', old('who_address', $ark->who_address ?? null), ['class' => 'form-control']) }}
