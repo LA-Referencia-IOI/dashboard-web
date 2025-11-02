@@ -4,36 +4,30 @@
 <div class="card mb-3 p-3">
     <h6 class="text-muted">Basic Information</h6>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="form-group">
                 {{ Form::label('what', 'What') }}
                 {{ Form::text('what', old('what', $ark->what ?? null), ['class' => 'form-control']) }}
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="form-group">
                 {{ Form::label('when', 'When') }}
                 {{ Form::text('when', old('when', $ark->when ?? $currentDateTime), ['class' => 'form-control']) }}
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group">
-                {{ Form::label('where', 'Where') }}
-                {{ Form::text('where', old('where', $ark->where ?? $resolverUrl), ['class' => 'form-control', 'readonly' => true]) }}
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                {{ Form::label('how', 'How') }}
-                {{ Form::text('how', old('how', $ark->how ?? null), ['class' => 'form-control']) }}
+                {{ Form::label('where', 'Where') }}
+                {{ Form::text('where', old('where', $ark->where ?? $resolverUrl), ['class' => 'form-control', 'readonly' => true]) }}
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
                 {{ Form::label('why', 'Why') }}
-                {{ Form::text('why', old('why', $ark->why ?? null), ['class' => 'form-control']) }}
+                {{ Form::text('why', 'ARK', ['class' => 'form-control', 'readonly' => true]) }}
             </div>
         </div>
     </div>
@@ -43,10 +37,10 @@
 <div class="card mb-3 p-3">
     <h6 class="text-muted">Who</h6>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="form-group">
                 {{ Form::label('who_name', 'Who Name') }}
-                {{ Form::text('who_name', old('who_name', $ark->who_name ?? null), ['class' => 'form-control']) }}
+                {{ Form::text('who_name', old('who_name', $institution->name ?? null), ['class' => 'form-control']) }}
             </div>
         </div>
         <div class="col-md-4">
@@ -55,7 +49,7 @@
                 {{ Form::text('who_name_native', old('who_name_native', $ark->who_name_native ?? null), ['class' => 'form-control']) }}
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-2">
             <div class="form-group">
                 {{ Form::label('who_acronym', 'Who Acronym') }}
                 {{ Form::text('who_acronym', old('who_acronym', $ark->who_acronym ?? null), ['class' => 'form-control']) }}
@@ -66,19 +60,19 @@
         <div class="col-md-6">
             <div class="form-group">
                 {{ Form::label('who_location_lat', 'Who Location (LAT)') }}
-                {{ Form::text('who_location_lat', old('who_location_lat', $ark->who_location_lat ?? null), ['class' => 'form-control']) }}
+                {{ Form::text('who_location_lat', old('who_location_lat', $institution->latitude ?? null), ['class' => 'form-control']) }}
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
                 {{ Form::label('who_location_lon', 'Who Location (LON)') }}
-                {{ Form::text('who_location_lon', old('who_location_lon', $ark->who_location_lon ?? null), ['class' => 'form-control']) }}
+                {{ Form::text('who_location_lon', old('who_location_lon', $institution->longitude ?? null), ['class' => 'form-control']) }}
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-group">
                 {{ Form::label('who_address', 'Who Address') }}
-                {{ Form::text('who_address', old('who_address', $ark->who_address ?? null), ['class' => 'form-control']) }}
+                {{ Form::text('who_address', old('who_address', $institution->address ?? null), ['class' => 'form-control']) }}
             </div>
         </div>
     </div>
@@ -141,7 +135,7 @@
         <div class="col-md-4">
             <div class="form-group">
                 {{ Form::label('contact_name', 'Contact Name') }}
-                {{ Form::text('contact_name', old('contact_name', $ark->contact_name ?? null), ['class' => 'form-control']) }}
+                {{ Form::text('contact_name', old('contact_name', $institution->responsible ?? null), ['class' => 'form-control']) }}
             </div>
         </div>
         <div class="col-md-4">
@@ -161,13 +155,13 @@
         <div class="col-md-6">
             <div class="form-group">
                 {{ Form::label('contact_email', 'Email') }}
-                {{ Form::text('contact_email', old('contact_email', $ark->contact_email ?? null), ['class' => 'form-control']) }}
+                {{ Form::text('contact_email', old('contact_email', $institution->email ?? null), ['class' => 'form-control']) }}
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
                 {{ Form::label('contact_phone', 'Phone') }}
-                {{ Form::text('contact_phone', old('contact_phone', $ark->contact_phone ?? null), ['class' => 'form-control']) }}
+                {{ Form::text('contact_phone', old('contact_phone', $institution->phone ?? null), ['class' => 'form-control']) }}
             </div>
         </div>
     </div>

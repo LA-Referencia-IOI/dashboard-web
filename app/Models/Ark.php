@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Account;
+use App\Models\Institution;
 
 class Ark extends Model
 {
@@ -31,6 +33,7 @@ protected $fillable = [
     'service_provider',
     'purpose',
     'rtype',
+    'contact_name',
     'contact_unit',
     'contact_tenure',
     'contact_phone',

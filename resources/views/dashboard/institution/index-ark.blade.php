@@ -7,8 +7,8 @@
             {{ session('message') }}
         </div>
     @endif
-    <a href="{{ route('institutions.create-ark') }}" class="btn btn-custom btn-sm" style="margin-bottom: 10px;">NEW ARK REGISTRATION</a>
-    <!-- <a href="{{ route('institutions.export-ark-txt') }}" class="btn btn-custom btn-sm" style="margin-bottom: 10px;">EXPORT TXT</a> -->
+    <!-- <a href="{{ route('institutions.create-ark') }}" class="btn btn-custom btn-sm" style="margin-bottom: 10px;">NEW ARK REGISTRATION</a> -->
+    <a href="{{ route('institutions.export-ark-txt') }}" class="btn btn-custom btn-sm" style="margin-bottom: 10px;">EXPORT TXT</a>
 
     <div class="box">
     <div class="box-header with-border">
@@ -20,7 +20,6 @@
                 <table class="table">
                     <thead class="thead-light">
                         <tr>
-                            <th>Who</th>
                             <th>What</th>
                             <th>When</th>
                             <th>Where</th>
@@ -31,11 +30,10 @@
                     <tbody>
                         @forelse($arks as $ark)
                             <tr>
-                                <td>{{ $ark->who }}</td>
                                 <td>{{ $ark->what }}</td>
                                 <td>{{ $ark->when }}</td>
                                 <td>{{ $ark->where }}</td>
-                                <td>{{ $ark->contact }}</td>
+                                <td>{{ $ark->contact_name }}</td>
                                 <td>  
                                     <a href="{{ route('institutions.edit-ark', $ark->id) }}" alt="Edit" title="Edit" class="btn btn-primary btn-sm"><i class="fa fa-pencil-alt"></i></a>                      
                                     <button alt="Delete" title="Delete" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $ark->id }}, '{{ route('institutions.destroy-ark', ['ark' => $ark->id]) }}')"><i class="fa fa-trash"></i></button>

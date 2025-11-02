@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Ark;
+use App\Models\Institution;
+use App\Models\Account;
 use App\Http\Requests\Dashboard\ArkRequest;
 use Illuminate\Support\Facades\DB;
 
@@ -28,15 +30,17 @@ class ArkController extends Controller
         }
         return view($this->viewPath . 'index-ark', compact('arks', 'total', 's'));
     }
-    public function create()
+    public function create(Institution $institution)
     {
-       $currentDateTime = now()->setTimezone('UTC')->format('Y-m-d\TH:i:sP'); // pre-filling the when field in form ark.  
+        $currentDateTime = now()->setTimezone('UTC')->format('Y-m-d\TH:i:sP'); // pre-filling the when field in form ark.  
 
         $resolverUrl = env('RESOLVER_URL');
 
         $targetUrl = $resolverUrl . '/ark:/${content}';
 
-        return view($this->viewPath . 'create-ark', compact('currentDateTime', 'resolverUrl', 'targetUrl'));
+        
+
+        return view($this->viewPath . 'create-ark', compact('currentDateTime', 'resolverUrl', 'targetUrl', 'institution'));
     }
 
     public function store(ArkRequest $request)
