@@ -13,7 +13,7 @@
         <div class="col-md-4">
             <div class="form-group">
                 {{ Form::label('when', 'When') }}
-                {{ Form::text('when', old('when', $ark->when ?? null), ['class' => 'form-control']) }}
+                {{ Form::text('when', old('when', $ark->when ?? $currentDateTime), ['class' => 'form-control']) }}
             </div>
         </div>
         <div class="col-md-4">

@@ -30,8 +30,9 @@ class ArkController extends Controller
     }
     public function create()
     {
-       
-        return view($this->viewPath . 'create-ark');
+       $currentDateTime = now()->setTimezone('UTC')->format('Y-m-d\TH:i:sP'); // pre-filling the when field in form ark.  
+
+        return view($this->viewPath . 'create-ark', compact('currentDateTime'));
     }
 
     public function store(ArkRequest $request)
@@ -51,7 +52,6 @@ class ArkController extends Controller
 
     public function edit(ArkRequest $request)
     {
-        dd("here");
         return view($this->viewPath . 'edit', ['ark' => $ark]);
     }
 
