@@ -37,7 +37,8 @@ class AddFieldsToArksTable extends Migration
             $table->string('rtype')->nullable();
 
 
-            $table->string('contact_unit')->nullable();
+            $table->string('contact_name')->nullable();
+             $table->string('contact_unit')->nullable();
             $table->string('contact_tenure')->nullable();
             $table->string('contact_phone')->nullable();
 
@@ -60,7 +61,8 @@ class AddFieldsToArksTable extends Migration
                 'target_http_code',
                 'who_name_native',
                 'who_acronym',
-                'who_location',
+                'who_location_lat',
+                'who_location_lon',
                 'na_orgtype',
                 'na_policy',
                 'na_tenure',
@@ -69,6 +71,7 @@ class AddFieldsToArksTable extends Migration
                 'service_provider',
                 'purpose',
                 'rtype',
+                'contact_name',
                 'contact_unit',
                 'contact_tenure',
                 'contact_phone',
