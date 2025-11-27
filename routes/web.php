@@ -55,6 +55,8 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::delete('ark/destroy/{ark}', [ArkController::class, 'destroy'])->name('institutions.destroy-ark');
         Route::get('ark/txt', [ArkController::class, 'exportTxt'])->name('institutions.export-ark-txt');
         Route::get('/ark/{id}/json', [ArkController::class, 'downloadJson'])->name('institutions.ark-json');
+        Route::get('/ark/json/all', [ArkController::class, 'downloadAll'])->name('institutions.ark-json-all');
+
 
 
         Route::get('institutions/{institution}/blockchain-id', [InstitutionController::class, 'addIdBlockchain'])->name('institutions.add_id_blockchain');

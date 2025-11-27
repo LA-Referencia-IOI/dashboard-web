@@ -183,4 +183,65 @@ class ArkController extends Controller
         ]);
     }
 
+    public function downloadAll()
+    {
+        $arks = Ark::orderBy('id', 'desc')->get();
+
+        $jsonList = [];
+
+        foreach ($arks as $ark) {
+            $jsonList[] = [
+                "what" => $ark->what,
+                "where" => $ark->where,
+                "target" => [
+                    "url" => $ark->target_url,
+                    "http_code" => (int) $ark->target_http_code
+                ],
+                "when" => $ark->when,
+                "who" => [
+                    "name" => $ark->who,
+                    "name_native" => $ark->who_name_native,
+                    "acronym" => $ark->who_acronym,
+                    "location" => $ark->who_location_lat && $ark->who_location_lon
+                        ? [
+                            "lat" => $ark->who_location_lat,
+                            "lon" => $ark->who_location_lon,
+                        ]
+                        : null,
+                    "address" => $ark->address
+                ],
+                "na_policy" => [
+                    "orgtype" => $ark->na_orgtype,
+                    "policy" => $ark->na_policy,
+                    "tenure" => $ark->contact_tenure,
+                    "policy_url" => $ark->na_policy_url
+                ],
+                "test_identifier" => $ark->test_identifier,
+                "service_provider" => $ark->service_provider,
+                "purpose" => $ark->purpose,
+                "rtype" => $ark->rtype,
+                "why" => $ark->why,
+                "contact" => [
+                    "name" => $ark->contact_name,
+                    "unit" => $ark->contact_unit,
+                    "tenure" => $ark->contact_tenure,
+                    "email" => $ark->contact,
+                    "phone" => $ark->contact_phone
+                ],
+                "alternate_contact" => $ark->alternate_contact,
+                "comments" => $ark->comments,
+                "provider" => $ark->provider
+            ];
+        }
+
+        $filename = "ark_all.json";
+
+        return response()->streamDownload(function () use ($jsonList) {
+            echo json_encode($jsonList, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        }, $filename, [
+            "Content-Type" => "application/json",
+        ]);
+    }
+
+
 }
