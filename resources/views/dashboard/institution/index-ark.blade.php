@@ -21,6 +21,8 @@
                     <thead class="thead-light">
                         <tr>
                             <th>What</th>
+                            <th>Who</th>
+                            <th>Acronym</th>
                             <th>When</th>
                             <th>Where</th>
                             <th>Contact</th>
@@ -31,11 +33,14 @@
                         @forelse($arks as $ark)
                             <tr>
                                 <td>{{ $ark->what }}</td>
+                                <td>{{ $ark->who_name }}</td>
+                                <td>{{ $ark->who_acronym }}</td>
                                 <td>{{ $ark->when }}</td>
                                 <td>{{ $ark->where }}</td>
                                 <td>{{ $ark->contact_name }}</td>
                                 <td>  
-                                    <a href="{{ route('institutions.edit-ark', $ark->id) }}" alt="Edit" title="Edit" class="btn btn-primary btn-sm"><i class="fa fa-pencil-alt"></i></a>                      
+                                    <a href="{{ route('institutions.edit-ark', $ark->id) }}" alt="Edit" title="Edit" class="btn btn-primary btn-sm"><i class="fa fa-pencil-alt"></i></a>  
+                                    <a href="{{ route('institutions.ark-json', $ark->id) }}" alt="Download" title="Download" class="btn btn-info btn-sm"><i class="fa fa-download"></i></a>                        
                                     <button alt="Delete" title="Delete" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $ark->id }}, '{{ route('institutions.destroy-ark', ['ark' => $ark->id]) }}')"><i class="fa fa-trash"></i></button>
                                 </td>
                             </tr>
