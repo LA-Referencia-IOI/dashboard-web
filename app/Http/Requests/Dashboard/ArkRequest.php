@@ -25,14 +25,9 @@ class ArkRequest extends FormRequest
     {
 
         $rules = [
-            'who' => 'required|max:255',
-            'what' => 'required|max:255',
             'when' => 'required|max:255',
             'where' => 'required|max:255',
-            'how' => 'required|max:255',
             'why' => 'required|max:255',
-            'contact' => 'required|max:255',
-            'address' => 'required|max:255'
         ];
         return $rules;
     }
@@ -40,14 +35,9 @@ class ArkRequest extends FormRequest
     public function attributes()
     {
         return [
-            'who' => 'who',
-            'what' => 'what',
             'when' => 'when',
             'where' => 'where',
-            'how' => 'how',
             'why' => 'why',
-            'contact' => 'contact',
-            'address' => 'adress'
         ];
     }
 }

@@ -7,42 +7,41 @@
             {{ session('message') }}
         </div>
     @endif
-    <a href="{{ route('institutions.create-ark') }}" class="btn btn-custom btn-sm" style="margin-bottom: 10px;">NEW ARK REGISTRATION</a>
-    <a href="{{ route('institutions.export-ark-txt') }}" class="btn btn-custom btn-sm" style="margin-bottom: 10px;">EXPORT TXT</a>
+    <!-- <a href="{{ route('institutions.create-ark') }}" class="btn btn-custom btn-sm" style="margin-bottom: 10px;">NEW ARK REGISTRATION</a> -->
+    <!-- <a href="{{ route('institutions.export-ark-txt') }}" class="btn btn-custom btn-sm" style="margin-bottom: 10px;">EXPORT TXT</a> -->
+    <a href="{{ route('institutions.ark-json-all') }}" class="btn btn-custom btn-sm" style="margin-bottom: 10px;">EXPORT JSON</a>
 
     <div class="box">
     <div class="box-header with-border">
         <div class="box-header with-border">
-            <h4 class="box-title">Institutions registrated List </h4>
+            <h4 class="box-title">Ark registrated List </h4>
         </div>
         <div class="box-body no-padding">
             <div class="table-responsive">
                 <table class="table">
                     <thead class="thead-light">
                         <tr>
-                            <th>Who</th>
                             <th>What</th>
+                            <th>Who</th>
+                            <th>Acronym</th>
                             <th>When</th>
                             <th>Where</th>
-                            <th>How</th>
-                            <th>Why</th>
                             <th>Contact</th>
-                            <th>Address</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($arks as $ark)
                             <tr>
-                                <td>{{ $ark->who }}</td>
                                 <td>{{ $ark->what }}</td>
+                                <td>{{ $ark->who_name }}</td>
+                                <td>{{ $ark->who_acronym }}</td>
                                 <td>{{ $ark->when }}</td>
                                 <td>{{ $ark->where }}</td>
-                                <td>{{ $ark->how }}</td>
-                                <td>{{ $ark->why }}</td>
-                                <td>{{ $ark->contact }}</td>
-                                <td>{{ $ark->address }}</td>
-                                <td>                        
+                                <td>{{ $ark->contact_name }}</td>
+                                <td>  
+                                    <!-- <a href="{{ route('institutions.edit-ark', $ark->id) }}" alt="Edit" title="Edit" class="btn btn-primary btn-sm"><i class="fa fa-pencil-alt"></i></a>   -->
+                                    <a href="{{ route('institutions.ark-json', $ark->id) }}" alt="Download" title="Download" class="btn btn-info btn-sm"><i class="fa fa-download"></i></a>                        
                                     <button alt="Delete" title="Delete" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $ark->id }}, '{{ route('institutions.destroy-ark', ['ark' => $ark->id]) }}')"><i class="fa fa-trash"></i></button>
                                 </td>
                             </tr>

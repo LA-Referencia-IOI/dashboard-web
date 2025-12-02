@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Ark;
+use App\Models\Institution;
+use App\Models\Account;
 use App\Http\Requests\Dashboard\ArkRequest;
 use Illuminate\Support\Facades\DB;
 
@@ -28,10 +30,17 @@ class ArkController extends Controller
         }
         return view($this->viewPath . 'index-ark', compact('arks', 'total', 's'));
     }
-    public function create()
+    public function create(Institution $institution)
     {
-       
-        return view($this->viewPath . 'create-ark');
+        $currentDateTime = now()->setTimezone('UTC')->format('Y-m-d\TH:i:sP'); // pre-filling the when field in form ark.  
+
+        $resolverUrl = env('RESOLVER_URL');
+
+        $targetUrl = $resolverUrl . '/ark:/${content}';
+
+        
+
+        return view($this->viewPath . 'create-ark', compact('currentDateTime', 'resolverUrl', 'targetUrl', 'institution'));
     }
 
     public function store(ArkRequest $request)
@@ -46,6 +55,31 @@ class ArkController extends Controller
             return redirect()
                 ->route('institutions.create-ark')
                 ->with(['message' => 'Error when registering. Try again!', 'code' => 'danger']);
+        }
+    }
+
+    public function edit(Ark $ark)
+    {
+
+        return view($this->viewPath . 'create-ark', ['ark' => $ark]);
+    }
+
+    public function update(ArkRequest $request, Ark $ark)
+    {
+        $data = [];
+
+        $data = $request->all();
+
+        $ark->fill($data)->update();
+
+        if ($ark) {
+            return redirect()
+                ->route('institutions.index-ark')
+                ->with(['message' => 'Editing completed successfully.', 'code' => 'success']);
+        } else {
+            return redirect()
+                ->route('institutions.create-ark')
+                ->with(['message' => 'Error when editing. Try again!', 'code' => 'danger']);
         }
     }
 
@@ -93,4 +127,122 @@ class ArkController extends Controller
             ->header('Content-Type', 'text/plain')
             ->header('Content-Disposition', "attachment; filename={$filename}");
     }
+
+    public function downloadJson($id)
+    {
+        $ark = Ark::findOrFail($id);
+
+        $json = [
+            "what" => $ark->what,
+            "where" => $ark->where,
+            "target" => [
+                "url" => $ark->target_url,
+                "http_code" => (int) $ark->target_http_code
+            ],
+            "when" => $ark->when,
+            "who" => [
+                "name" => $ark->who_name,
+                "name_native" => $ark->who_name_native,
+                "acronym" => $ark->who_acronym,
+                "location" => $ark->who_location_lat && $ark->who_location_lon
+                    ? [
+                        "lat" => $ark->who_location_lat,
+                        "lon" => $ark->who_location_lon,
+                    ]
+                    : null,
+                "address" => $ark->address
+            ],
+            "na_policy" => [
+                "orgtype" => $ark->na_orgtype,
+                "policy" => $ark->na_policy,
+                "tenure" => $ark->contact_tenure,
+                "policy_url" => $ark->na_policy_url
+            ],
+            "test_identifier" => $ark->test_identifier,
+            "service_provider" => $ark->service_provider,
+            "purpose" => $ark->purpose,
+            "rtype" => $ark->rtype,
+            "why" => $ark->why,
+            "contact" => [
+                "name" => $ark->contact_name,
+                "unit" => $ark->contact_unit,
+                "tenure" => $ark->contact_tenure,
+                "email" => $ark->contact,
+                "phone" => $ark->contact_phone
+            ],
+            "alternate_contact" => $ark->alternate_contact,
+            "comments" => $ark->comments,
+            "provider" => $ark->provider
+        ];
+
+        $filename = "ark_{$ark->id}.json";
+
+        return response()->streamDownload(function () use ($json) {
+            echo json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        }, $filename, [
+            "Content-Type" => "application/json",
+        ]);
+    }
+
+    public function downloadAll()
+    {
+        $arks = Ark::orderBy('id', 'desc')->get();
+
+        $jsonList = [];
+
+        foreach ($arks as $ark) {
+            $jsonList[] = [
+                "what" => $ark->what,
+                "where" => $ark->where,
+                "target" => [
+                    "url" => $ark->target_url,
+                    "http_code" => (int) $ark->target_http_code
+                ],
+                "when" => $ark->when,
+                "who" => [
+                    "name" => $ark->who,
+                    "name_native" => $ark->who_name_native,
+                    "acronym" => $ark->who_acronym,
+                    "location" => $ark->who_location_lat && $ark->who_location_lon
+                        ? [
+                            "lat" => $ark->who_location_lat,
+                            "lon" => $ark->who_location_lon,
+                        ]
+                        : null,
+                    "address" => $ark->address
+                ],
+                "na_policy" => [
+                    "orgtype" => $ark->na_orgtype,
+                    "policy" => $ark->na_policy,
+                    "tenure" => $ark->contact_tenure,
+                    "policy_url" => $ark->na_policy_url
+                ],
+                "test_identifier" => $ark->test_identifier,
+                "service_provider" => $ark->service_provider,
+                "purpose" => $ark->purpose,
+                "rtype" => $ark->rtype,
+                "why" => $ark->why,
+                "contact" => [
+                    "name" => $ark->contact_name,
+                    "unit" => $ark->contact_unit,
+                    "tenure" => $ark->contact_tenure,
+                    "email" => $ark->contact,
+                    "phone" => $ark->contact_phone
+                ],
+                "alternate_contact" => $ark->alternate_contact,
+                "comments" => $ark->comments,
+                "provider" => $ark->provider
+            ];
+        }
+
+        $filename = "ark_all.json";
+
+        return response()->streamDownload(function () use ($jsonList) {
+            echo json_encode($jsonList, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        }, $filename, [
+            "Content-Type" => "application/json",
+        ]);
+    }
+
+
 }

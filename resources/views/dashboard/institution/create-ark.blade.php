@@ -36,7 +36,10 @@
                             Attention!
                             <br>
                             <br>
-                            All fields are mandatory.
+                            The ARK Alliance is a global initiative that promotes the development and adoption of Persistent Identifiers (PIDs) using the Archival Resource Key (ARK) system. 
+                            It brings together organizations, libraries, archives, and researchers who work to ensure long-term access to digital information by providing reliable, permanent 
+                            links to data and resources. The Alliance supports best practices, technical standards, and community collaboration to make digital objects more discoverable, citable, 
+                            and sustainable over time.
                         </h6>
                         @include('dashboard.institution.partials.form-ark')
                     </div>
