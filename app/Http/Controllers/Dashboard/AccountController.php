@@ -128,7 +128,7 @@ class AccountController extends Controller
         $url = env('CREATE_WALLET');
 
         try {
-            $response = Http::post($url, $data);
+            $response = Http::timeout(120)->post($url, $data);
         
             if ($response->successful()) {
                 $d = $response->json();
