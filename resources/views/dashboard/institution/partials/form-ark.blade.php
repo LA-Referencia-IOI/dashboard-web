@@ -4,13 +4,19 @@
 <div class="card mb-3 p-3">
     <h6 class="text-muted">Basic Information</h6>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4">
+            <div class="form-group">
+                {{ Form::label('institution_id', 'Institution ID') }}
+                {{ Form::text('institution_id', old('id', $institution->id ?? $ark->institution_id ?? null), ['class' => 'form-control', 'readonly' => true]) }}
+            </div>
+        </div>
+        <div class="col-md-4">
             <div class="form-group">
                 {{ Form::label('what', 'What') }}
                 {{ Form::text('what', old('what', $ark->what ?? null), ['class' => 'form-control']) }}
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
             <div class="form-group">
                 {{ Form::label('when', 'When') }}
                 {{ Form::text('when', old('when', $ark->when ?? $currentDateTime), ['class' => 'form-control']) }}
@@ -46,7 +52,7 @@
         <div class="col-md-4">
             <div class="form-group">
                 {{ Form::label('who_name_native', 'Who Name Native') }}
-                {{ Form::text('who_name_native', old('who_name_native', $ark->who_name_native ?? null), ['class' => 'form-control']) }}
+                {{ Form::text('who_name_native', old('who_name_native', $institution->name ?? null), ['class' => 'form-control']) }}
             </div>
         </div>
         <div class="col-md-2">
@@ -85,13 +91,13 @@
         <div class="col-md-6">
             <div class="form-group">
                 {{ Form::label('target_url', 'Target URL') }}
-                {{ Form::text('target_url', old('target_url', $ark->target_url ?? $targetUrl), ['class' => 'form-control', 'readonly' => true]) }}
+                {{ Form::text('target_url', old('target_url', $ark->target_url ?? $targetUrl), ['class' => 'form-control']) }}
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
                 {{ Form::label('target_http_code', 'Target HTTP Code') }}
-                {{ Form::number('target_http_code', old('target_http_code', $ark->target_http_code ?? null), ['class' => 'form-control']) }}
+                {{ Form::number('target_http_code', old('target_http_code', $ark->target_http_code ?? '0'), ['class' => 'form-control']) }}
             </div>
         </div>
     </div>
@@ -104,19 +110,19 @@
         <div class="col-md-3">
             <div class="form-group">
                 {{ Form::label('na_orgtype', 'Org Type') }}
-                {{ Form::text('na_orgtype', old('na_orgtype', $ark->na_orgtype ?? null), ['class' => 'form-control']) }}
+                {{ Form::text('na_orgtype', old('na_orgtype', $ark->na_orgtype ?? 'NP'), ['class' => 'form-control']) }}
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-group">
                 {{ Form::label('na_policy', 'Policy') }}
-                {{ Form::text('na_policy', old('na_policy', $ark->na_policy ?? null), ['class' => 'form-control']) }}
+                {{ Form::text('na_policy', old('na_policy', $ark->na_policy ?? 'NP,OP'), ['class' => 'form-control']) }}
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-group">
                 {{ Form::label('na_tenure', 'Tenure') }}
-                {{ Form::text('na_tenure', old('na_tenure', $ark->na_tenure ?? null), ['class' => 'form-control']) }}
+                {{ Form::text('na_tenure', old('na_tenure', $ark->na_tenure ?? '2025'), ['class' => 'form-control']) }}
             </div>
         </div>
         <div class="col-md-3">
@@ -135,7 +141,7 @@
         <div class="col-md-4">
             <div class="form-group">
                 {{ Form::label('contact_name', 'Contact Name') }}
-                {{ Form::text('contact_name', old('contact_name', $institution->responsible ?? null), ['class' => 'form-control']) }}
+                {{ Form::text('contact_name', old('contact_name', $institution->responsible ?? $ark->contact_name ?? null), ['class' => 'form-control']) }}
             </div>
         </div>
         <div class="col-md-4">
@@ -180,7 +186,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 {{ Form::label('provider', 'Provider') }}
-                {{ Form::text('provider', old('provider', $ark->provider ?? null), ['class' => 'form-control']) }}
+                {{ Form::text('provider', old('provider', $ark->provider ?? 'unspecified'), ['class' => 'form-control']) }}
             </div>
         </div>
         <div class="col-md-12">

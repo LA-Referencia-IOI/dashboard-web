@@ -58,9 +58,10 @@ class ArkController extends Controller
         }
     }
 
-    public function edit(ArkRequest $request)
+    public function edit(Ark $ark)
     {
-        return view($this->viewPath . 'edit', ['ark' => $ark]);
+
+        return view($this->viewPath . 'create-ark', ['ark' => $ark]);
     }
 
     public function update(ArkRequest $request, Ark $ark)
@@ -140,7 +141,7 @@ class ArkController extends Controller
             ],
             "when" => $ark->when,
             "who" => [
-                "name" => $ark->who,
+                "name" => $ark->who_name,
                 "name_native" => $ark->who_name_native,
                 "acronym" => $ark->who_acronym,
                 "location" => $ark->who_location_lat && $ark->who_location_lon

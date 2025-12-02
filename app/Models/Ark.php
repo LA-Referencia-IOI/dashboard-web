@@ -22,6 +22,7 @@ protected $fillable = [
     'address',
     'target_url',
     'target_http_code',
+    'who_name',
     'who_name_native',
     'who_acronym',
     'who_location_lat',
@@ -40,6 +41,7 @@ protected $fillable = [
     'alternate_contact',
     'comments',
     'provider',
+    'institution_id',
 ];
 
 }

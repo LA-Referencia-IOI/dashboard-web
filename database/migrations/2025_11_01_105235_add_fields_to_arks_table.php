@@ -19,6 +19,7 @@ class AddFieldsToArksTable extends Migration
             $table->integer('target_http_code')->nullable();
 
 
+            $table->string('who_name')->nullable();
             $table->string('who_name_native')->nullable();
             $table->string('who_acronym')->nullable();
             $table->json('who_location_lat')->nullable();
@@ -45,6 +46,7 @@ class AddFieldsToArksTable extends Migration
             $table->string('alternate_contact')->nullable();
             $table->text('comments')->nullable();
             $table->string('provider')->nullable();
+            $table->unsignedBigInteger('institution_id')->after('id');
         });
     }
 
@@ -59,6 +61,7 @@ class AddFieldsToArksTable extends Migration
             $table->dropColumn([
                 'target_url',
                 'target_http_code',
+                'who_name',
                 'who_name_native',
                 'who_acronym',
                 'who_location_lat',
@@ -77,7 +80,8 @@ class AddFieldsToArksTable extends Migration
                 'contact_phone',
                 'alternate_contact',
                 'comments',
-                'provider'
+                'provider',
+                'institution_id'
             ]);
         });
     }

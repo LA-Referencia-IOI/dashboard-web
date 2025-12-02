@@ -14,7 +14,7 @@
     <div class="box">
     <div class="box-header with-border">
         <div class="box-header with-border">
-            <h4 class="box-title">Institutions registrated List </h4>
+            <h4 class="box-title">Ark registrated List </h4>
         </div>
         <div class="box-body no-padding">
             <div class="table-responsive">
@@ -40,7 +40,7 @@
                                 <td>{{ $ark->where }}</td>
                                 <td>{{ $ark->contact_name }}</td>
                                 <td>  
-                                    <a href="{{ route('institutions.edit-ark', $ark->id) }}" alt="Edit" title="Edit" class="btn btn-primary btn-sm"><i class="fa fa-pencil-alt"></i></a>  
+                                    <!-- <a href="{{ route('institutions.edit-ark', $ark->id) }}" alt="Edit" title="Edit" class="btn btn-primary btn-sm"><i class="fa fa-pencil-alt"></i></a>   -->
                                     <a href="{{ route('institutions.ark-json', $ark->id) }}" alt="Download" title="Download" class="btn btn-info btn-sm"><i class="fa fa-download"></i></a>                        
                                     <button alt="Delete" title="Delete" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $ark->id }}, '{{ route('institutions.destroy-ark', ['ark' => $ark->id]) }}')"><i class="fa fa-trash"></i></button>
                                 </td>
