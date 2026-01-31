@@ -66,15 +66,15 @@ class AccountController extends Controller
     {
         $institution = $account->institution ?? null;
 
-        dd($account->naan);
+        // dd($account->naan);
 
-        return view($this->viewPath . 'edit', compact('account', 'institution'));
+        return view($this->viewPath . 'edit-account', compact('account', 'institution'));
     }
 
 
     public function update(AccountRequest $request, Account $account)
     {
-        dd($account);
+        // dd($account);
 
         $data = [];
 
