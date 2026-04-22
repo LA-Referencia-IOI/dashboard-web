@@ -25,7 +25,7 @@
 </div>
 <div class="row">
     
-    <div class="col-md-3">
+    <div class="col-md-1">
         <div class="form-group">
             {{ Form::label('naan', 'Naan') }}
             {{ Form::text(
@@ -36,7 +36,7 @@
 
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-2">
         <div class="form-group">
             {{ Form::label('institution_id', 'Institution ID') }}
             {{ Form::text(
@@ -46,12 +46,43 @@
             ) }}
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-2">
+        <div class="form-group">
+            {{ Form::label('sholder', 'Sholder') }}
+            {{ Form::text(
+                'sholder',
+                old('sholder', $account->sholder ?? null),
+                ['class' => 'form-control']
+            ) }}
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            {{ Form::label('noid', 'Noid') }}
+            {{ Form::text(
+                'noid',
+                old('noid', $account->noid ?? null),
+                ['class' => 'form-control']
+            ) }}
+        </div>
+    </div>
+    <div class="col-md-5">
         <div class="form-group">
                 {{ Form::label('payload_schema', 'Payload Schema') }}
                 {{ Form::select('payload_schema', [
                     'basic2024a' => 'basic2024a'
                 ], null, array('class' => 'form-control', 'readonly' => 'readonly')) }}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group">
+                {{ Form::label('Noid Prov Addr', 'Noid Provider Address') }}
+                {{ Form::text(
+                    '$account->noidprovider_addr',
+                    old('noidprovider_addr', $account->noidprovider_addr ?? null),
+                    ['class' => 'form-control']
+                ) }}
             </div>
         </div>
     </div>
