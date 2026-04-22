@@ -1,7 +1,7 @@
+# dARK Dashboard Web
 
-# dARK Dashboard Wed
-<### Components
-- docker
+### Components
+- docker & docker-compose
 - jeroennoten/laravel-adminlte
 - doctrine/dbal
 - laravelcollective/html
@@ -9,47 +9,85 @@
 - akaunting/money
 - bensampo/laravel-enum
 - maatwebsite/excel
-- node
+- node & npm
 - php 8
-- npm
 - leaflet
 
+---
 
+## Setup / Installation
 
-### Installation
-1. Up Container
+### 🚀 Automated Setup (Recommended)
+You can easily set up the entire application using the automated installer script. This will start the containers, sync environment variables, install dependencies, and run database migrations.
+
+1. Run the installer:
 ```sh
- sudo docker-compose up -d
-```
-1.1 
-```sh
- npm install leaflet
-```
-2. Enter the container
-```sh
- sudo docker exec -it NAME-app bash
+python3 install.py
 ```
 
-3. Install dependencies
-```sh
- ./composer.phar install
-```
-Important: Need create .env and verificad .yml
-
-
-4. Run Migrations and the project
-```sh
- php artisan key:generate --show
-``` 
-```
- php artisan migrate --step --seed
-```
-```
- php artisan storage:link
-
-```
-
-5. In browser
+2. Access the application in your browser:
 ```sh
 http://127.0.0.1:8081/login
 ```
+
+**Resetting the Environment:**
+If you need to destroy the current setup (including all containers, volumes, and database data) and start fresh:
+```sh
+python3 install.py --reset
+```
+
+---
+
+### 🛠 Manual Setup (Detailed)
+If you prefer to set up the project manually or need to troubleshoot, follow these steps:
+
+1. **Copy the Environment File:**
+   ```sh
+   cp .env.example .env
+   ```
+   *Note: Ensure your `.env` database variables match `docker-compose.yml` and that there are no trailing semicolons or commas in the `.env` file.*
+
+2. **Start the Docker Containers:**
+   ```sh
+   sudo docker-compose up -d
+   ```
+
+3. **Install NPM Dependencies (for Leaflet maps):**
+   ```sh
+   npm install
+   ```
+
+4. **Enter the Application Container:**
+   ```sh
+   sudo docker exec -it dark-app bash
+   ```
+
+5. **Install PHP Dependencies:**
+   *(Inside the container)*
+   ```sh
+   php composer.phar install
+   ```
+
+6. **Generate Application Key:**
+   *(Inside the container)*
+   ```sh
+   php artisan key:generate
+   ``` 
+
+7. **Run Migrations and Seeders:**
+   *(Inside the container)*
+   ```sh
+   php artisan migrate --step --seed
+   ```
+
+8. **Create Storage Link:**
+   *(Inside the container)*
+   ```sh
+   php artisan storage:link
+   ```
+
+9. **Access the Application:**
+   Open your browser and navigate to:
+   ```sh
+   http://127.0.0.1:8081/login
+   ```
