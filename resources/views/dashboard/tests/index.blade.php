@@ -10,7 +10,7 @@
                 <div class="card-body">
                     <p>This runner executes the full end-to-end integration test (Authority -> NAAN -> ARK -> L1/L2 Metadata -> IPFS Pinning -> Resolver) identical to the Jupyter Notebook script.</p>
                     <button id="runTestsBtn" class="btn btn-primary">
-                        <i class="fas fa-play"></i> Run E2E Tests
+                        <i class="fas fa-play"></i> Run Tests
                     </button>
                     
                     @if($lastRun)
