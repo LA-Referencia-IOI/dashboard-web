@@ -22,6 +22,7 @@
                                 <th style="width: 8%">HTTP</th>
                                 <th style="width: 8%">Latency</th>
                                 <th style="width: 9%">Message</th>
+                                <th style="width: 5%">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="apiTableBody">
@@ -37,6 +38,11 @@
                                 <td id="code-{{ $api['env'] }}">-</td>
                                 <td id="time-{{ $api['env'] }}">-</td>
                                 <td id="msg-{{ $api['env'] }}">-</td>
+                                <td>
+                                    <button class="btn btn-xs btn-outline-primary edit-url-btn" data-env="{{ $api['env'] }}" data-url="{{ $api['url'] ?? '' }}" data-name="{{ $api['name'] }}" title="Edit URL">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </button>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -96,6 +102,59 @@
     }
 
     $('#checkAllBtn').click(checkAll);
+
+    // Edit URL button
+    $(document).on('click', '.edit-url-btn', function() {
+        var envKey = $(this).data('env');
+        var currentUrl = $(this).data('url');
+        var name = $(this).data('name');
+        var btn = $(this);
+
+        Swal.fire({
+            title: 'Edit ' + name + ' URL',
+            html: '<div class="form-group text-left mt-3">' +
+                  '<label>ENV: <code>' + envKey + '</code></label>' +
+                  '<input id="swal-url" class="form-control" type="text" value="' + currentUrl + '" placeholder="http://...">' +
+                  '</div>',
+            showCancelButton: true,
+            confirmButtonText: 'Save',
+            onOpen: function(popup) {
+                popup.querySelector('#swal-url').focus();
+            },
+            preConfirm: function() {
+                var val = Swal.getPopup().querySelector('#swal-url').value.trim();
+                if (!val) {
+                    Swal.showValidationMessage('URL cannot be empty');
+                    return false;
+                }
+                return val;
+            }
+        }).then(function(result) {
+            if (!result.dismiss && result.value) {
+                $.ajax({
+                    url: '{{ route("tests.update_api_url") }}',
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        env_key: envKey,
+                        url: result.value
+                    },
+                    success: function(res) {
+                        if (res.success) {
+                            btn.data('url', result.value);
+                            Swal.fire('Saved', 'URL updated in .env. Re-checking APIs...', 'success');
+                            setTimeout(function() { location.reload(); }, 1500);
+                        } else {
+                            Swal.fire('Error', res.message, 'error');
+                        }
+                    },
+                    error: function(xhr) {
+                        Swal.fire('Error', 'Failed to update: ' + xhr.responseText, 'error');
+                    }
+                });
+            }
+        });
+    });
 
     // Auto-check on page load
     $(document).ready(function() {

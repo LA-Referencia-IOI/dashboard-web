@@ -317,4 +317,40 @@ class TestController extends Controller
 
         return response()->json($results);
     }
+
+    public function updateApiUrl(Request $request)
+    {
+        $request->validate([
+            'env_key' => 'required|string',
+            'url'     => 'required|string',
+        ]);
+
+        $envKey = $request->input('env_key');
+        $newUrl = $request->input('url');
+
+        $allowedKeys = [
+            'CREATE_WALLET', 'BLOCK_NUMBER', 'LIVENESS',
+            'ADMIN_API_BASE_URL', 'MINTER_BASE_URL', 'RESOLVER_BASE_URL',
+            'STORE_API_BASE_URL', 'IPFS_API_BASE_URL', 'IPFS_CLUSTER_API_URL',
+        ];
+
+        if (!in_array($envKey, $allowedKeys)) {
+            return response()->json(['success' => false, 'message' => 'Invalid env key.'], 400);
+        }
+
+        $envPath = base_path('.env');
+        $envContent = file_get_contents($envPath);
+
+        $pattern = '/^' . preg_quote($envKey, '/') . '=.*/m';
+
+        if (preg_match($pattern, $envContent)) {
+            $envContent = preg_replace($pattern, $envKey . '="' . $newUrl . '"', $envContent);
+        } else {
+            $envContent .= "\n" . $envKey . '="' . $newUrl . '"';
+        }
+
+        file_put_contents($envPath, $envContent);
+
+        return response()->json(['success' => true, 'message' => 'URL updated successfully.']);
+    }
 }

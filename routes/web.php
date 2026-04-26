@@ -101,6 +101,7 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::get('tests/download', [TestController::class, 'download'])->name('tests.download');
         Route::get('tests/api-health', [TestController::class, 'apiHealth'])->name('tests.api_health');
         Route::post('tests/api-health/check', [TestController::class, 'checkApis'])->name('tests.check_apis');
+        Route::post('tests/api-health/update-url', [TestController::class, 'updateApiUrl'])->name('tests.update_api_url');
 
     });
 
