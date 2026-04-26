@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Institution;
 
 class TestController extends Controller
 {
@@ -14,8 +15,9 @@ class TestController extends Controller
 
     public function index()
     {
+        $institutions = Institution::all();
         $lastRun = Storage::exists('tests/last_run.json') ? json_decode(Storage::get('tests/last_run.json'), true) : null;
-        return view($this->viewPath . 'index', compact('lastRun'));
+        return view($this->viewPath . 'index', compact('lastRun', 'institutions'));
     }
 
     public function download()
@@ -46,7 +48,7 @@ class TestController extends Controller
         $minterApiV1 = "$minterApi/api/v1";
         $resolverApiV1 = "$resolverApi/api/v1";
 
-        $authorityId = 'resolver-e2e-' . time();
+        $authorityId = $request->input('institution_id') ?: 'resolver-e2e-' . time();
         $naan = env('NAAN', '12345');
         $targetUrl = 'https://sedici.unlp.edu.ar/handle/10915/5605';
         $pollInterval = (int) env('POLL_INTERVAL_SECONDS', 2);
