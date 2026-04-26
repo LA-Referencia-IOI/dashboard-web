@@ -73,23 +73,26 @@
                 `,
                 showCancelButton: true,
                 confirmButtonText: 'Run Tests',
-                didOpen: () => {
-                    $('#testModeSelect').change(function() {
-                        if($(this).val() == 'institution') {
-                            $('#institutionSelectGroup').show();
+                onOpen: (popup) => {
+                    var select = popup.querySelector('#testModeSelect');
+                    var group = popup.querySelector('#institutionSelectGroup');
+                    select.addEventListener('change', function() {
+                        if (this.value === 'institution') {
+                            group.style.display = 'block';
                         } else {
-                            $('#institutionSelectGroup').hide();
+                            group.style.display = 'none';
                         }
                     });
                 },
                 preConfirm: () => {
-                    var mode = $('#testModeSelect').val();
-                    var instId = mode == 'institution' ? $('#institutionId').val() : null;
-                    return instId;
+                    var popup = Swal.getPopup();
+                    var mode = popup.querySelector('#testModeSelect').value;
+                    var instId = mode === 'institution' ? popup.querySelector('#institutionId').value : null;
+                    return { institutionId: instId };
                 }
             }).then((result) => {
-                if(result.isConfirmed) {
-                    executeTests(result.value);
+                if (!result.dismiss) {
+                    executeTests(result.value ? result.value.institutionId : null);
                 }
             });
         } else {
