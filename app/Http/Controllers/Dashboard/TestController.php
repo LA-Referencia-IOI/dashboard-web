@@ -232,4 +232,89 @@ class TestController extends Controller
             return response()->json(['success' => false, 'logs' => $logs]);
         }
     }
+
+    public function apiHealth()
+    {
+        $apis = [
+            ['name' => 'Create Wallet',     'env' => 'CREATE_WALLET',       'url' => env('CREATE_WALLET')],
+            ['name' => 'Block Number',       'env' => 'BLOCK_NUMBER',        'url' => env('BLOCK_NUMBER')],
+            ['name' => 'Liveness',           'env' => 'LIVENESS',            'url' => env('LIVENESS')],
+            ['name' => 'Admin API',          'env' => 'ADMIN_API_BASE_URL',  'url' => env('ADMIN_API_BASE_URL')],
+            ['name' => 'Minter API',         'env' => 'MINTER_BASE_URL',     'url' => env('MINTER_BASE_URL')],
+            ['name' => 'Resolver API',       'env' => 'RESOLVER_BASE_URL',   'url' => env('RESOLVER_BASE_URL')],
+            ['name' => 'Store API',          'env' => 'STORE_API_BASE_URL',  'url' => env('STORE_API_BASE_URL')],
+            ['name' => 'IPFS API',           'env' => 'IPFS_API_BASE_URL',   'url' => env('IPFS_API_BASE_URL')],
+            ['name' => 'IPFS Cluster API',   'env' => 'IPFS_CLUSTER_API_URL','url' => env('IPFS_CLUSTER_API_URL')],
+        ];
+
+        return view($this->viewPath . 'api_health', compact('apis'));
+    }
+
+    public function checkApis(Request $request)
+    {
+        $healthChecks = [
+            'CREATE_WALLET'       => ['method' => 'GET',  'path' => ''],
+            'BLOCK_NUMBER'        => ['method' => 'POST', 'path' => '', 'body' => ['jsonrpc' => '2.0', 'method' => 'eth_blockNumber', 'params' => [], 'id' => 1]],
+            'LIVENESS'            => ['method' => 'GET',  'path' => ''],
+            'ADMIN_API_BASE_URL'  => ['method' => 'GET',  'path' => '/api/v1/admin/status'],
+            'MINTER_BASE_URL'     => ['method' => 'GET',  'path' => '/health'],
+            'RESOLVER_BASE_URL'   => ['method' => 'GET',  'path' => '/health'],
+            'STORE_API_BASE_URL'  => ['method' => 'GET',  'path' => '/health'],
+            'IPFS_API_BASE_URL'   => ['method' => 'POST', 'path' => '/api/v0/id'],
+            'IPFS_CLUSTER_API_URL'=> ['method' => 'GET',  'path' => '/id'],
+        ];
+
+        $results = [];
+
+        foreach ($healthChecks as $envKey => $config) {
+            $baseUrl = rtrim(env($envKey, ''), '/');
+            $url = $baseUrl . $config['path'];
+
+            if (empty($baseUrl)) {
+                $results[] = [
+                    'env'     => $envKey,
+                    'url'     => 'Not configured',
+                    'status'  => 'warning',
+                    'code'    => '-',
+                    'message' => 'Variable not set in .env',
+                    'time_ms' => 0,
+                ];
+                continue;
+            }
+
+            try {
+                $start = microtime(true);
+
+                if ($config['method'] === 'POST') {
+                    $body = $config['body'] ?? [];
+                    $res = Http::timeout(15)->post($url, $body);
+                } else {
+                    $res = Http::timeout(15)->get($url);
+                }
+
+                $elapsed = round((microtime(true) - $start) * 1000);
+
+                $results[] = [
+                    'env'     => $envKey,
+                    'url'     => $url,
+                    'status'  => $res->successful() ? 'online' : 'error',
+                    'code'    => $res->status(),
+                    'message' => $res->successful() ? 'OK' : substr($res->body(), 0, 120),
+                    'time_ms' => $elapsed,
+                ];
+            } catch (\Exception $e) {
+                $elapsed = round((microtime(true) - $start) * 1000);
+                $results[] = [
+                    'env'     => $envKey,
+                    'url'     => $url,
+                    'status'  => 'offline',
+                    'code'    => '-',
+                    'message' => substr($e->getMessage(), 0, 120),
+                    'time_ms' => $elapsed,
+                ];
+            }
+        }
+
+        return response()->json($results);
+    }
 }

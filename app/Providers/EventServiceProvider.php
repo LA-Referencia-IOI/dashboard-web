@@ -82,9 +82,14 @@ class EventServiceProvider extends ServiceProvider
             ]);
             $event->menu->add('TESTING');
             $event->menu->add([
-                'icon' => 'fas fa-vial',
-                'text' => 'E2E Runner',
+                'icon' => 'fas fa-server',
+                'text' => 'Server Tests',
                 'route' => 'tests.index',
+            ]);
+            $event->menu->add([
+                'icon' => 'fas fa-heartbeat',
+                'text' => 'API Health',
+                'route' => 'tests.api_health',
             ]);
             $event->menu->add('PROFILE');
 
