@@ -61,6 +61,7 @@ Route::group(['middleware' => ['https.protocol']], function () {
 
 
         Route::get('institutions/{institution}/blockchain-id', [InstitutionController::class, 'addIdBlockchain'])->name('institutions.add_id_blockchain');
+        Route::get('institutions/{institution}/register-authority', [InstitutionController::class, 'registerAuthority'])->name('institutions.register_authority');
 
         Route::get('accounts', [AccountController::class, 'index'])->name('accounts.index');
         Route::get('account/create/{institution?}', [AccountController::class, 'create'])->name('accounts.create');

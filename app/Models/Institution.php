@@ -33,6 +33,7 @@ class Institution extends Model
         'typeNodes',
         'detailsNodes',
         'status',
+        'authority_registered',
         'description'
     ];
 

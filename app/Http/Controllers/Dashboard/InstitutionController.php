@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Dashboard\InstitutionRequest;
 use App\Models\User;
 use App\Models\Institution;
+use Illuminate\Support\Facades\Http;
 
 class InstitutionController extends Controller
 {
@@ -87,6 +88,51 @@ class InstitutionController extends Controller
         } else {
             return redirect()->route('institution.index')
                              ->with(['message' => 'Error registering Device. Try again!', 'code' => 'danger']);
+        }
+    }
+
+    public function registerAuthority(Institution $institution)
+    {
+        $adminApiUrl = env('ADMIN_API_BASE_URL');
+
+        if (!$adminApiUrl) {
+            return redirect()->back()->with(['message' => 'ADMIN_API_BASE_URL not configured.', 'code' => 'danger']);
+        }
+
+        try {
+            // 1. Create the Authority
+            $authResponse = Http::timeout(180)->post($adminApiUrl . '/api/v1/admin/authority', [
+                'uuid' => (string) $institution->id,
+                'naans' => [],
+                'fund_amount_eth' => 0.05
+            ]);
+
+            // 409 means already exists, which is acceptable
+            if (!$authResponse->successful() && $authResponse->status() != 409) {
+                return redirect()->back()->with(['message' => 'Error creating authority: ' . $authResponse->body(), 'code' => 'danger']);
+            }
+
+            // Flag as registered
+            $institution->authority_registered = true;
+            $institution->save();
+
+            // 2. Authorize NAAN if account exists
+            if ($institution->account && $institution->account->naan) {
+                $naanResponse = Http::timeout(180)->post($adminApiUrl . '/api/v1/admin/authority/' . $institution->id . '/authorize-naan', [
+                    'naan' => $institution->account->naan
+                ]);
+
+                if (!$naanResponse->successful()) {
+                    return redirect()->back()->with(['message' => 'Authority created, but error authorizing NAAN: ' . $naanResponse->body(), 'code' => 'danger']);
+                }
+
+                return redirect()->back()->with(['message' => 'Authority registered and NAAN authorized successfully.', 'code' => 'success']);
+            }
+
+            return redirect()->back()->with(['message' => 'Authority registered, but no Account/NAAN found to authorize.', 'code' => 'warning']);
+
+        } catch (\Throwable $th) {
+            return redirect()->back()->with(['message' => 'Error connecting to API: ' . $th->getMessage(), 'code' => 'danger']);
         }
     }
 

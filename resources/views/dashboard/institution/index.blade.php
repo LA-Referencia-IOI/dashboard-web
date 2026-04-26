@@ -47,6 +47,9 @@
                                         <i class="fas fa-user-plus"></i>
                                     </a>
                                 @endif
+                                @if (!$institution->authority_registered)
+                                    <a href="{{ route('institutions.register_authority', $institution->id) }}" alt="Register Authority" title="Register Authority" class="btn btn-info btn-sm"><i class="fas fa-sitemap"></i></a>
+                                @endif
                                     <a href="{{ route('institutions.create-ark-institution', $institution->id) }}" alt="Ark" title="Ark" class="btn btn-warning btn-sm"><i class="fas fa-fw fa-ship"></i></a>
                                     <a href="{{ route('institutions.edit', $institution->id) }}" alt="Edit" title="Edit" class="btn btn-primary btn-sm"><i class="fa fa-pencil-alt"></i></a>
                                     <button alt="Delete" title="Delete" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $institution->id }}, '{{ route('institutions.destroy', ['institution' => $institution->id]) }}')"><i class="fa fa-trash"></i></button>
