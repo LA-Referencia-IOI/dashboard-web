@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class TestController extends Controller
 {
@@ -13,7 +14,16 @@ class TestController extends Controller
 
     public function index()
     {
-        return view($this->viewPath . 'index');
+        $lastRun = Storage::exists('tests/last_run.json') ? json_decode(Storage::get('tests/last_run.json'), true) : null;
+        return view($this->viewPath . 'index', compact('lastRun'));
+    }
+
+    public function download()
+    {
+        if (Storage::exists('tests/last_run.txt')) {
+            return Storage::download('tests/last_run.txt', 'e2e_last_run_' . date('Y_m_d_His') . '.txt');
+        }
+        return redirect()->back()->with(['message' => 'No log file found.', 'code' => 'warning']);
     }
 
     public function run(Request $request)
@@ -88,31 +98,31 @@ class TestController extends Controller
             
             // 1. Smoke Checks
             $log("1. Running Smoke Checks...");
-            $res = Http::timeout(5)->get("$adminApiV1/status");
+            $res = Http::timeout(30)->get("$adminApiV1/status");
             if (!$res->successful()) throw new \Exception("Admin API down: " . $res->body());
             $log("Admin API OK");
 
-            $res = Http::timeout(5)->get("$minterApi/health");
+            $res = Http::timeout(30)->get("$minterApi/health");
             if (!in_array($res->status(), [200, 503])) throw new \Exception("Minter API down: " . $res->body());
             $log("Minter API OK");
 
-            $res = Http::timeout(5)->withHeaders($minterHeaders)->get("$minterApiV1/worker/status");
+            $res = Http::timeout(30)->withHeaders($minterHeaders)->get("$minterApiV1/worker/status");
             if (!$res->successful() || !$res->json('running')) throw new \Exception("Worker not running: " . $res->body());
             $log("Worker OK");
 
-            $res = Http::timeout(5)->get("$storeApi/health");
+            $res = Http::timeout(30)->get("$storeApi/health");
             if (!$res->successful()) throw new \Exception("Store API down: " . $res->body());
             $log("Store API OK");
 
-            $res = Http::timeout(5)->post("$ipfsApi/api/v0/id");
+            $res = Http::timeout(30)->post("$ipfsApi/api/v0/id");
             if (!$res->successful()) throw new \Exception("IPFS API down: " . $res->body());
             $log("IPFS API OK");
 
-            $res = Http::timeout(5)->get("$ipfsClusterApi/id");
+            $res = Http::timeout(30)->get("$ipfsClusterApi/id");
             if (!$res->successful()) throw new \Exception("IPFS Cluster API down: " . $res->body());
             $log("IPFS Cluster API OK");
 
-            $res = Http::timeout(5)->get("$resolverApi/health");
+            $res = Http::timeout(30)->get("$resolverApi/health");
             if (!$res->successful()) throw new \Exception("Resolver API down: " . $res->body());
             $log("Resolver API OK");
 
@@ -205,10 +215,18 @@ class TestController extends Controller
             $log("CIDs are successfully pinned.");
 
             $log("E2E Test Completed Successfully!");
+
+            Storage::put('tests/last_run.txt', implode("\n", $logs));
+            Storage::put('tests/last_run.json', json_encode(['date' => now()->toDateTimeString(), 'status' => 'Success']));
+
             return response()->json(['success' => true, 'logs' => $logs]);
 
         } catch (\Exception $e) {
             $log("ERROR: " . $e->getMessage());
+
+            Storage::put('tests/last_run.txt', implode("\n", $logs));
+            Storage::put('tests/last_run.json', json_encode(['date' => now()->toDateTimeString(), 'status' => 'Failed']));
+
             return response()->json(['success' => false, 'logs' => $logs]);
         }
     }

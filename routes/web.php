@@ -98,6 +98,7 @@ Route::group(['middleware' => ['https.protocol']], function () {
 
         Route::get('tests', [TestController::class, 'index'])->name('tests.index');
         Route::post('tests/run', [TestController::class, 'run'])->name('tests.run');
+        Route::get('tests/download', [TestController::class, 'download'])->name('tests.download');
 
     });
 
