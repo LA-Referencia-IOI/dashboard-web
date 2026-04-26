@@ -8,6 +8,7 @@ use App\Http\Controllers\Dashboard\InstitutionController;
 use App\Http\Controllers\Dashboard\ImageController;
 use App\Http\Controllers\Dashboard\ArkController;
 use App\Http\Controllers\Dashboard\SettingController;
+use App\Http\Controllers\Dashboard\TestController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -95,7 +96,9 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::put('image/{id}/upload', [ImageController::class, 'upload'])->name('image.upload');
         Route::delete('image/destroy/{file}', [ImageController::class, 'destroy'])->name('image.destroy');
 
-       
+        Route::get('tests', [TestController::class, 'index'])->name('tests.index');
+        Route::post('tests/run', [TestController::class, 'run'])->name('tests.run');
+
     });
 
     Auth::routes();

@@ -80,6 +80,12 @@ class EventServiceProvider extends ServiceProvider
                 'text' => 'Backup',
                 'route' => 'blockchains.backup_blockchain',
             ]);
+            $event->menu->add('TESTING');
+            $event->menu->add([
+                'icon' => 'fas fa-vial',
+                'text' => 'E2E Runner',
+                'route' => 'tests.index',
+            ]);
             $event->menu->add('PROFILE');
 
             $event->menu->add([
