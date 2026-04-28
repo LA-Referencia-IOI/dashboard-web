@@ -236,7 +236,6 @@ class TestController extends Controller
     public function apiHealth()
     {
         $apis = [
-            ['name' => 'Create Wallet',     'env' => 'CREATE_WALLET',       'url' => env('CREATE_WALLET')],
             ['name' => 'Block Number',       'env' => 'BLOCK_NUMBER',        'url' => env('BLOCK_NUMBER')],
             ['name' => 'Liveness',           'env' => 'LIVENESS',            'url' => env('LIVENESS')],
             ['name' => 'Admin API',          'env' => 'ADMIN_API_BASE_URL',  'url' => env('ADMIN_API_BASE_URL')],
