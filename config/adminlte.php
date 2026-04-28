@@ -223,7 +223,52 @@ return [
     |
     */
 
-    'menu' => [],
+    'menu' => [
+        ['header' => 'REGISTRY'],
+        [
+            'text'  => 'Authorities',
+            'url'   => 'dashboard/authorities',
+            'icon'  => 'fas fa-shield-alt',
+            'label' => '',
+        ],
+        [
+            'text'  => 'Institutions',
+            'url'   => 'dashboard/institutions',
+            'icon'  => 'fas fa-university',
+        ],
+        [
+            'text'  => 'ARKs',
+            'url'   => 'dashboard/arks',
+            'icon'  => 'fas fa-ship',
+        ],
+        ['header' => 'BLOCKCHAIN'],
+        [
+            'text'  => 'Accounts / Wallets',
+            'url'   => 'dashboard/accounts',
+            'icon'  => 'fas fa-wallet',
+        ],
+        [
+            'text'    => 'Blockchain',
+            'url'     => 'dashboard/blockchains',
+            'icon'    => 'fas fa-link',
+        ],
+        ['header' => 'ADMINISTRATION'],
+        [
+            'text'  => 'Users',
+            'url'   => 'dashboard/users',
+            'icon'  => 'fas fa-users',
+        ],
+        [
+            'text'  => 'Settings',
+            'url'   => 'dashboard/settings',
+            'icon'  => 'fas fa-cog',
+        ],
+        [
+            'text'  => 'API Tests',
+            'url'   => 'dashboard/tests/api-health',
+            'icon'  => 'fas fa-heartbeat',
+        ],
+    ],
 
     /*
     |--------------------------------------------------------------------------

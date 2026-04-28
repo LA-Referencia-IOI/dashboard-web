@@ -4,22 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Authority;
 
 class Blockchain extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'institution_id',
+        'authority_id',
         'type',
         'number_nodes',
         'local',
         'status',
         'description',
         'url',
-        'enodes'
+        'enodes',
     ];
+
+    public function authority()
+    {
+        return $this->belongsTo(Authority::class, 'authority_id', 'id');
+    }
 }
-
-
-

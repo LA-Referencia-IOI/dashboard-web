@@ -1,30 +1,42 @@
 @extends('adminlte::page')
 
+@section('title', 'Institutions')
+
 @section('content')
     @if (session('message'))
         <div class="alert alert-{{ session('code') }} alert-dismissible">
-            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <button type="button" class="close" data-dismiss="alert">×</button>
             {{ session('message') }}
         </div>
     @endif
-    <a href="{{ route('institutions.create') }}" class="btn btn-custom btn-sm" style="margin-bottom: 10px;">NEW INSTITUTION</a>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="m-0">Institutions <span class="badge badge-secondary">{{ $total }}</span></h4>
+        <a href="{{ route('authorities.index') }}" class="btn btn-default btn-sm">
+            <i class="fas fa-shield-alt mr-1"></i> Manage via Authorities
+        </a>
+    </div>
+
     <div class="box">
-    <div class="box-header with-border">
         <div class="box-header with-border">
-            <h4 class="box-title">Institutions List</h4>
+            <form method="GET" action="{{ route('institutions.index') }}" class="d-flex">
+                <input type="text" name="s" value="{{ $s }}" class="form-control form-control-sm mr-2"
+                       placeholder="Search by name..." style="max-width:260px">
+                <button class="btn btn-sm btn-default">Search</button>
+            </form>
         </div>
         <div class="box-body no-padding">
             <div class="table-responsive">
-                <table class="table">
+                <table class="table table-hover">
                     <thead class="thead-light">
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
+                            <th>Authority</th>
                             <th>Type</th>
                             <th>Email</th>
                             <th>Responsible</th>
                             <th>Status</th>
-                            <th>Create at</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -32,36 +44,45 @@
                         @forelse($institutions as $institution)
                             <tr>
                                 <td>{{ $institution->id }}</td>
-                                <td>{{ $institution->name }}</td>
+                                <td><strong>{{ $institution->name }}</strong></td>
+                                <td>
+                                    @if ($institution->authority)
+                                        <a href="{{ route('authorities.show', $institution->authority_id) }}">
+                                            {{ $institution->authority->name }}
+                                        </a>
+                                    @else
+                                        <span class="text-muted">—</span>
+                                    @endif
+                                </td>
                                 <td>{{ $institution->getTypeAlias() }}</td>
                                 <td>{{ $institution->email }}</td>
                                 <td>{{ $institution->responsible }}</td>
                                 <td>{!! $institution->getStatus() !!}</td>
-                                <td>{{ $institution->created_at }}</td>
                                 <td>
-                                @if (!$institution->code)
-                                    <a href="{{ route('institutions.add_id_blockchain', $institution->id) }}" alt="key dARK" title="key dARK" class="btn btn-success btn-sm"><i class="fa  fa-key"></i></a>
-                                @endif
-                                @if (!$institution->account)
-                                    <a href="{{ route('accounts.create', $institution->id) }}" class="btn btn-warning btn-sm">
-                                        <i class="fas fa-user-plus"></i>
+                                    <a href="{{ route('institutions.create-ark-institution', $institution->id) }}"
+                                       class="btn btn-warning btn-sm" title="ARK">
+                                        <i class="fas fa-ship"></i>
                                     </a>
-                                @endif
-                                @if (!$institution->authority_registered)
-                                    <a href="{{ route('institutions.register_authority', $institution->id) }}" alt="Register Authority" title="Register Authority" class="btn btn-info btn-sm"><i class="fas fa-sitemap"></i></a>
-                                @endif
-                                    <a href="{{ route('institutions.create-ark-institution', $institution->id) }}" alt="Ark" title="Ark" class="btn btn-warning btn-sm"><i class="fas fa-fw fa-ship"></i></a>
-                                    <a href="{{ route('institutions.edit', $institution->id) }}" alt="Edit" title="Edit" class="btn btn-primary btn-sm"><i class="fa fa-pencil-alt"></i></a>
-                                    <button alt="Delete" title="Delete" class="btn btn-danger btn-sm" onclick="confirmDelete({{ $institution->id }}, '{{ route('institutions.destroy', ['institution' => $institution->id]) }}')"><i class="fa fa-trash"></i></button>
+                                    <a href="{{ route('institutions.edit', $institution->id) }}"
+                                       class="btn btn-primary btn-sm" title="Edit">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="8" class="text-center text-muted py-4">
+                                    No institutions found.
+                                    <a href="{{ route('authorities.index') }}">Create via an Authority</a>.
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
         <div class="box-footer clearfix">
-              {{ ($institutions != null)? $institutions->links(): null }}
+            {{ $institutions->links() }}
         </div>
     </div>
 @stop

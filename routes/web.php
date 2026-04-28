@@ -5,6 +5,7 @@ use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\Dashboard\AccountController;
 use App\Http\Controllers\Dashboard\BlockchainController;
 use App\Http\Controllers\Dashboard\InstitutionController;
+use App\Http\Controllers\Dashboard\AuthorityController;
 use App\Http\Controllers\Dashboard\ImageController;
 use App\Http\Controllers\Dashboard\ArkController;
 use App\Http\Controllers\Dashboard\SettingController;
@@ -24,9 +25,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['middleware' => ['https.protocol']], function () {
-    // Route::get('/', function () {
-    //     // return redirect('login');
-    // });
     Route::get('/', [SiteController::class, 'index'])->name('site.index');
     Route::get('/documentation', [SiteController::class, 'documentation'])->name('site.documentation');
 
@@ -40,14 +38,25 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::put('user/{user}', [UserController::class, 'update'])->name('users.update');
         Route::delete('user/destroy/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
+        // ── Authorities ────────────────────────────────────────────────
+        Route::get('authorities', [AuthorityController::class, 'index'])->name('authorities.index');
+        Route::get('authority/create', [AuthorityController::class, 'create'])->name('authorities.create');
+        Route::post('authority/create', [AuthorityController::class, 'store'])->name('authorities.store');
+        Route::get('authority/{authority}/edit', [AuthorityController::class, 'edit'])->name('authorities.edit');
+        Route::put('authority/{authority}', [AuthorityController::class, 'update'])->name('authorities.update');
+        Route::delete('authority/destroy/{authority}', [AuthorityController::class, 'destroy'])->name('authorities.destroy');
+        Route::get('authority/{authority}/register', [AuthorityController::class, 'registerAuthority'])->name('authorities.register');
+        Route::get('authority/{authority}', [AuthorityController::class, 'show'])->name('authorities.show');
+
+        // ── Institutions (create only via Authority show page) ─────────
         Route::get('institutions', [InstitutionController::class, 'index'])->name('institutions.index');
         Route::get('institution/create', [InstitutionController::class, 'create'])->name('institutions.create');
-        Route::get('institution/edit/{institution}', [InstitutionController::class, 'edit'])->name('institutions.edit');
         Route::post('institution/create', [InstitutionController::class, 'store'])->name('institutions.store');
+        Route::get('institution/edit/{institution}', [InstitutionController::class, 'edit'])->name('institutions.edit');
         Route::put('institution/{institution}', [InstitutionController::class, 'update'])->name('institutions.update');
         Route::delete('institution/destroy/{institution}', [InstitutionController::class, 'destroy'])->name('institutions.destroy');
 
-
+        // ── ARKs ───────────────────────────────────────────────────────
         Route::get('arks', [ArkController::class, 'index'])->name('institutions.index-ark');
         Route::get('ark/create-ark/', [ArkController::class, 'create'])->name('institutions.create-ark');
         Route::get('ark/create-ark/{institution}', [ArkController::class, 'create'])->name('institutions.create-ark-institution');
@@ -59,11 +68,7 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::get('/ark/{id}/json', [ArkController::class, 'downloadJson'])->name('institutions.ark-json');
         Route::get('/ark/json/all', [ArkController::class, 'downloadAll'])->name('institutions.ark-json-all');
 
-
-
-        Route::get('institutions/{institution}/blockchain-id', [InstitutionController::class, 'addIdBlockchain'])->name('institutions.add_id_blockchain');
-        Route::get('institutions/{institution}/register-authority', [InstitutionController::class, 'registerAuthority'])->name('institutions.register_authority');
-
+        // ── Accounts ───────────────────────────────────────────────────
         Route::get('accounts', [AccountController::class, 'index'])->name('accounts.index');
         Route::get('account/create/{institution?}', [AccountController::class, 'create'])->name('accounts.create');
         Route::get('account/edit/{account}', [AccountController::class, 'edit'])->name('accounts.edit');
@@ -71,13 +76,12 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::put('account/{account}', [AccountController::class, 'update'])->name('accounts.update');
         Route::delete('account/destroy/{account}', [AccountController::class, 'destroy'])->name('accounts.destroy');
         Route::get('account/wallet/{account}', [AccountController::class, 'createWallet'])->name('accounts.account-create');
-        Route::get('account/card-profile/{account}', [AccountController::class,'cardProfile'])->name('accounts.card_profile');
+        Route::get('account/card-profile/{account}', [AccountController::class, 'cardProfile'])->name('accounts.card_profile');
         Route::post('account/manager', [AccountController::class, 'accountManager'])->name('accounts.manager');
         Route::get('account/transfer-funds', [AccountController::class, 'transferFunds'])->name('accounts.transfer_funds');
         Route::get('account/balance/{account}', [AccountController::class, 'getBalance'])->name('accounts.get_balance');
-        Route::get('account/edit/{account}', [AccountController::class, 'edit'])->name('accounts.edit');
-        
 
+        // ── Blockchains ────────────────────────────────────────────────
         Route::get('blockchains', [BlockchainController::class, 'index'])->name('blockchains.index');
         Route::get('blockchain/create', [BlockchainController::class, 'create'])->name('blockchains.create');
         Route::get('blockchain/edit/{blockchain}', [BlockchainController::class, 'edit'])->name('blockchains.edit');
@@ -88,7 +92,7 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::get('blockchain/backup-blockchain', [BlockchainController::class, 'backup'])->name('blockchains.backup_blockchain');
         Route::get('blockchain/logs/fetch', [BlockchainController::class, 'fetchLogs'])->name('blockchain.logs_fetch');
 
-
+        // ── Settings ───────────────────────────────────────────────────
         Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
         Route::put('settings/{user}', [SettingController::class, 'update'])->name('settings.update');
         Route::post('settings/change-menu', [SettingController::class, 'changeMenu'])->name('settings.changeMenu');
