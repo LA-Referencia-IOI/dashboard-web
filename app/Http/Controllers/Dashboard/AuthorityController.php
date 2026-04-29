@@ -171,7 +171,7 @@ class AuthorityController extends Controller
             return response()->json([
                 'naans_count' => $naansCount,
                 'naans' => $authResponse->json('naans') ?? [],
-                'balance' => number_format((float)$balance, 4) . ' ETH',
+                'balance' => number_format((float)$balance, 4) . ' dark',
                 'wallet_address' => $authority->wallet_address,
             ]);
 
@@ -180,10 +180,47 @@ class AuthorityController extends Controller
             return response()->json([
                 'naans_count' => '?',
                 'naans' => [],
-                'balance' => number_format((float)$authority->balance, 4) . ' ETH',
+                'balance' => number_format((float)$authority->balance, 4) . ' dark',
                 'wallet_address' => $authority->wallet_address,
                 'error' => 'API Offline'
             ]);
+        }
+    }
+
+    public function fund(\Illuminate\Http\Request $request, Authority $authority)
+    {
+        $request->validate([
+            'amount' => 'required|numeric|min:0.0001'
+        ]);
+
+        $adminApiUrl = env('ADMIN_API_BASE_URL');
+        if (!$adminApiUrl) {
+            return response()->json(['success' => false, 'message' => 'Admin API not configured.'], 500);
+        }
+
+        try {
+            $response = Http::timeout(120)->post($adminApiUrl . '/api/v1/admin/authority/' . $authority->id . '/fund', [
+                'amount_eth' => (float) $request->amount
+            ]);
+
+            if ($response->successful()) {
+                return response()->json([
+                    'success' => true, 
+                    'message' => 'Successfully injected ' . $request->amount . ' dark.',
+                    'tx_hash' => $response->json('transaction_hash')
+                ]);
+            }
+
+            return response()->json([
+                'success' => false, 
+                'message' => 'Failed to fund wallet: ' . $response->body()
+            ], $response->status());
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false, 
+                'message' => 'Error connecting to Admin API: ' . $th->getMessage()
+            ], 500);
         }
     }
 }

@@ -1,6 +1,7 @@
 @extends('adminlte::page')
 
 @section('title', 'Authorities')
+@section('plugins.Sweetalert2', true)
 
 @section('content')
     @if (session('message'))
@@ -62,6 +63,11 @@
                                 <td>{!! $authority->getStatusBadge() !!}</td>
                                 <td>{{ $authority->created_at->format('d/m/Y') }}</td>
                                 <td>
+                                    @if($authority->isRegistered())
+                                        <button class="btn btn-success btn-sm btn-fund" data-uuid="{{ $authority->id }}" data-name="{{ $authority->name }}" title="Inject Funds">
+                                            <i class="fas fa-hand-holding-usd"></i>
+                                        </button>
+                                    @endif
                                     <a href="{{ route('authorities.show', $authority->id) }}"
                                        class="btn btn-secondary btn-sm" title="View">
                                         <i class="fas fa-eye"></i>
@@ -106,25 +112,93 @@
 
             // Only fetch if it shows a spinner (meaning it's registered)
             if (tdNaans.find('.fa-spinner').length > 0) {
-                $.ajax({
-                    url: '/dashboard/authority/' + uuid + '/api-data',
-                    type: 'GET',
-                    success: function(response) {
-                        if (response.error) {
-                            tdNaans.html('<span class="text-danger" title="' + response.error + '">?</span>');
-                            tdBalance.html('<span class="text-muted">' + response.balance + ' <i class="fas fa-exclamation-triangle text-warning" title="' + response.error + '"></i></span>');
-                        } else {
-                            tdNaans.html('<span class="badge badge-dark">' + response.naans_count + '</span>');
-                            tdBalance.html('<strong>' + response.balance + '</strong>');
-                        }
-                    },
-                    error: function() {
-                        tdNaans.html('<span class="text-danger">Error</span>');
-                        tdBalance.html('<span class="text-danger">Error</span>');
-                    }
-                });
+                fetchApiData(uuid, tdNaans, tdBalance);
             }
         });
+
+        // Funding Flow
+        $(document).on('click', '.btn-fund', function() {
+            let uuid = $(this).data('uuid');
+            let name = $(this).data('name');
+
+            Swal.fire({
+                title: 'Inject Funds',
+                html: '<div class="text-left"><label>Amount (in <strong>dark</strong>):</label>' +
+                      '<input id="swal-fund-amount" type="number" step="0.0001" min="0.0001" class="form-control" placeholder="0.05"></div>' +
+                      '<small class="text-muted mt-2 d-block text-left">Funds will be transferred from the Master Wallet.</small>',
+                icon: 'info',
+                showCancelButton: true,
+                confirmButtonText: 'Inject Funds',
+                confirmButtonColor: '#28a745',
+                onOpen: function(popup) {
+                    popup.querySelector('#swal-fund-amount').focus();
+                },
+                preConfirm: function() {
+                    let amount = Swal.getPopup().querySelector('#swal-fund-amount').value;
+                    if (!amount || amount <= 0) {
+                        Swal.showValidationMessage('Please enter a valid amount');
+                    }
+                    return amount;
+                }
+            }).then(function(result) {
+                if (result.value) {
+                    Swal.fire({
+                        title: 'Transferring...',
+                        text: 'Please wait while the transaction is mined on the blockchain.',
+                        allowOutsideClick: false,
+                        onBeforeOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    $.ajax({
+                        url: '/dashboard/authority/' + uuid + '/fund',
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            amount: result.value
+                        },
+                        success: function(res) {
+                            if (res.success) {
+                                Swal.fire('Success!', res.message, 'success');
+                                
+                                // Refresh the balance
+                                let tdNaans = $('.auth-naans[data-uuid="' + uuid + '"]');
+                                let tdBalance = $('.auth-balance[data-uuid="' + uuid + '"]');
+                                tdBalance.html('<i class="fas fa-spinner fa-spin text-muted"></i>');
+                                fetchApiData(uuid, tdNaans, tdBalance);
+                            } else {
+                                Swal.fire('Error', res.message, 'error');
+                            }
+                        },
+                        error: function(xhr) {
+                            Swal.fire('Error', 'Failed to inject funds. Check the console.', 'error');
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
+        });
+
+        function fetchApiData(uuid, tdNaans, tdBalance) {
+            $.ajax({
+                url: '/dashboard/authority/' + uuid + '/api-data',
+                type: 'GET',
+                success: function(response) {
+                    if (response.error) {
+                        tdNaans.html('<span class="text-danger" title="' + response.error + '">?</span>');
+                        tdBalance.html('<span class="text-muted">' + response.balance + ' <i class="fas fa-exclamation-triangle text-warning" title="' + response.error + '"></i></span>');
+                    } else {
+                        tdNaans.html('<span class="badge badge-dark">' + response.naans_count + '</span>');
+                        tdBalance.html('<strong>' + response.balance + '</strong>');
+                    }
+                },
+                error: function() {
+                    tdNaans.html('<span class="text-danger">Error</span>');
+                    tdBalance.html('<span class="text-danger">Error</span>');
+                }
+            });
+        }
     });
 </script>
 @stop

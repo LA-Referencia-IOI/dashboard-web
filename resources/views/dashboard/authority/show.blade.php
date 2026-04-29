@@ -77,7 +77,7 @@
                             <tr>
                                 <th class="text-muted">Balance</th>
                                 <td id="walletBalance">
-                                    {{ $authority->balance ?? '0' }} ETH
+                                    {{ $authority->balance ?? '0' }} dark
                                     <i class="fas fa-spinner fa-spin ml-2 text-muted" id="walletSpinner" style="display:none;"></i>
                                 </td>
                             </tr>
