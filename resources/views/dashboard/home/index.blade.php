@@ -21,13 +21,13 @@
         <div class="col-lg-3 col-6">
             <div class="small-box bg-purple">
             <div class="inner">
-                <h3>Instituition<sup style="font-size: 20px"></sup> </h3>
-                <p>{!!$countInstitutions!!}</p>
+                <h3>NAANs<sup style="font-size: 20px"></sup> </h3>
+                <p>{!!$countNaans!!}</p>
             </div>
             <div class="icon">
-                <i class="fas fa-fw fa-building"></i>
+                <i class="fas fa-fw fa-hashtag"></i>
             </div>
-            <a href="{{route('institutions.index')}}" class="small-box-footer">See <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="{{route('naans.index')}}" class="small-box-footer">See <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
         <div class="col-lg-3 col-6">

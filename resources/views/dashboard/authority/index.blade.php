@@ -28,7 +28,6 @@
                             <th>Name</th>
                             <th>Responsible</th>
                             <th>Email</th>
-                            <th>Institutions</th>
                             <th>NAANs</th>
                             <th>Wallet Balance</th>
                             <th>Status</th>
@@ -43,9 +42,6 @@
                                 <td><strong>{{ $authority->name }}</strong></td>
                                 <td>{{ $authority->responsible }}</td>
                                 <td>{{ $authority->email }}</td>
-                                <td>
-                                    <span class="badge badge-info">{{ $authority->institutions_count }}</span>
-                                </td>
                                 <td class="auth-naans" data-uuid="{{ $authority->id }}">
                                     @if($authority->isRegistered())
                                         <i class="fas fa-spinner fa-spin text-muted"></i>

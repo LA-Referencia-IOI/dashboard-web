@@ -61,73 +61,55 @@ class HomeController extends Controller
             }
         }
 
-        // URL of your Besu node with a default fallback
-        $originalNodeUrl = 'http://dark-01.dark-pid.net:8545';//env('BLOCK_NUMBER');
+        // URL of your Besu node from .env
+        $originalNodeUrl = env('BLOCK_NUMBER');
 
+        $blockNumber = '?';
 
-        // Ensure URL is not null and has the correct format
-        if (!$originalNodeUrl || (!str_starts_with($originalNodeUrl, 'http://') && !str_starts_with($originalNodeUrl, 'https://'))) {
-            \Log::error('Invalid or missing node URL.');
-            return view('lanpage.index', ['blockNumber' => 'Invalid Node URL']);
-        }
+        // Ensure URL is not null
+        if ($originalNodeUrl) {
+            try {
+                // getting number of blocks
+                $response = Http::post($originalNodeUrl, [
+                    'jsonrpc' => '2.0',
+                    'method' => 'eth_blockNumber',
+                    'params' => [],
+                    'id' => 1,
+                ]);
+                
+                // Check if the request was successful
+                if ($response->successful()) {
+                    // Get the hexadecimal result of the block number
+                    $blockHex = $response->json('result');
 
-        // getting number of blocks
-        $response = Http::post($originalNodeUrl, [
-            'jsonrpc' => '2.0',
-            'method' => 'eth_blockNumber',
-            'params' => [],
-            'id' => 1,
-        ]);
-        
-        try {
-            // Check if the request was successful
-            if ($response->successful()) {
-                // Get the hexadecimal result of the block number
-                $blockHex = $response->json('result');
-
-                // Remove the '0x' prefix and convert from hexadecimal to decimal
-                $blockNumber = hexdec($blockHex);
-                $blockNumber = number_format($blockNumber, 0, ',');
-
-              
-
-            } else {
-                $blockNumber = '1.091,02';
-               
+                    if ($blockHex) {
+                        // Remove the '0x' prefix and convert from hexadecimal to decimal
+                        $blockNumber = hexdec($blockHex);
+                        $blockNumber = number_format($blockNumber, 0, ',');
+                    }
+                }
+            } catch (\Exception $e) {
+                $blockNumber = '?';
             }
-
-        } catch (\Exception $e) {
-            $blockNumber = '1.091,02';
-           
         }
 
         // getting number of darks
         $response2 = Http::get('http://dark-01.dark-pid.net:5000/check-number');
 
-        
         try {
             // Check if the request was successful
             if ($response2->successful()) {
-                // Get the hexadecimal result of the block number
                 $numberDark = $response2->json();
-
-
                 $numberDark = number_format($numberDark, 0, ',');
-
-              
-
             } else {
                 $numberDark = '1.091,02';
-               
             }
-
         } catch (\Exception $e) {
             $numberDark = '1.091,02';
-           
         }
 
-
+        $countNaans = \App\Models\Naan::count();
         
-        return view('dashboard.home.index',compact('institutions','locations','countInstitutions', 'upCount', 'downCount', 'blockNumber', 'numberDark'));
+        return view('dashboard.home.index',compact('institutions','locations','countInstitutions', 'countNaans', 'upCount', 'downCount', 'blockNumber', 'numberDark'));
     }
 }
