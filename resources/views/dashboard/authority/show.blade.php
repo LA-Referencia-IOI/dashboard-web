@@ -1,6 +1,7 @@
 @extends('adminlte::page')
 
 @section('title', 'Authority — ' . $authority->name)
+@section('plugins.Sweetalert2', true)
 
 @section('content')
     @if (session('message'))
@@ -82,9 +83,16 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th class="text-muted">NAANs</th>
+                                <th class="text-muted" style="vertical-align: middle;">NAANs</th>
                                 <td id="walletNaans">
                                     <i class="fas fa-spinner fa-spin text-muted" id="naanSpinner" style="display:none;"></i>
+                                </td>
+                                <td style="width: 10%; text-align: right;">
+                                    @if($authority->isRegistered())
+                                        <button class="btn btn-xs btn-outline-primary btn-add-naan" title="Authorize new NAAN">
+                                            <i class="fas fa-plus"></i>
+                                        </button>
+                                    @endif
                                 </td>
                             </tr>
                         </table>
@@ -206,7 +214,7 @@
         var isRegistered = {{ $authority->isRegistered() ? 'true' : 'false' }};
         var uuid = '{{ $authority->id }}';
 
-        if (isRegistered) {
+        function fetchWalletData() {
             $('#walletSpinner, #naanSpinner').show();
             if ($('#walletAddress').text() === 'Loading...') {
                 $('#walletAddress').html('<i class="fas fa-spinner fa-spin"></i>');
@@ -216,6 +224,7 @@
                 url: '/dashboard/authority/' + uuid + '/api-data',
                 type: 'GET',
                 success: function(response) {
+                    $('#walletSpinner, #naanSpinner').hide();
                     if (!response.error) {
                         $('#walletAddress').text(response.wallet_address || 'Not found');
                         $('#walletBalance').html('<strong>' + response.balance + '</strong>');
@@ -230,11 +239,70 @@
                     }
                 },
                 error: function() {
+                    $('#walletSpinner, #naanSpinner').hide();
                     $('#walletBalance').html('<span class="text-danger">Error</span>');
                     $('#walletNaans').html('<span class="text-danger">Error</span>');
                 }
             });
         }
+
+        if (isRegistered) {
+            fetchWalletData();
+        }
+
+        // Authorize NAAN flow
+        $('.btn-add-naan').click(function() {
+            Swal.fire({
+                title: 'Authorize NAAN',
+                html: '<div class="text-left"><label>Enter NAAN:</label>' +
+                      '<input id="swal-naan" type="text" class="form-control" placeholder="e.g. 12345"></div>',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Authorize',
+                onOpen: function(popup) {
+                    popup.querySelector('#swal-naan').focus();
+                },
+                preConfirm: function() {
+                    let naan = Swal.getPopup().querySelector('#swal-naan').value.trim();
+                    if (!naan) {
+                        Swal.showValidationMessage('NAAN cannot be empty');
+                    }
+                    return naan;
+                }
+            }).then(function(result) {
+                if (result.value) {
+                    Swal.fire({
+                        title: 'Authorizing...',
+                        text: 'Please wait while the NAAN is registered on the blockchain.',
+                        allowOutsideClick: false,
+                        onBeforeOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    $.ajax({
+                        url: '/dashboard/authority/' + uuid + '/authorize-naan',
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            naan: result.value
+                        },
+                        success: function(res) {
+                            if (res.success) {
+                                Swal.fire('Success!', res.message, 'success');
+                                fetchWalletData(); // Refresh Wallet UI
+                            } else {
+                                Swal.fire('Error', res.message, 'error');
+                            }
+                        },
+                        error: function(xhr) {
+                            Swal.fire('Error', 'Failed to authorize NAAN.', 'error');
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
+        });
     });
 </script>
 @stop

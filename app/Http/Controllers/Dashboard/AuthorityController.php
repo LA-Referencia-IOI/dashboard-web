@@ -223,4 +223,40 @@ class AuthorityController extends Controller
             ], 500);
         }
     }
+
+    public function authorizeNaan(\Illuminate\Http\Request $request, Authority $authority)
+    {
+        $request->validate([
+            'naan' => 'required|string|max:50'
+        ]);
+
+        $adminApiUrl = env('ADMIN_API_BASE_URL');
+        if (!$adminApiUrl) {
+            return response()->json(['success' => false, 'message' => 'Admin API not configured.'], 500);
+        }
+
+        try {
+            $response = Http::timeout(60)->post($adminApiUrl . '/api/v1/admin/authority/' . $authority->id . '/authorize-naan', [
+                'naan' => $request->naan
+            ]);
+
+            if ($response->successful()) {
+                return response()->json([
+                    'success' => true, 
+                    'message' => 'NAAN ' . $request->naan . ' successfully authorized!'
+                ]);
+            }
+
+            return response()->json([
+                'success' => false, 
+                'message' => 'Failed to authorize NAAN: ' . $response->body()
+            ], $response->status());
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false, 
+                'message' => 'Error connecting to Admin API: ' . $th->getMessage()
+            ], 500);
+        }
+    }
 }
