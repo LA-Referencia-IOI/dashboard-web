@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\AuthorityRequest;
 use App\Models\Authority;
+use App\Models\AuthorityBalanceHistory;
 use Illuminate\Support\Facades\Http;
 
 class AuthorityController extends Controller
@@ -166,6 +167,12 @@ class AuthorityController extends Controller
                     $authority->wallet_address = $balanceResponse->json('wallet_address');
                 }
                 $authority->save();
+
+                // Snapshot for history if changed or first time
+                $lastHistory = $authority->balanceHistories()->latest()->first();
+                if (!$lastHistory || $lastHistory->balance != $balance) {
+                    $authority->balanceHistories()->create(['balance' => $balance]);
+                }
             }
 
             return response()->json([
@@ -258,5 +265,31 @@ class AuthorityController extends Controller
                 'message' => 'Error connecting to Admin API: ' . $th->getMessage()
             ], 500);
         }
+    }
+
+    public function balanceHistoryData(Authority $authority)
+    {
+        $histories = $authority->balanceHistories()
+            ->orderBy('created_at', 'asc')
+            ->get();
+
+        $labels = [];
+        $data = [];
+
+        foreach ($histories as $history) {
+            $labels[] = $history->created_at->format('d/m H:i:s');
+            $data[] = $history->balance;
+        }
+
+        // If no history, show current balance as a single point
+        if (count($data) === 0) {
+            $labels[] = now()->format('d/m H:i:s');
+            $data[] = $authority->balance ?? 0;
+        }
+
+        return response()->json([
+            'labels' => $labels,
+            'data' => $data
+        ]);
     }
 }

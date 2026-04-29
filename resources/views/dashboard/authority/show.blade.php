@@ -2,6 +2,7 @@
 
 @section('title', 'Authority — ' . $authority->name)
 @section('plugins.Sweetalert2', true)
+@section('plugins.Chartjs', true)
 
 @section('content')
     @if (session('message'))
@@ -126,6 +127,20 @@
                     @endif
                 </div>
             </div>
+
+            {{-- ── Balance Evolution Chart ───────────────────────────────── --}}
+            @if ($authority->isRegistered())
+            <div class="box box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fas fa-chart-line mr-1"></i> Balance Evolution</h3>
+                </div>
+                <div class="box-body">
+                    <div class="chart">
+                        <canvas id="balanceChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                    </div>
+                </div>
+            </div>
+            @endif
         </div>
 
         {{-- ── Institutions Panel ────────────────────────────────────────── --}}
@@ -233,6 +248,9 @@
                             ? response.naans.map(n => '<span class="badge badge-dark mr-1">' + n + '</span>').join('')
                             : '<span class="text-muted">None</span>';
                         $('#walletNaans').html(naansHtml);
+
+                        // Also refresh chart data
+                        fetchChartData();
                     } else {
                         $('#walletBalance').html('<span class="text-danger">API Error</span>');
                         $('#walletNaans').html('<span class="text-danger">API Error</span>');
@@ -303,6 +321,81 @@
                 }
             });
         });
+
+        // Chart Logic
+        var balanceChart;
+        function fetchChartData() {
+            $.ajax({
+                url: '/dashboard/authority/' + uuid + '/balance-history',
+                type: 'GET',
+                success: function(response) {
+                    renderChart(response.labels, response.data);
+                }
+            });
+        }
+
+        function renderChart(labels, data) {
+            var ctx = document.getElementById('balanceChart').getContext('2d');
+            
+            if (balanceChart) {
+                balanceChart.data.labels = labels;
+                balanceChart.data.datasets[0].data = data;
+                balanceChart.update();
+                return;
+            }
+
+            var gradient = ctx.createLinearGradient(0, 0, 0, 250);
+            gradient.addColorStop(0, 'rgba(0, 123, 255, 0.5)');
+            gradient.addColorStop(1, 'rgba(0, 123, 255, 0)');
+
+            balanceChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Balance (dark)',
+                        data: data,
+                        borderColor: '#007bff',
+                        backgroundColor: gradient,
+                        borderWidth: 2,
+                        pointBackgroundColor: '#007bff',
+                        pointBorderColor: '#fff',
+                        pointRadius: 4,
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                callback: function(value) {
+                                    return value + ' dark';
+                                }
+                            }
+                        }],
+                        xAxes: [{
+                            gridLines: {
+                                display: false
+                            }
+                        }]
+                    },
+                    legend: {
+                        display: false
+                    },
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.yLabel + ' dark';
+                            }
+                        }
+                    }
+                }
+            });
+        }
     });
 </script>
 @stop
