@@ -68,8 +68,53 @@ class AuthorityController extends Controller
 
     public function show(Authority $authority)
     {
-        $authority->load('institutions', 'account', 'blockchains');
-        return view($this->viewPath . 'show', compact('authority'));
+        $authority->load('institutions', 'account', 'blockchains', 'naans');
+        $assignedNaanIds = $authority->naans->pluck('id')->toArray();
+        $availableNaans = \App\Models\Naan::whereNotIn('id', $assignedNaanIds)->get();
+        return view($this->viewPath . 'show', compact('authority', 'availableNaans'));
+    }
+
+    public function syncNaans(\Illuminate\Http\Request $request, Authority $authority)
+    {
+        $request->validate([
+            'naans' => 'array',
+            'naans.*' => 'exists:naans,id'
+        ]);
+
+        $newNaansIds = $request->naans ?? [];
+        
+        // Sync local database without removing existing ones
+        $authority->naans()->syncWithoutDetaching($newNaansIds);
+
+        // Call admin_api to authorize newly added NAANs on the blockchain
+        $adminApiUrl = env('ADMIN_API_BASE_URL');
+        $apiErrors = [];
+
+        if ($adminApiUrl && !empty($newNaansIds)) {
+            $addedNaans = \App\Models\Naan::whereIn('id', $newNaansIds)->get();
+            foreach ($addedNaans as $naanObj) {
+                try {
+                    $response = Http::timeout(60)->post($adminApiUrl . '/api/v1/admin/authority/' . $authority->id . '/authorize-naan', [
+                        'naan' => $naanObj->naan
+                    ]);
+
+                    if (!$response->successful()) {
+                        $apiErrors[] = "Failed to authorize NAAN {$naanObj->naan}: " . $response->body();
+                    }
+                } catch (\Throwable $th) {
+                    $apiErrors[] = "Error connecting to Admin API for NAAN {$naanObj->naan}: " . $th->getMessage();
+                }
+            }
+        }
+
+        if (count($apiErrors) > 0) {
+            return redirect()->back()->with([
+                'message' => 'Database assigned, but blockchain errors occurred: ' . implode(' | ', $apiErrors),
+                'code' => 'warning'
+            ]);
+        }
+
+        return redirect()->back()->with(['message' => 'NAANs assigned and authorized successfully.', 'code' => 'success']);
     }
 
     public function edit(Authority $authority)

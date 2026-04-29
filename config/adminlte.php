@@ -232,37 +232,37 @@ return [
             'label' => '',
         ],
         [
-            'text'  => 'Institutions',
-            'url'   => 'dashboard/institutions',
-            'icon'  => 'fas fa-university',
+            'text'  => 'Naans',
+            'url'   => 'dashboard/naans',
+            'icon'  => 'fas fa-hashtag',
         ],
-        [
-            'text'  => 'ARKs',
-            'url'   => 'dashboard/arks',
-            'icon'  => 'fas fa-ship',
-        ],
-        ['header' => 'BLOCKCHAIN'],
-        [
-            'text'  => 'Accounts / Wallets',
-            'url'   => 'dashboard/accounts',
-            'icon'  => 'fas fa-wallet',
-        ],
-        [
-            'text'    => 'Blockchain',
-            'url'     => 'dashboard/blockchains',
-            'icon'    => 'fas fa-link',
-        ],
+        // [
+        //     'text'  => 'ARKs',
+        //     'url'   => 'dashboard/arks',
+        //     'icon'  => 'fas fa-ship',
+        // ],
+        // ['header' => 'BLOCKCHAIN'],
+        // [
+        //     'text'  => 'Accounts / Wallets',
+        //     'url'   => 'dashboard/accounts',
+        //     'icon'  => 'fas fa-wallet',
+        // ],
+        // [
+        //     'text'    => 'Blockchain',
+        //     'url'     => 'dashboard/blockchains',
+        //     'icon'    => 'fas fa-link',
+        // ],
         ['header' => 'ADMINISTRATION'],
         [
             'text'  => 'Users',
             'url'   => 'dashboard/users',
             'icon'  => 'fas fa-users',
         ],
-        [
-            'text'  => 'Settings',
-            'url'   => 'dashboard/settings',
-            'icon'  => 'fas fa-cog',
-        ],
+        // [
+        //     'text'  => 'Settings',
+        //     'url'   => 'dashboard/settings',
+        //     'icon'  => 'fas fa-cog',
+        // ],
         [
             'text'  => 'API Tests',
             'url'   => 'dashboard/tests/api-health',

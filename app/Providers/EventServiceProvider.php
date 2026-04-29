@@ -39,26 +39,26 @@ class EventServiceProvider extends ServiceProvider
                 'text' => 'New Users',
                 'route' => 'users.index',
             ]);
-            $event->menu->add([
-                'icon' => 'fas fa-fw fa-building',
-                'text' => 'Institutions',
-                'route' => 'institutions.index',
-            ]);
-            $event->menu->add([
-                'icon' => 'fas fa-fw fa-ship',
-                'text' => 'Ark',
-                'route' => 'institutions.index-ark',
-            ]);
+            // $event->menu->add([
+            //     'icon' => 'fas fa-fw fa-building',
+            //     'text' => 'Institutions',
+            //     'route' => 'institutions.index',
+            // ]);
+            // $event->menu->add([
+            //     'icon' => 'fas fa-fw fa-ship',
+            //     'text' => 'Ark',
+            //     'route' => 'institutions.index-ark',
+            // ]);
             // $event->menu->add([
             //     'icon' => 'fas fa-book',
             //     'text' => 'Balances',
             //     'route' => 'users.index',
             // ]);
-            $event->menu->add([
-                'icon' => 'fas fa-user-plus',
-                'text' => 'Accounts',
-                'route' => 'accounts.index',
-            ]);
+            // $event->menu->add([
+            //     'icon' => 'fas fa-user-plus',
+            //     'text' => 'Accounts',
+            //     'route' => 'accounts.index',
+            // ]);
             // $event->menu->add([
             //     'icon' => 'fa fa-signal',
             //     'text' => 'Metrics',
@@ -70,16 +70,16 @@ class EventServiceProvider extends ServiceProvider
                 'text' => 'Network',
                 'route' => 'blockchains.index',
             ]);
-            $event->menu->add([
-                'icon' => 'fas fa-desktop',
-                'text' => 'Logs',
-                'route' => 'blockchains.log',
-            ]);
-            $event->menu->add([
-                'icon' => 'fas fa-database',
-                'text' => 'Backup',
-                'route' => 'blockchains.backup_blockchain',
-            ]);
+            // $event->menu->add([
+            //     'icon' => 'fas fa-desktop',
+            //     'text' => 'Logs',
+            //     'route' => 'blockchains.log',
+            // ]);
+            // $event->menu->add([
+            //     'icon' => 'fas fa-database',
+            //     'text' => 'Backup',
+            //     'route' => 'blockchains.backup_blockchain',
+            // ]);
             $event->menu->add('TESTING');
             $event->menu->add([
                 'icon' => 'fas fa-server',

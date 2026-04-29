@@ -10,6 +10,7 @@ use App\Http\Controllers\Dashboard\ImageController;
 use App\Http\Controllers\Dashboard\ArkController;
 use App\Http\Controllers\Dashboard\SettingController;
 use App\Http\Controllers\Dashboard\TestController;
+use App\Http\Controllers\Dashboard\NaanController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -49,6 +50,7 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::get('authority/{authority}/api-data', [AuthorityController::class, 'apiData'])->name('authorities.apiData');
         Route::post('authority/{authority}/fund', [AuthorityController::class, 'fund'])->name('authorities.fund');
         Route::post('authority/{authority}/authorize-naan', [AuthorityController::class, 'authorizeNaan'])->name('authorities.authorizeNaan');
+        Route::post('authority/{authority}/sync-naans', [AuthorityController::class, 'syncNaans'])->name('authorities.syncNaans');
         Route::get('authority/{authority}/balance-history', [AuthorityController::class, 'balanceHistoryData'])->name('authorities.balanceHistoryData');
         Route::get('authority/{authority}', [AuthorityController::class, 'show'])->name('authorities.show');
 
@@ -59,6 +61,14 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::get('institution/edit/{institution}', [InstitutionController::class, 'edit'])->name('institutions.edit');
         Route::put('institution/{institution}', [InstitutionController::class, 'update'])->name('institutions.update');
         Route::delete('institution/destroy/{institution}', [InstitutionController::class, 'destroy'])->name('institutions.destroy');
+
+        // ── NAANs ───────────────────────────────────────────────────────
+        Route::get('naans', [NaanController::class, 'index'])->name('naans.index');
+        Route::get('naan/create', [NaanController::class, 'create'])->name('naans.create');
+        Route::post('naans', [NaanController::class, 'store'])->name('naans.store');
+        Route::get('naan/{naan}/edit', [NaanController::class, 'edit'])->name('naans.edit');
+        Route::put('naan/{naan}', [NaanController::class, 'update'])->name('naans.update');
+        Route::delete('naan/destroy/{naan}', [NaanController::class, 'destroy'])->name('naans.destroy');
 
         // ── ARKs ───────────────────────────────────────────────────────
         Route::get('arks', [ArkController::class, 'index'])->name('institutions.index-ark');

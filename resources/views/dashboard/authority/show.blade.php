@@ -143,78 +143,54 @@
             @endif
         </div>
 
-        {{-- ── Institutions Panel ────────────────────────────────────────── --}}
+        {{-- ── NAANs Panel ────────────────────────────────────────── --}}
         <div class="col-md-8">
             <div class="box box-solid">
                 <div class="box-header with-border">
                     <h3 class="box-title">
-                        <i class="fas fa-university mr-1"></i>
-                        Institutions
-                        <span class="badge badge-info ml-1">{{ $authority->institutions->count() }}</span>
+                        <i class="fas fa-hashtag mr-1"></i>
+                        Available NAANs to Assign
                     </h3>
-                    <div class="box-tools">
-                        <a href="{{ route('institutions.create', ['authority_id' => $authority->id]) }}"
-                           class="btn btn-custom btn-sm">
-                            <i class="fas fa-plus mr-1"></i> Add Institution
-                        </a>
-                    </div>
                 </div>
                 <div class="box-body no-padding">
-                    @if ($authority->institutions->count() > 0)
-                        <div class="table-responsive">
+                    <form action="{{ route('authorities.syncNaans', $authority->id) }}" method="POST">
+                        @csrf
+                        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                             <table class="table table-hover mb-0">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th>Name</th>
-                                        <th>Type</th>
-                                        <th>Email</th>
-                                        <th>Location</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
+                                        <th style="width: 50px;" class="text-center">Select</th>
+                                        <th>NAAN</th>
+                                        <th>Organization</th>
+                                        <th>Contact</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($authority->institutions as $institution)
+                                    @forelse ($availableNaans as $naan)
                                         <tr>
-                                            <td><strong>{{ $institution->name }}</strong></td>
-                                            <td>{{ $institution->getTypeAlias() }}</td>
-                                            <td>{{ $institution->email }}</td>
-                                            <td>
-                                                @if($institution->city)
-                                                    {{ $institution->city }}@if($institution->country), {{ $institution->country }}@endif
-                                                @else
-                                                    <span class="text-muted">—</span>
-                                                @endif
+                                            <td class="text-center">
+                                                <input type="checkbox" name="naans[]" value="{{ $naan->id }}">
                                             </td>
-                                            <td>{!! $institution->getStatus() !!}</td>
-                                            <td>
-                                                <a href="{{ route('institutions.create-ark-institution', $institution->id) }}"
-                                                   class="btn btn-warning btn-sm" title="ARK">
-                                                    <i class="fas fa-ship"></i>
-                                                </a>
-                                                <a href="{{ route('institutions.edit', $institution->id) }}"
-                                                   class="btn btn-primary btn-sm" title="Edit">
-                                                    <i class="fas fa-pencil-alt"></i>
-                                                </a>
-                                                <button class="btn btn-danger btn-sm" title="Delete"
-                                                    onclick="confirmDelete({{ $institution->id }}, '{{ route('institutions.destroy', $institution->id) }}')">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </td>
+                                            <td><strong>{{ $naan->naan }}</strong></td>
+                                            <td>{{ $naan->organization_name }}</td>
+                                            <td>{{ $naan->contact_name }}</td>
                                         </tr>
-                                    @endforeach
+                                    @empty
+                                        <tr>
+                                            <td colspan="4" class="text-center text-muted">All NAANs have been assigned to this Authority or there are no NAANs created yet.</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>
-                    @else
-                        <div class="text-center text-muted py-4">
-                            <i class="fas fa-university fa-2x mb-2 d-block opacity-50"></i>
-                            No institutions yet.
-                            <a href="{{ route('institutions.create', ['authority_id' => $authority->id]) }}">
-                                Add the first one
-                            </a>.
-                        </div>
-                    @endif
+                        @if($availableNaans->count() > 0)
+                            <div class="p-3 bg-light text-right">
+                                <button type="submit" class="btn btn-dark">
+                                    <i class="fas fa-link mr-1"></i> Assign NAAN
+                                </button>
+                            </div>
+                        @endif
+                    </form>
                 </div>
             </div>
         </div>

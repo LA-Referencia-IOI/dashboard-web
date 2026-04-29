@@ -40,6 +40,11 @@ class Authority extends Model
         return $this->hasMany(Institution::class, 'authority_id', 'id');
     }
 
+    public function naans()
+    {
+        return $this->belongsToMany(Naan::class, 'authority_naan', 'authority_id', 'naan_id')->withTimestamps();
+    }
+
     public function account()
     {
         return $this->hasOne(Account::class, 'authority_id', 'id');
