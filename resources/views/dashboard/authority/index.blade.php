@@ -28,6 +28,8 @@
                             <th>Responsible</th>
                             <th>Email</th>
                             <th>Institutions</th>
+                            <th>NAANs</th>
+                            <th>Wallet Balance</th>
                             <th>Status</th>
                             <th>Created at</th>
                             <th>Actions</th>
@@ -42,6 +44,20 @@
                                 <td>{{ $authority->email }}</td>
                                 <td>
                                     <span class="badge badge-info">{{ $authority->institutions_count }}</span>
+                                </td>
+                                <td class="auth-naans" data-uuid="{{ $authority->id }}">
+                                    @if($authority->isRegistered())
+                                        <i class="fas fa-spinner fa-spin text-muted"></i>
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
+                                </td>
+                                <td class="auth-balance" data-uuid="{{ $authority->id }}">
+                                    @if($authority->isRegistered())
+                                        <i class="fas fa-spinner fa-spin text-muted"></i>
+                                    @else
+                                        <span class="text-muted">-</span>
+                                    @endif
                                 </td>
                                 <td>{!! $authority->getStatusBadge() !!}</td>
                                 <td>{{ $authority->created_at->format('d/m/Y') }}</td>
@@ -78,4 +94,37 @@
     </div>
 
     @include('dashboard.partials.confirm-delete')
+@stop
+
+@section('js')
+<script>
+    $(document).ready(function() {
+        $('.auth-naans').each(function() {
+            let tdNaans = $(this);
+            let uuid = tdNaans.data('uuid');
+            let tdBalance = $('.auth-balance[data-uuid="' + uuid + '"]');
+
+            // Only fetch if it shows a spinner (meaning it's registered)
+            if (tdNaans.find('.fa-spinner').length > 0) {
+                $.ajax({
+                    url: '/dashboard/authority/' + uuid + '/api-data',
+                    type: 'GET',
+                    success: function(response) {
+                        if (response.error) {
+                            tdNaans.html('<span class="text-danger" title="' + response.error + '">?</span>');
+                            tdBalance.html('<span class="text-muted">' + response.balance + ' <i class="fas fa-exclamation-triangle text-warning" title="' + response.error + '"></i></span>');
+                        } else {
+                            tdNaans.html('<span class="badge badge-dark">' + response.naans_count + '</span>');
+                            tdBalance.html('<strong>' + response.balance + '</strong>');
+                        }
+                    },
+                    error: function() {
+                        tdNaans.html('<span class="text-danger">Error</span>');
+                        tdBalance.html('<span class="text-danger">Error</span>');
+                    }
+                });
+            }
+        });
+    });
+</script>
 @stop

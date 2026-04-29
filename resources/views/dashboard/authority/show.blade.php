@@ -67,20 +67,25 @@
                 <div class="box-header with-border">
                     <h3 class="box-title"><i class="fas fa-wallet mr-1"></i> Wallet</h3>
                 </div>
-                <div class="box-body">
-                    @if ($authority->account)
-                        <table class="table table-sm table-borderless">
+                <div class="box-body" id="walletInfoBox">
+                    @if ($authority->wallet_address || $authority->isRegistered())
+                        <table class="table table-sm table-borderless mb-0">
                             <tr>
                                 <th class="text-muted">Address</th>
-                                <td><small><code>{{ $authority->account->address ?? '—' }}</code></small></td>
+                                <td><small><code id="walletAddress">{{ $authority->wallet_address ?? 'Loading...' }}</code></small></td>
                             </tr>
                             <tr>
                                 <th class="text-muted">Balance</th>
-                                <td>{{ $authority->account->balance ?? '0' }}</td>
+                                <td id="walletBalance">
+                                    {{ $authority->balance ?? '0' }} ETH
+                                    <i class="fas fa-spinner fa-spin ml-2 text-muted" id="walletSpinner" style="display:none;"></i>
+                                </td>
                             </tr>
                             <tr>
-                                <th class="text-muted">NAAN</th>
-                                <td>{{ $authority->account->naan ?? '—' }}</td>
+                                <th class="text-muted">NAANs</th>
+                                <td id="walletNaans">
+                                    <i class="fas fa-spinner fa-spin text-muted" id="naanSpinner" style="display:none;"></i>
+                                </td>
                             </tr>
                         </table>
                     @else
@@ -193,4 +198,43 @@
     </div>
 
     @include('dashboard.partials.confirm-delete')
+@stop
+
+@section('js')
+<script>
+    $(document).ready(function() {
+        var isRegistered = {{ $authority->isRegistered() ? 'true' : 'false' }};
+        var uuid = '{{ $authority->id }}';
+
+        if (isRegistered) {
+            $('#walletSpinner, #naanSpinner').show();
+            if ($('#walletAddress').text() === 'Loading...') {
+                $('#walletAddress').html('<i class="fas fa-spinner fa-spin"></i>');
+            }
+
+            $.ajax({
+                url: '/dashboard/authority/' + uuid + '/api-data',
+                type: 'GET',
+                success: function(response) {
+                    if (!response.error) {
+                        $('#walletAddress').text(response.wallet_address || 'Not found');
+                        $('#walletBalance').html('<strong>' + response.balance + '</strong>');
+                        
+                        var naansHtml = response.naans.length > 0 
+                            ? response.naans.map(n => '<span class="badge badge-dark mr-1">' + n + '</span>').join('')
+                            : '<span class="text-muted">None</span>';
+                        $('#walletNaans').html(naansHtml);
+                    } else {
+                        $('#walletBalance').html('<span class="text-danger">API Error</span>');
+                        $('#walletNaans').html('<span class="text-danger">API Error</span>');
+                    }
+                },
+                error: function() {
+                    $('#walletBalance').html('<span class="text-danger">Error</span>');
+                    $('#walletNaans').html('<span class="text-danger">Error</span>');
+                }
+            });
+        }
+    });
+</script>
 @stop

@@ -46,6 +46,7 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::put('authority/{authority}', [AuthorityController::class, 'update'])->name('authorities.update');
         Route::delete('authority/destroy/{authority}', [AuthorityController::class, 'destroy'])->name('authorities.destroy');
         Route::get('authority/{authority}/register', [AuthorityController::class, 'registerAuthority'])->name('authorities.register');
+        Route::get('authority/{authority}/api-data', [AuthorityController::class, 'apiData'])->name('authorities.apiData');
         Route::get('authority/{authority}', [AuthorityController::class, 'show'])->name('authorities.show');
 
         // ── Institutions (create only via Authority show page) ─────────
