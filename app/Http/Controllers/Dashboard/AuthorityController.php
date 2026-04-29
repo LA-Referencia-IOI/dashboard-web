@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\AuthorityRequest;
 use App\Models\Authority;
 use App\Models\AuthorityBalanceHistory;
+use App\Models\WalletTransfer;
 use Illuminate\Support\Facades\Http;
 
 class AuthorityController extends Controller
@@ -128,6 +129,13 @@ class AuthorityController extends Controller
             $authority->status = 'active';
             $authority->save();
 
+            // Log the registration transfer
+            WalletTransfer::create([
+                'authority_id' => $authority->id,
+                'amount' => 0.05,
+                'tx_hash' => 'registration-funding'
+            ]);
+
             return redirect()->back()->with([
                 'message' => 'Authority successfully registered on the blockchain.',
                 'code'    => 'success',
@@ -211,6 +219,13 @@ class AuthorityController extends Controller
             ]);
 
             if ($response->successful()) {
+                // Log the transfer
+                WalletTransfer::create([
+                    'authority_id' => $authority->id,
+                    'amount' => (float) $request->amount,
+                    'tx_hash' => $response->json('transaction_hash')
+                ]);
+
                 return response()->json([
                     'success' => true, 
                     'message' => 'Successfully injected ' . $request->amount . ' dark.',

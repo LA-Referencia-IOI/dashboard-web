@@ -87,6 +87,7 @@ Route::group(['middleware' => ['https.protocol']], function () {
 
         // ── Blockchains ────────────────────────────────────────────────
         Route::get('blockchains', [BlockchainController::class, 'index'])->name('blockchains.index');
+        Route::get('blockchains/master-wallet-data', [BlockchainController::class, 'masterWalletData'])->name('blockchains.masterWalletData');
         Route::get('blockchain/create', [BlockchainController::class, 'create'])->name('blockchains.create');
         Route::get('blockchain/edit/{blockchain}', [BlockchainController::class, 'edit'])->name('blockchains.edit');
         Route::post('blockchain/create', [BlockchainController::class, 'store'])->name('blockchains.store');

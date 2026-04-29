@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Dashboard\BlockchainRequest;
 use App\Models\User;
 use App\Models\Blockchain;
+use App\Models\MasterBalanceHistory;
+use App\Models\WalletTransfer;
 use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 
@@ -16,9 +18,56 @@ class BlockchainController extends Controller
 
     public function index(Request $request)
     {
-        
         $blockchains = Blockchain::orderBy('type')->paginate(config('pagination.default'));
-        return view($this->viewPath . 'index', compact('blockchains'));
+        
+        // Fetch all wallet transfers for the ledger
+        $transfers = WalletTransfer::with('authority')->orderBy('created_at', 'desc')->get();
+
+        return view($this->viewPath . 'index', compact('blockchains', 'transfers'));
+    }
+
+    public function masterWalletData()
+    {
+        $adminApiUrl = env('ADMIN_API_BASE_URL');
+        $currentBalance = 0;
+        
+        if ($adminApiUrl) {
+            try {
+                $statusResponse = Http::timeout(5)->get($adminApiUrl . '/api/v1/admin/status');
+                if ($statusResponse->successful()) {
+                    $currentBalance = $statusResponse->json('admin_balance_eth') ?? 0;
+                    
+                    // Snapshot if changed
+                    $lastHistory = MasterBalanceHistory::latest()->first();
+                    if (!$lastHistory || $lastHistory->balance != $currentBalance) {
+                        MasterBalanceHistory::create(['balance' => $currentBalance]);
+                    }
+                }
+            } catch (\Throwable $th) {
+                // Ignore API errors, just return local history if available
+            }
+        }
+
+        $histories = MasterBalanceHistory::orderBy('created_at', 'asc')->get();
+        $labels = [];
+        $data = [];
+
+        foreach ($histories as $history) {
+            $labels[] = $history->created_at->format('d/m H:i:s');
+            $data[] = $history->balance;
+        }
+
+        // If no history at all
+        if (count($data) === 0) {
+            $labels[] = now()->format('d/m H:i:s');
+            $data[] = $currentBalance;
+        }
+
+        return response()->json([
+            'labels' => $labels,
+            'data' => $data,
+            'current_balance' => number_format((float)$currentBalance, 4) . ' dark'
+        ]);
     }
 
     public function showLogs()

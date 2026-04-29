@@ -55,6 +55,11 @@ class Authority extends Model
         return $this->hasMany(AuthorityBalanceHistory::class, 'authority_id', 'id');
     }
 
+    public function walletTransfers()
+    {
+        return $this->hasMany(WalletTransfer::class, 'authority_id', 'id');
+    }
+
     public function getStatusBadge()
     {
         switch ($this->status) {
