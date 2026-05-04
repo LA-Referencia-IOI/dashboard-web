@@ -254,6 +254,11 @@ return [
         // ],
         ['header' => 'ADMINISTRATION'],
         [
+            'text'  => 'Server Resources',
+            'url'   => 'dashboard/server-resources',
+            'icon'  => 'fas fa-server',
+        ],
+        [
             'text'  => 'Users',
             'url'   => 'dashboard/users',
             'icon'  => 'fas fa-users',

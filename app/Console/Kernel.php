@@ -24,7 +24,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('server:record-disk-space')
+                 ->dailyAt('23:00')
+                 ->timezone('America/Sao_Paulo');
     }
 
     /**

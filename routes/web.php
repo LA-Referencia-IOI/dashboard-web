@@ -11,6 +11,7 @@ use App\Http\Controllers\Dashboard\ArkController;
 use App\Http\Controllers\Dashboard\SettingController;
 use App\Http\Controllers\Dashboard\TestController;
 use App\Http\Controllers\Dashboard\NaanController;
+use App\Http\Controllers\Dashboard\ServerResourceController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -111,6 +112,10 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
         Route::put('settings/{user}', [SettingController::class, 'update'])->name('settings.update');
         Route::post('settings/change-menu', [SettingController::class, 'changeMenu'])->name('settings.changeMenu');
+
+        // ── Server Resources ───────────────────────────────────────────
+        Route::get('server-resources', [ServerResourceController::class, 'index'])->name('server-resources.index');
+        Route::get('server-resources/api-data', [ServerResourceController::class, 'apiData'])->name('server-resources.apiData');
 
         Route::put('image/{id}/upload', [ImageController::class, 'upload'])->name('image.upload');
         Route::delete('image/destroy/{file}', [ImageController::class, 'destroy'])->name('image.destroy');
