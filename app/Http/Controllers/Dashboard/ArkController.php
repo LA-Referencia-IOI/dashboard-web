@@ -17,18 +17,7 @@ class ArkController extends Controller
 
     public function index(Request $request)
     {
-        $total = Ark::count();
-        $s = isset($request['s']) ? $request['s'] : null;
-
-        
-        if ($s) {
-            $arks = Ark::where('who', 'LIKE', '%' . $s . '%')
-                ->orderBy('who')
-                ->paginate(config('pagination.default'));
-        }else{
-            $arks = Ark::orderBy('who')->paginate(config('pagination.default'));
-        }
-        return view($this->viewPath . 'index-ark', compact('arks', 'total', 's'));
+        return view($this->viewPath . 'index-ark');
     }
     public function create(Institution $institution)
     {
