@@ -68,8 +68,9 @@
     document.addEventListener("DOMContentLoaded", function() {
         const tableBody = document.getElementById('arks-table-body');
         const resolverBaseUrl = '{{ env("RESOLVER_BASE_URL", "http://127.0.0.1:8002") }}';
+        const adminApiBaseUrl = '{{ env("ADMIN_API_BASE_URL", "http://127.0.0.1:8000") }}';
         
-        fetch('http://localhost:8000/api/v1/arks/recent?limit=5')
+        fetch(`${adminApiBaseUrl}/api/v1/arks/recent?limit=5`)
             .then(response => response.json())
             .then(data => {
                 tableBody.innerHTML = ''; // Clear loading state

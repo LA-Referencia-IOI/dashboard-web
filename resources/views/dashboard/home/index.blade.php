@@ -128,7 +128,8 @@
     }
 
     // Fetch ARKs stored count
-    fetch('http://localhost:8000/api/v1/arks/count')
+    const adminApiBaseUrl = '{{ env("ADMIN_API_BASE_URL", "http://127.0.0.1:8000") }}';
+    fetch(`${adminApiBaseUrl}/api/v1/arks/count`)
         .then(response => response.json())
         .then(data => {
             // Assuming the JSON returns something like { "count": 10 } or just the number.
