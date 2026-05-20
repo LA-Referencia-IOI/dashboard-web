@@ -12,6 +12,7 @@ use App\Http\Controllers\Dashboard\SettingController;
 use App\Http\Controllers\Dashboard\TestController;
 use App\Http\Controllers\Dashboard\NaanController;
 use App\Http\Controllers\Dashboard\ServerResourceController;
+use App\Http\Controllers\Dashboard\WorkerController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -116,6 +117,10 @@ Route::group(['middleware' => ['https.protocol']], function () {
         // ── Server Resources ───────────────────────────────────────────
         Route::get('server-resources', [ServerResourceController::class, 'index'])->name('server-resources.index');
         Route::get('server-resources/api-data', [ServerResourceController::class, 'apiData'])->name('server-resources.apiData');
+
+        // ── Workers ────────────────────────────────────────────────────
+        Route::get('workers', [WorkerController::class, 'index'])->name('workers.index');
+        Route::get('workers/api-data', [WorkerController::class, 'apiData'])->name('workers.apiData');
 
         Route::put('image/{id}/upload', [ImageController::class, 'upload'])->name('image.upload');
         Route::delete('image/destroy/{file}', [ImageController::class, 'destroy'])->name('image.destroy');

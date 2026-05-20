@@ -108,7 +108,8 @@ class TestController extends Controller
             if (!in_array($res->status(), [200, 503])) throw new \Exception("Minter API down: " . $res->body());
             $log("Minter API OK");
 
-            $res = Http::timeout(30)->withHeaders($minterHeaders)->get("$minterApiV1/worker/status");
+            $workerStatusUrl = rtrim(env('WORKER_STATUS_URL', "$minterApiV1/worker/status"), '/');
+            $res = Http::timeout(30)->withHeaders($minterHeaders)->get($workerStatusUrl);
             if (!$res->successful() || !$res->json('running')) throw new \Exception("Worker not running: " . $res->body());
             $log("Worker OK");
 

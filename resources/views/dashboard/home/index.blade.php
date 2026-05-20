@@ -18,7 +18,7 @@
         </div>
     @endif
     <div class="row">
-        <div class="col-lg-3 col-6">
+        <div class="col-2">
             <div class="small-box bg-purple">
             <div class="inner">
                 <h3>NAANs<sup style="font-size: 20px"></sup> </h3>
@@ -30,7 +30,7 @@
             <a href="{{route('naans.index')}}" class="small-box-footer">See <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
-        <div class="col-lg-3 col-6">
+        <div class="col-2">
             <div class="small-box bg-info">
             <div class="inner">
                 <h3>ARKs<sup style="font-size: 20px"> stored</sup> </h3>
@@ -42,7 +42,7 @@
             <a href="{{route('institutions.index-ark')}}" class="small-box-footer">See ARKs <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
-        <div class="col-lg-3 col-6">
+        <div class="col-2">
             <div class="small-box bg-purple">
             <div class="inner">
                 <h3>Block<sup style="font-size: 20px"> last</sup> </h3>
@@ -55,7 +55,31 @@
             <a href="{{route('blockchains.index')}}" class="small-box-footer">see <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
-        <div class="col-lg-3 col-6">
+        <div class="col-2">
+            <div class="small-box bg-success" id="workers-card">
+            <div class="inner">
+                <h3 id="workers-count"><i class="fas fa-spinner fa-spin" style="font-size:1.5rem"></i></h3>
+                <p>Workers</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-fw fa-cogs"></i>
+            </div>
+            <a href="{{route('workers.index')}}" class="small-box-footer">See <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="small-box bg-warning">
+            <div class="inner">
+                <h3 id="processing-count"><i class="fas fa-spinner fa-spin" style="font-size:1.5rem"></i></h3>
+                <p>Processing</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-fw fa-layer-group"></i>
+            </div>
+            <a href="{{route('workers.index')}}" class="small-box-footer">See <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <div class="col-2">
             <div class="small-box bg-danger">
             <div class="inner">
                 <h3>Errors<sup style="font-size: 20px"></sup></h3>
@@ -126,6 +150,31 @@
               radius: 300 // raio em metros
         }).addTo(map);
     }
+
+    // Fetch Worker status
+    const workerApiUrl = '{{ route("workers.apiData") }}';
+    fetch(workerApiUrl)
+        .then(r => r.json())
+        .then(d => {
+            const card   = document.getElementById('workers-card');
+            const count  = document.getElementById('workers-count');
+            const proc   = document.getElementById('processing-count');
+
+            if (d.error) {
+                count.innerHTML = '<small>N/A</small>';
+                proc.innerHTML  = '<small>N/A</small>';
+                return;
+            }
+
+            const running = d.running && !d.stale;
+            card.className = 'small-box ' + (running ? 'bg-success' : 'bg-danger');
+            count.textContent = running ? '1 running' : d.status || 'Stopped';
+            proc.textContent  = new Intl.NumberFormat().format(d.queue?.pending_total ?? 0);
+        })
+        .catch(() => {
+            document.getElementById('workers-count').innerHTML = '<small>N/A</small>';
+            document.getElementById('processing-count').innerHTML = '<small>N/A</small>';
+        });
 
     // Fetch ARKs stored count
     const adminApiBaseUrl = '{{ env("ADMIN_API_BASE_URL", "http://127.0.0.1:8000") }}';
