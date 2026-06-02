@@ -156,9 +156,9 @@
     fetch(workerApiUrl)
         .then(r => r.json())
         .then(d => {
-            const card   = document.getElementById('workers-card');
-            const count  = document.getElementById('workers-count');
-            const proc   = document.getElementById('processing-count');
+            const card  = document.getElementById('workers-card');
+            const count = document.getElementById('workers-count');
+            const proc  = document.getElementById('processing-count');
 
             if (d.error) {
                 count.innerHTML = '<small>N/A</small>';
@@ -166,10 +166,16 @@
                 return;
             }
 
-            const running = d.running && !d.stale;
-            card.className = 'small-box ' + (running ? 'bg-success' : 'bg-danger');
-            count.textContent = running ? '1 running' : d.status || 'Stopped';
-            proc.textContent  = new Intl.NumberFormat().format(d.queue?.pending_total ?? 0);
+            const overallColor = { healthy: 'bg-success', degraded: 'bg-warning', critical: 'bg-danger' };
+            card.className = 'small-box ' + (overallColor[d.overall] || 'bg-secondary');
+
+            const workers  = d.workers || {};
+            const alive    = Object.values(workers).filter(w => w.alive).length;
+            const total    = Object.values(workers).length;
+            count.textContent = `${alive}/${total} running`;
+
+            const totalPending = Object.values(workers).reduce((sum, w) => sum + (w.queue?.pending ?? 0), 0);
+            proc.textContent = new Intl.NumberFormat().format(totalPending);
         })
         .catch(() => {
             document.getElementById('workers-count').innerHTML = '<small>N/A</small>';
