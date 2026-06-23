@@ -17,25 +17,19 @@ class UsersTableSeeder extends Seeder
     {
         $password = bcrypt('password');
 
-        User::create([
-            'profile' => UserType::Administrator,
-            'name' => 'Administrator',
-            'email' => 'admin@darkpid.com',
-            'password' => $password
-        ]);
+        User::firstOrCreate(
+            ['email' => 'admin@darkpid.com'],
+            ['profile' => UserType::Administrator, 'name' => 'Administrator', 'password' => $password]
+        );
 
-        User::create([
-            'profile' => UserType::Instituition,
-            'name' => 'Instituition',
-            'email' => 'instituition@darkpid.com',
-            'password' => $password
-        ]);
+        User::firstOrCreate(
+            ['email' => 'instituition@darkpid.com'],
+            ['profile' => UserType::Instituition, 'name' => 'Instituition', 'password' => $password]
+        );
 
-        User::create([
-            'profile' => UserType::User,
-            'name' => 'User',
-            'email' => 'user@darkpid.com',
-            'password' => $password
-        ]);
+        User::firstOrCreate(
+            ['email' => 'user@darkpid.com'],
+            ['profile' => UserType::User, 'name' => 'User', 'password' => $password]
+        );
     }
 }
