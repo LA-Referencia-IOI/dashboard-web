@@ -106,7 +106,7 @@ def run(cmd, check=True, capture=False, cwd=PROJECT_DIR, timeout=300):
 
 def docker_exec(command, container=CONTAINER_APP):
     """Execute a command inside a Docker container."""
-    return run(f"sudo docker exec {container} bash -c '{command}'")
+    return run(f"docker exec {container} bash -c '{command}'")
 
 
 def check_command_exists(name):
@@ -150,8 +150,8 @@ def step_check_prerequisites():
 def get_compose_cmd():
     """Return the appropriate docker-compose command."""
     if check_command_exists("docker-compose"):
-        return "sudo docker-compose"
-    return "sudo docker compose"
+        return "docker-compose"
+    return "docker compose"
 
 
 def step_setup_env():
@@ -231,7 +231,7 @@ def step_wait_mysql():
     start = time.time()
     while time.time() - start < MYSQL_READY_TIMEOUT:
         result = run(
-            f'sudo docker exec {CONTAINER_MYSQL} mysqladmin ping -u root -pdark --silent',
+            f'docker exec {CONTAINER_MYSQL} mysqladmin ping -u root -pdark --silent',
             check=False,
             capture=True,
         )
@@ -266,7 +266,7 @@ def step_install_composer():
 
     # Check if the container is running
     result = run(
-        f"sudo docker inspect -f '{{{{.State.Running}}}}' {CONTAINER_APP}",
+        f"docker inspect -f '{{{{.State.Running}}}}' {CONTAINER_APP}",
         check=False,
         capture=True,
     )
@@ -349,7 +349,7 @@ def print_success():
   Password for all: {Colors.BOLD}password{Colors.RESET}
 
   {Colors.YELLOW}Tip:{Colors.RESET} To stop the application:
-    sudo docker-compose down
+    docker compose down
 
   {Colors.YELLOW}Tip:{Colors.RESET} To reset everything and reinstall:
     python3 install.py --reset
