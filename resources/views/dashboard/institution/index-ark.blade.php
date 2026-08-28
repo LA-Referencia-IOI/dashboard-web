@@ -67,10 +67,22 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const tableBody = document.getElementById('arks-table-body');
-        const resolverBaseUrl = '{{ env("RESOLVER_BASE_URL", "http://127.0.0.1:8002") }}';
-        const adminApiBaseUrl = '{{ env("ADMIN_API_BASE_URL", "http://127.0.0.1:8000") }}';
-        
-        fetch(`${adminApiBaseUrl}/api/v1/arks/recent?limit=5`)
+        const recentArksUrl = @json(route('arks.api.recent'));
+        const metadataApiUrl = @json(route('arks.api.metadata'));
+
+        const esc = (v) => String(v ?? '').replace(/[&<>"']/g, c => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[c]));
+        const safeHref = (u) => {
+            try {
+                const parsed = new URL(u, window.location.origin);
+                return (parsed.protocol === 'http:' || parsed.protocol === 'https:') ? parsed.href : '#';
+            } catch (e) {
+                return '#';
+            }
+        };
+
+        fetch(`${recentArksUrl}?limit=5`)
             .then(response => response.json())
             .then(data => {
                 tableBody.innerHTML = ''; // Clear loading state
@@ -87,22 +99,25 @@
 
                 data.arks.forEach(ark => {
                     const tr = document.createElement('tr');
-                    
-                    const ownerShort = ark.owner ? ark.owner.substring(0, 8) + '...' + ark.owner.substring(ark.owner.length - 6) : 'N/A';
-                    const cidShort = ark.cid ? ark.cid.substring(0, 10) + '...' : 'N/A';
-                    
-                    const metadataUrl = `${resolverBaseUrl}/api/v1/arks/${ark.pid}?metadata=true`;
+
+                    const owner = ark.owner || '';
+                    const ownerShort = owner ? owner.substring(0, 8) + '...' + owner.substring(owner.length - 6) : 'N/A';
+                    const cid = ark.cid || '';
+                    const cidShort = cid ? cid.substring(0, 10) + '...' : 'N/A';
+
+                    const metadataUrl = `${metadataApiUrl}?pid=${encodeURIComponent(ark.pid || '')}`;
 
                     tr.innerHTML = `
-                        <td><strong>${ark.pid || 'N/A'}</strong></td>
-                        <td>${ark.name || 'N/A'}</td>
-                        <td><span class="badge badge-dark">${ark.naan || 'N/A'}</span></td>
-                        <td><code title="${ark.owner}">${ownerShort}</code></td>
-                        <td><a href="${ark.url}" target="_blank" class="btn btn-xs btn-outline-info"><i class="fas fa-external-link-alt"></i> Link</a></td>
-                        <td><span class="text-muted" title="${ark.cid}">${cidShort}</span></td>
-                        <td><button class="btn btn-xs btn-warning" onclick="showMetadata('${metadataUrl}', '${ark.pid}')"><i class="fas fa-code"></i> JSON</button></td>
+                        <td><strong>${esc(ark.pid) || 'N/A'}</strong></td>
+                        <td>${esc(ark.name) || 'N/A'}</td>
+                        <td><span class="badge badge-dark">${esc(ark.naan) || 'N/A'}</span></td>
+                        <td><code title="${esc(owner)}">${esc(ownerShort)}</code></td>
+                        <td><a href="${esc(safeHref(ark.url))}" target="_blank" rel="noopener noreferrer" class="btn btn-xs btn-outline-info"><i class="fas fa-external-link-alt"></i> Link</a></td>
+                        <td><span class="text-muted" title="${esc(cid)}">${esc(cidShort)}</span></td>
+                        <td><button type="button" class="btn btn-xs btn-warning btn-metadata"><i class="fas fa-code"></i> JSON</button></td>
                     `;
-                    
+
+                    tr.querySelector('.btn-metadata').addEventListener('click', () => showMetadata(metadataUrl, ark.pid || ''));
                     tableBody.appendChild(tr);
                 });
             })
@@ -125,7 +140,7 @@
             })
             .catch(error => {
                 console.error("Error fetching metadata:", error);
-                document.getElementById('metadataContent').innerText = 'Failed to load metadata. Please check if the API is running and CORS is allowed.';
+                document.getElementById('metadataContent').innerText = 'Failed to load metadata. Please check if the Resolver API is reachable.';
             });
     };
 </script>

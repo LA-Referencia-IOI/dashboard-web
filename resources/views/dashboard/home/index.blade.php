@@ -6,7 +6,6 @@
     <h5>
         Welcome {{ \Auth::user()->name }} || Today: {{ now()->format('d/m/Y') }}
     </h5>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet/dist/leaflet.css" />
 @endsection
 
 @section('content')
@@ -94,63 +93,10 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="info-box">
-            <div class="info-box-content">
-                <div class="pad">
-                    <!-- Map will be created here -->
-                    <div id="mapid" style="height: 600px;"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 @endsection
 
 @push('js')
-<script src="https://cdn.jsdelivr.net/npm/leaflet/dist/leaflet.js"></script>
 <script>
-    const latitude = '{{ isset($latitude) ? $latitude : -15.8040207 }}';
-    const longitude = '{{ isset($longitude) ? $longitude : -47.8857621 }}';
-    
-    var map = L.map('mapid').setView([latitude, longitude], 11);
-
-    var circle = L.circle([latitude, longitude], {
-        color: 'red',
-        fillColor: '#f03',
-        fillOpacity: 0.5,
-        radius: 300
-    }).addTo(map);
-    
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© Version 0.2 dARK',
-        maxZoom: 7,
-    }).addTo(map);
-
-    L.marker([latitude, longitude]).addTo(map);
-
-    L.marker([latitude, longitude]).addTo(map)
-        .bindPopup("<b>IBICT</b>: <small>Instituto Brasileiro de Informação em Ciência e Tecnologia </small> ").openPopup();
-
-    const locations = @json($locations);
-    console.log(locations);
-
-    for (var i = 0; i < locations.length; i++) {
-        console.log(locations[i]["latitude"]);
-        L.marker([locations[i]["latitude"], locations[i]["longitude"]]).addTo(map)
-        .bindPopup("<b>Institution: </b>"+ locations[i]["name"] +"\n"+ "<b>Resp: </b>"+ locations[i]["responsible"]+ "\n" +
-          "<b>Email: </b>"+ locations[i]["email"]+"\n"+ locations[i]["typeNodes"]+"\n").openPopup();
-
-        var circle = L.circle([locations[i]["latitude"],locations[i]["longitude"]], {
-              color: 'red',
-              fillColor: '#f03',
-              fillOpacity: 0.5,
-              radius: 300 // raio em metros
-        }).addTo(map);
-    }
-
     // Fetch Worker status
     const workerApiUrl = '{{ route("workers.apiData") }}';
     fetch(workerApiUrl)
@@ -183,8 +129,8 @@
         });
 
     // Fetch ARKs stored count
-    const adminApiBaseUrl = '{{ env("ADMIN_API_BASE_URL", "http://127.0.0.1:8000") }}';
-    fetch(`${adminApiBaseUrl}/api/v1/arks/count`)
+    const arksCountUrl = @json(route('arks.api.count'));
+    fetch(arksCountUrl)
         .then(response => response.json())
         .then(data => {
             // Assuming the JSON returns something like { "count": 10 } or just the number.

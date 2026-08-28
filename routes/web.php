@@ -28,11 +28,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['middleware' => ['https.protocol']], function () {
-    Route::get('/', [SiteController::class, 'index'])->name('site.index');
+    Route::redirect('/', '/login')->name('site.index');
     Route::get('/documentation', [SiteController::class, 'documentation'])->name('site.documentation');
 
     Route::group(['middleware' => ['auth'], 'namespace' => 'Dashboard', 'prefix' => 'dashboard'], function () {
-        Route::get('/login', [HomeController::class, 'index'])->name('home.index');
+        Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
         Route::get('users', [UserController::class, 'index'])->name('users.index');
         Route::get('user/create', [UserController::class, 'create'])->name('users.create');
@@ -74,6 +74,9 @@ Route::group(['middleware' => ['https.protocol']], function () {
 
         // ── ARKs ───────────────────────────────────────────────────────
         Route::get('arks', [ArkController::class, 'index'])->name('institutions.index-ark');
+        Route::get('arks/api/recent', [ArkController::class, 'recentApiData'])->name('arks.api.recent');
+        Route::get('arks/api/count', [ArkController::class, 'countApiData'])->name('arks.api.count');
+        Route::get('arks/api/metadata', [ArkController::class, 'metadataApiData'])->name('arks.api.metadata');
         Route::get('ark/create-ark/', [ArkController::class, 'create'])->name('institutions.create-ark');
         Route::get('ark/create-ark/{institution}', [ArkController::class, 'create'])->name('institutions.create-ark-institution');
         Route::post('ark/create-ark', [ArkController::class, 'store'])->name('institutions.store-ark');

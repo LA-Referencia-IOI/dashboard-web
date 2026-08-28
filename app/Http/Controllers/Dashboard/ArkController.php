@@ -10,6 +10,8 @@ use App\Models\Institution;
 use App\Models\Account;
 use App\Http\Requests\Dashboard\ArkRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Support\Facades\Http;
 
 class ArkController extends Controller
 {
@@ -19,6 +21,88 @@ class ArkController extends Controller
     {
         return view($this->viewPath . 'index-ark');
     }
+
+    public function recentApiData(Request $request)
+    {
+        $adminApiUrl = rtrim((string) config('services.dark.admin_api_url'), '/');
+        if ($adminApiUrl === '') {
+            return response()->json([
+                'error' => true,
+                'message' => 'ADMIN_API_BASE_URL not configured.',
+            ], 503);
+        }
+
+        $limit = min(max((int) $request->query('limit', 5), 1), 100);
+
+        try {
+            $upstream = Http::acceptJson()
+                ->timeout(30)
+                ->get($adminApiUrl . '/api/v1/arks/recent', ['limit' => $limit]);
+        } catch (ConnectionException $exception) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Unable to connect to the Admin API.',
+            ], 502);
+        }
+
+        return response($upstream->body(), $upstream->status())
+            ->header('Content-Type', $upstream->header('Content-Type') ?: 'application/json');
+    }
+
+    public function countApiData(Request $request)
+    {
+        $adminApiUrl = rtrim((string) config('services.dark.admin_api_url'), '/');
+        if ($adminApiUrl === '') {
+            return response()->json([
+                'error' => true,
+                'message' => 'ADMIN_API_BASE_URL not configured.',
+            ], 503);
+        }
+
+        try {
+            $upstream = Http::acceptJson()
+                ->timeout(15)
+                ->get($adminApiUrl . '/api/v1/arks/count');
+        } catch (ConnectionException $exception) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Unable to connect to the Admin API.',
+            ], 502);
+        }
+
+        return response($upstream->body(), $upstream->status())
+            ->header('Content-Type', $upstream->header('Content-Type') ?: 'application/json');
+    }
+
+    public function metadataApiData(Request $request)
+    {
+        $request->validate(['pid' => ['required', 'string', 'max:512']]);
+        $resolverApiUrl = rtrim((string) config('services.dark.resolver_api_url'), '/');
+        if ($resolverApiUrl === '') {
+            return response()->json([
+                'error' => true,
+                'message' => 'RESOLVER_BASE_URL not configured.',
+            ], 503);
+        }
+
+        $pid = ltrim($request->query('pid'), '/');
+
+        try {
+            $upstream = Http::timeout(15)->get(
+                $resolverApiUrl . '/api/v1/arks/' . $pid,
+                ['metadata' => 'true']
+            );
+        } catch (ConnectionException $exception) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Unable to connect to the Resolver API.',
+            ], 502);
+        }
+
+        return response($upstream->body(), $upstream->status())
+            ->header('Content-Type', $upstream->header('Content-Type') ?: 'text/plain');
+    }
+
     public function create(Institution $institution)
     {
         $currentDateTime = now()->setTimezone('UTC')->format('Y-m-d\TH:i:sP'); // pre-filling the when field in form ark.  

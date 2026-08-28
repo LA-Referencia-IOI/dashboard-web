@@ -14,7 +14,7 @@ services:
     volumes:
       - dark-mysql-data:/var/lib/mysql
     ports:
-      - "3307:3306"
+      - "127.0.0.1:3307:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=dark
       - MYSQL_DATABASE=dark
@@ -28,7 +28,7 @@ services:
     volumes:
       - dark-redis-data:/data
     ports:
-      - "6380:6379"
+      - "127.0.0.1:6380:6379"
 
   app:
     image: ambientum/php:8.0-nginx
@@ -36,7 +36,7 @@ services:
     volumes:
       - .:/var/www/app
     ports:
-      - "8081:8080"
+      - "${APPS_BIND_ADDRESS:-127.0.0.1}:8081:8080"
     environment:
       XDEBUG_ENABLED: "true"
     links:
