@@ -49,6 +49,31 @@ class ArkController extends Controller
             ->header('Content-Type', $upstream->header('Content-Type') ?: 'application/json');
     }
 
+    public function countApiData(Request $request)
+    {
+        $adminApiUrl = rtrim((string) config('services.dark.admin_api_url'), '/');
+        if ($adminApiUrl === '') {
+            return response()->json([
+                'error' => true,
+                'message' => 'ADMIN_API_BASE_URL not configured.',
+            ], 503);
+        }
+
+        try {
+            $upstream = Http::acceptJson()
+                ->timeout(15)
+                ->get($adminApiUrl . '/api/v1/arks/count');
+        } catch (ConnectionException $exception) {
+            return response()->json([
+                'error' => true,
+                'message' => 'Unable to connect to the Admin API.',
+            ], 502);
+        }
+
+        return response($upstream->body(), $upstream->status())
+            ->header('Content-Type', $upstream->header('Content-Type') ?: 'application/json');
+    }
+
     public function metadataApiData(Request $request)
     {
         $request->validate(['pid' => ['required', 'string', 'max:512']]);

@@ -29,6 +29,24 @@ class ArkApiProxyTest extends TestCase
         });
     }
 
+    public function test_ark_count_is_fetched_server_side(): void
+    {
+        config(['services.dark.admin_api_url' => 'http://10.20.30.20:8000']);
+        Http::fake([
+            'http://10.20.30.20:8000/api/v1/arks/count' => Http::response(['count' => 42]),
+        ]);
+
+        $response = (new ArkController())->countApiData(
+            Request::create('/dashboard/arks/api/count', 'GET')
+        );
+
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame(['count' => 42], json_decode($response->getContent(), true));
+        Http::assertSent(function ($request) {
+            return $request->url() === 'http://10.20.30.20:8000/api/v1/arks/count';
+        });
+    }
+
     public function test_metadata_is_fetched_server_side(): void
     {
         config(['services.dark.resolver_api_url' => 'http://10.20.30.20:8002']);
