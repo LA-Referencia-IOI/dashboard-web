@@ -67,10 +67,10 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const tableBody = document.getElementById('arks-table-body');
-        const resolverBaseUrl = '{{ env("RESOLVER_BASE_URL", "http://127.0.0.1:8002") }}';
-        const adminApiBaseUrl = '{{ env("ADMIN_API_BASE_URL", "http://127.0.0.1:8000") }}';
+        const recentArksUrl = @json(route('arks.api.recent'));
+        const metadataApiUrl = @json(route('arks.api.metadata'));
         
-        fetch(`${adminApiBaseUrl}/api/v1/arks/recent?limit=5`)
+        fetch(`${recentArksUrl}?limit=5`)
             .then(response => response.json())
             .then(data => {
                 tableBody.innerHTML = ''; // Clear loading state
@@ -91,7 +91,7 @@
                     const ownerShort = ark.owner ? ark.owner.substring(0, 8) + '...' + ark.owner.substring(ark.owner.length - 6) : 'N/A';
                     const cidShort = ark.cid ? ark.cid.substring(0, 10) + '...' : 'N/A';
                     
-                    const metadataUrl = `${resolverBaseUrl}/api/v1/arks/${ark.pid}?metadata=true`;
+                    const metadataUrl = `${metadataApiUrl}?pid=${encodeURIComponent(ark.pid)}`;
 
                     tr.innerHTML = `
                         <td><strong>${ark.pid || 'N/A'}</strong></td>

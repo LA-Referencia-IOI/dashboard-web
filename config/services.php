@@ -2,6 +2,11 @@
 
 return [
 
+    'dark' => [
+        'admin_api_url' => env('ADMIN_API_BASE_URL'),
+        'resolver_api_url' => env('RESOLVER_BASE_URL'),
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Third Party Services
