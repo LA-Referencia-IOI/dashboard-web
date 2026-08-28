@@ -28,11 +28,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['middleware' => ['https.protocol']], function () {
-    Route::get('/', [SiteController::class, 'index'])->name('site.index');
+    Route::redirect('/', '/login')->name('site.index');
     Route::get('/documentation', [SiteController::class, 'documentation'])->name('site.documentation');
 
     Route::group(['middleware' => ['auth'], 'namespace' => 'Dashboard', 'prefix' => 'dashboard'], function () {
-        Route::get('/login', [HomeController::class, 'index'])->name('home.index');
+        Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
         Route::get('users', [UserController::class, 'index'])->name('users.index');
         Route::get('user/create', [UserController::class, 'create'])->name('users.create');
