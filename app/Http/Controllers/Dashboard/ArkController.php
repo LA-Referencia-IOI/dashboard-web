@@ -36,7 +36,7 @@ class ArkController extends Controller
 
         try {
             $upstream = Http::acceptJson()
-                ->timeout(15)
+                ->timeout(30)
                 ->get($adminApiUrl . '/api/v1/arks/recent', ['limit' => $limit]);
         } catch (ConnectionException $exception) {
             return response()->json([
