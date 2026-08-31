@@ -110,11 +110,19 @@ class TestController extends Controller
 
             $workerStatusUrl = rtrim(env('WORKER_STATUS_URL', "$minterApiV1/worker/status"), '/');
             $res = Http::timeout(30)->withHeaders($minterHeaders)->get($workerStatusUrl);
-            if (!$res->successful() || !$res->json('running')) throw new \Exception("Worker not running: " . $res->body());
-            $log("Worker OK");
+            $workerBody = $res->json() ?? [];
+            $metadataAlive = data_get($workerBody, 'workers.metadata.alive') === true;
+            $chainAlive = data_get($workerBody, 'workers.chain.alive') === true;
+            $workerOverall = data_get($workerBody, 'overall');
+            if (!$res->successful() || !$metadataAlive || !$chainAlive || !in_array($workerOverall, ['ok', 'degraded'], true)) {
+                throw new \Exception("Workers not healthy: " . $res->body());
+            }
+            $log("Workers OK (overall=$workerOverall)");
 
-            $res = Http::timeout(30)->get("$storeApi/health");
-            if (!$res->successful()) throw new \Exception("Store API down: " . $res->body());
+            $res = Http::timeout(30)->get("$storeApi/health/live");
+            if (!$res->successful()) throw new \Exception("Store API not live: " . $res->body());
+            $res = Http::timeout(30)->get("$storeApi/health", ['refresh' => 'true']);
+            if (!$res->successful() || $res->json('backend_healthy') !== true) throw new \Exception("Store API backend not healthy: " . $res->body());
             $log("Store API OK");
 
             $res = Http::timeout(30)->post("$ipfsApi/api/v0/id");
@@ -206,8 +214,9 @@ class TestController extends Controller
                 while (time() < $deadline) {
                     $res = Http::timeout(180)->get("$storeApi/v1/status/$cid");
                     $status = $res->json('status');
-                    $log("Pin poll $cid: status=$status");
-                    if ($res->successful() && $res->json('pinned') === true) return true;
+                    $replicas = (int) $res->json('replication.total_replicas', 0);
+                    $log("Pin poll $cid: status=$status replicas=$replicas");
+                    if ($res->successful() && $replicas >= 1) return true;
                     sleep($pollInterval);
                 }
                 return false;
