@@ -112,9 +112,12 @@ class TestController extends Controller
             $res = Http::timeout(30)->withHeaders($minterHeaders)->get($workerStatusUrl);
             $workerBody = $res->json() ?? [];
             $metadataAlive = data_get($workerBody, 'workers.metadata.alive') === true;
+            $replicationAlive = data_get($workerBody, 'workers.replication.alive') === true;
             $chainAlive = data_get($workerBody, 'workers.chain.alive') === true;
+            $recoveryEnabled = data_get($workerBody, 'workers.recovery.enabled', true) !== false;
+            $recoveryAlive = data_get($workerBody, 'workers.recovery.alive') === true;
             $workerOverall = data_get($workerBody, 'overall');
-            if (!$res->successful() || !$metadataAlive || !$chainAlive || !in_array($workerOverall, ['ok', 'degraded'], true)) {
+            if (!$res->successful() || !$metadataAlive || !$replicationAlive || !$chainAlive || ($recoveryEnabled && !$recoveryAlive) || !in_array($workerOverall, ['ok', 'degraded'], true)) {
                 throw new \Exception("Workers not healthy: " . $res->body());
             }
             $log("Workers OK (overall=$workerOverall)");

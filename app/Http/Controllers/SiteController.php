@@ -10,8 +10,8 @@ class SiteController extends Controller
 {
     public function index()
     {
-        // URL of your Besu node with a default fallback
-        $originalNodeUrl = 'http://dark-01.dark-pid.net:8545';//env('BLOCK_NUMBER');
+        // The installer supplies the site-local RPC endpoint.
+        $originalNodeUrl = env('BLOCK_NUMBER');
 
 
         // Ensure URL is not null and has the correct format
@@ -28,7 +28,7 @@ class SiteController extends Controller
             'id' => 1,
         ]);
 
-        $response2 = Http::get('http://dark-01.dark-pid.net:5000/check-number');
+        $response2 = Http::get(env('LIVENESS', $originalNodeUrl . '/liveness'));
         
         try {
             // Check if the request was successful

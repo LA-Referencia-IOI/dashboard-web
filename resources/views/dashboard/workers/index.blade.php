@@ -103,7 +103,7 @@
 
 @push('js')
 <script>
-const apiUrl = '{{ route("workers.apiData") }}';
+const apiUrl = '{{ route("workers.apiData") }}?detail=full';
 
 function fmt(val) {
     if (val === null || val === undefined) return '<span class="text-muted">—</span>';
@@ -131,10 +131,11 @@ function infraColor(state) {
     return 'bg-gradient-danger';
 }
 
-function workerCard(name, w) {
+function workerCard(name, w, queues) {
     const lc    = w.last_cycle  || {};
-    const queue = w.queue       || {};
-    const alive = w.alive;
+    const queue = w.queue || (queues[name] || {});
+    const stats = w.stats || {};
+    const alive = w.alive !== undefined ? w.alive : (w.running === true && !w.stale);
     const stateColor = { idle: 'info', running: 'success', backlogged: 'warning', dead: 'danger' };
     const headerColor = stateColor[w.state] || 'secondary';
 
@@ -155,13 +156,13 @@ function workerCard(name, w) {
                 <table class="table table-sm table-striped mb-0">
                     <tbody>
                         <tr><th colspan="2" class="bg-dark text-white-50 small py-1 px-2">Queue</th></tr>
-                        ${row('Pending',         fmt(queue.pending))}
-                        ${row('Ready',           fmt(queue.ready))}
-                        ${row('Delayed',         fmt(queue.delayed))}
+                        ${row('Pending',         fmt(queue.pending ?? queue.pending_total))}
+                        ${row('Ready',           fmt(queue.ready ?? queue.ready_now))}
+                        ${row('Delayed',         fmt(queue.delayed ?? queue.delayed_by_backoff))}
                         <tr><th colspan="2" class="bg-dark text-white-50 small py-1 px-2">Last Cycle</th></tr>
-                        ${row('Processed',       fmt(lc.processed))}
-                        ${row('Succeeded',       fmt(lc.succeeded))}
-                        ${row('Failed',          fmt(lc.failed))}
+                        ${row('Processed',       fmt(lc.processed !== undefined ? lc.processed : stats.total_processed))}
+                        ${row('Succeeded',       fmt(lc.succeeded !== undefined ? lc.succeeded : stats.total_succeeded))}
+                        ${row('Failed',          fmt(lc.failed !== undefined ? lc.failed : stats.total_failed))}
                         ${row('Duration (s)',    lc.duration_seconds !== undefined ? lc.duration_seconds.toFixed(3) : '—')}
                         ${row('Page size',       fmt(lc.page_size))}
                         ${row('Full page',       lc.full_page !== undefined ? (lc.full_page ? '<span class="badge badge-warning">Yes</span>' : '<span class="badge badge-secondary">No</span>') : '—')}
@@ -169,7 +170,8 @@ function workerCard(name, w) {
                         <tr><th colspan="2" class="bg-dark text-white-50 small py-1 px-2">Health</th></tr>
                         ${row('Status',          w.status ?? '—')}
                         ${row('Activity',        w.activity ?? '—')}
-                        ${row('Last heartbeat',  w.last_heartbeat_seconds !== undefined ? w.last_heartbeat_seconds.toFixed(1) + 's ago' : '—')}
+                        ${row('Last heartbeat',  w.last_heartbeat_seconds !== undefined ? w.last_heartbeat_seconds.toFixed(1) + 's ago' : (w.heartbeat_age_seconds !== undefined ? w.heartbeat_age_seconds.toFixed(1) + 's ago' : '—'))}
+                        ${row('Last cycle',      w.last_cycle_at || w.reconciliation?.last_run_at || '—')}
                     </tbody>
                 </table>
             </div>
@@ -177,8 +179,8 @@ function workerCard(name, w) {
     </div>`;
 }
 
-function load() {
-    fetch(apiUrl)
+function load(refresh = false) {
+    fetch(apiUrl + (refresh ? '&refresh=1' : ''))
         .then(r => r.json())
         .then(d => {
             if (d.error) {
@@ -190,10 +192,10 @@ function load() {
             }
 
             // Overall alert
-            const overallMap = {
-                healthy:  { cls: 'alert-success', icon: 'fa-check-circle',      label: 'Healthy' },
+        const overallMap = {
+                ok:       { cls: 'alert-success', icon: 'fa-check-circle',      label: 'OK' },
                 degraded: { cls: 'alert-warning', icon: 'fa-exclamation-circle', label: 'Degraded' },
-                critical: { cls: 'alert-danger',  icon: 'fa-times-circle',       label: 'Critical' },
+                down:     { cls: 'alert-danger',  icon: 'fa-times-circle',       label: 'Down' },
             };
             const ov = overallMap[d.overall] || { cls: 'alert-secondary', icon: 'fa-question-circle', label: d.overall };
             const alertEl = document.getElementById('overall-alert');
@@ -224,11 +226,11 @@ function load() {
 
             // Workers
             const workers = d.workers || {};
-            const workersHtml = Object.entries(workers).map(([name, w]) => workerCard(name, w)).join('');
+            const workersHtml = Object.entries(workers).map(([name, w]) => workerCard(name, w, d.queues || {})).join('');
             document.getElementById('workers-row').innerHTML = workersHtml || '<div class="col-12 text-muted text-center py-3">No workers found</div>';
 
             // ARKs by state
-            const arks = d.arks || {};
+            const arks = d.by_state || d.arks || {};
             const arkColors = { reserved: 'secondary', draft: 'warning', update: 'info', published: 'success', tombstone: 'dark' };
             document.getElementById('arks-table').innerHTML = Object.entries(arks).map(([state, count]) =>
                 `<tr>
@@ -240,8 +242,8 @@ function load() {
             // Errors
             const e = d.errors || {};
             document.getElementById('errors-table').innerHTML = [
-                row('Retrying',  `<span class="badge badge-${e.retrying > 0 ? 'warning' : 'secondary'}">${fmt(e.retrying)}</span>`),
-                row('Permanent', `<span class="badge badge-${e.permanent > 0 ? 'danger'  : 'secondary'}">${fmt(e.permanent)}</span>`),
+                row('Recoverable', `<span class="badge badge-${(e.recoverable ?? e.total?.recoverable ?? 0) > 0 ? 'warning' : 'secondary'}">${fmt(e.recoverable ?? e.total?.recoverable ?? 0)}</span>`),
+                row('Permanent', `<span class="badge badge-${(e.permanent ?? e.total?.permanent ?? 0) > 0 ? 'danger'  : 'secondary'}">${fmt(e.permanent ?? e.total?.permanent ?? 0)}</span>`),
             ].join('');
         })
         .catch(err => {
@@ -253,6 +255,6 @@ function load() {
 }
 
 load();
-document.getElementById('btn-refresh').addEventListener('click', load);
+document.getElementById('btn-refresh').addEventListener('click', () => load(true));
 </script>
 @endpush

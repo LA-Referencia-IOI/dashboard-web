@@ -70,7 +70,7 @@
             <div class="small-box bg-warning">
             <div class="inner">
                 <h3 id="processing-count"><i class="fas fa-spinner fa-spin" style="font-size:1.5rem"></i></h3>
-                <p>Processing</p>
+                <p>Status</p>
             </div>
             <div class="icon">
                 <i class="fas fa-fw fa-layer-group"></i>
@@ -82,12 +82,12 @@
             <div class="small-box bg-danger">
             <div class="inner">
                 <h3>Errors<sup style="font-size: 20px"></sup></h3>
-                <p>0</p>
+                <p id="errors-count">—</p>
             </div>
             <div class="icon">
                 <i class="fas fa-fw  fa-wrench"></i>
             </div>
-            <a href="" class="small-box-footer">see <i class="fas fa-arrow-circle-right"></i></a>
+            <a href="{{route('workers.errors')}}" class="small-box-footer">see <i class="fas fa-arrow-circle-right"></i></a>
             </div>
         </div>
     </div>
@@ -98,7 +98,7 @@
 @push('js')
 <script>
     // Fetch Worker status
-    const workerApiUrl = '{{ route("workers.apiData") }}';
+    const workerApiUrl = '{{ route("workers.apiData") }}?detail=simple';
     fetch(workerApiUrl)
         .then(r => r.json())
         .then(d => {
@@ -112,16 +112,14 @@
                 return;
             }
 
-            const overallColor = { healthy: 'bg-success', degraded: 'bg-warning', critical: 'bg-danger' };
+            const overallColor = { ok: 'bg-success', degraded: 'bg-warning', down: 'bg-danger' };
             card.className = 'small-box ' + (overallColor[d.overall] || 'bg-secondary');
 
             const workers  = d.workers || {};
-            const alive    = Object.values(workers).filter(w => w.alive).length;
-            const total    = Object.values(workers).length;
-            count.textContent = `${alive}/${total} running`;
-
-            const totalPending = Object.values(workers).reduce((sum, w) => sum + (w.queue?.pending ?? 0), 0);
-            proc.textContent = new Intl.NumberFormat().format(totalPending);
+            const enabled = Object.values(workers).filter(w => w.enabled !== false);
+            const alive    = enabled.filter(w => w.alive).length;
+            count.textContent = `${alive}/${enabled.length} running`;
+            proc.textContent = d.overall || '—';
         })
         .catch(() => {
             document.getElementById('workers-count').innerHTML = '<small>N/A</small>';

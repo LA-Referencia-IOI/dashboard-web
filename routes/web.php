@@ -124,6 +124,8 @@ Route::group(['middleware' => ['https.protocol']], function () {
         // ── Workers ────────────────────────────────────────────────────
         Route::get('workers', [WorkerController::class, 'index'])->name('workers.index');
         Route::get('workers/api-data', [WorkerController::class, 'apiData'])->name('workers.apiData');
+        Route::get('workers/errors', [WorkerController::class, 'errorsPage'])->name('workers.errors');
+        Route::get('workers/errors/api-data', [WorkerController::class, 'errors'])->name('workers.errors.apiData');
 
         Route::put('image/{id}/upload', [ImageController::class, 'upload'])->name('image.upload');
         Route::delete('image/destroy/{file}', [ImageController::class, 'destroy'])->name('image.destroy');
