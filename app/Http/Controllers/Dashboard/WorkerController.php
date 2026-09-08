@@ -29,11 +29,13 @@ class WorkerController extends Controller
 
         try {
             $detail = $request->query('detail', 'simple');
-            if (!in_array($detail, ['simple', 'full'], true)) {
+            if (!in_array($detail, ['simple', 'workload', 'infrastructure', 'full'], true)) {
                 return response()->json(['error' => 'Invalid status detail'], 422);
             }
-            if ($detail === 'simple') {
-                $res = Http::timeout(10)->get($url);
+            if ($detail === 'simple' || $detail === 'workload' || $detail === 'infrastructure') {
+                $res = $detail === 'simple'
+                    ? Http::timeout(10)->get($url)
+                    : Http::timeout(15)->get($url, ['detail' => $detail]);
                 return response()->json($res->json(), $res->status());
             }
 
@@ -69,18 +71,10 @@ class WorkerController extends Controller
             return response()->json(['error' => 'WORKER_STATUS_URL not configured'], 500);
         }
         try {
-            $query = $request->only(['list', 'stage', 'authority_id', 'error_code', 'page', 'page_size']);
+            $query = $request->only(['stage', 'authority_id', 'error_code', 'page', 'page_size']);
             $errorsUrl = preg_replace('/\/status$/', '/errors', $url);
-            if (!$request->filled('list')) {
-                $res = Http::timeout(15)->get($errorsUrl, $query);
-                return response()->json($res->json(), $res->status());
-            }
-            $summaryQuery = array_filter($query, fn ($key) => in_array($key, ['stage', 'authority_id', 'error_code'], true), ARRAY_FILTER_USE_KEY);
-            $summary = Http::timeout(15)->get($errorsUrl, $summaryQuery);
             $res = Http::timeout(15)->get($errorsUrl, $query);
-            $body = $res->json();
-            $body['summary'] = $summary->json();
-            return response()->json($body, $res->status());
+            return response()->json($res->json(), $res->status());
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 503);
         }

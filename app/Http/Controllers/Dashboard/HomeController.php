@@ -40,7 +40,7 @@ class HomeController extends Controller
         $locations = collect($locations);
 
         $blockchains = Blockchain::all(); // Supondo que você tenha um modelo Blockchain
-        $client = new Client();
+        $client = new Client(['connect_timeout' => 2, 'timeout' => 5]);
 
         $upCount = 0;
         $downCount = 0;
@@ -70,7 +70,7 @@ class HomeController extends Controller
         if ($originalNodeUrl) {
             try {
                 // getting number of blocks
-                $response = Http::post($originalNodeUrl, [
+                $response = Http::timeout(5)->post($originalNodeUrl, [
                     'jsonrpc' => '2.0',
                     'method' => 'eth_blockNumber',
                     'params' => [],
@@ -94,11 +94,19 @@ class HomeController extends Controller
         }
 
         // getting number of darks
-        $response2 = Http::get('http://dark-01.dark-pid.net:5000/check-number');
+        // This legacy counter is optional. Keep the home page bounded when the
+        // remote service is unavailable instead of allowing an unbounded wait.
+        $response2 = null;
+        $darksCountUrl = env('DARKS_COUNT_URL', 'http://dark-01.dark-pid.net:5000/check-number');
+        try {
+            $response2 = Http::timeout(5)->get($darksCountUrl);
+        } catch (\Exception $e) {
+            $response2 = null;
+        }
 
         try {
             // Check if the request was successful
-            if ($response2->successful()) {
+            if ($response2 !== null && $response2->successful()) {
                 $numberDark = $response2->json();
                 $numberDark = number_format($numberDark, 0, ',');
             } else {

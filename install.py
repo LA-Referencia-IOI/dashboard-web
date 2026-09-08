@@ -372,7 +372,10 @@ def main():
 
     step_check_prerequisites()
     step_setup_env()
-    step_start_containers()
+    if os.environ.get("DARK_DEPLOYER_MANAGED_COMPOSE") == "1":
+        log_ok("Docker containers are managed by dark-deployer")
+    else:
+        step_start_containers()
     step_wait_mysql()
     step_install_npm()
     step_install_composer()
