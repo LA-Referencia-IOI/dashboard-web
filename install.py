@@ -36,8 +36,12 @@ ENV_FILE = os.path.join(PROJECT_DIR, ".env")
 ENV_EXAMPLE = os.path.join(PROJECT_DIR, ".env.example")
 DOCKER_COMPOSE_FILE = os.path.join(PROJECT_DIR, "docker-compose.yml")
 
-CONTAINER_APP = "dark-app"
-CONTAINER_MYSQL = "dark-mysql"
+# The standalone legacy Compose file used ``dark-*`` names.  Central Compose
+# deliberately owns the dashboard as ``dashboard-*`` so it can share the apps
+# host network with the APIs.  Resolve this once, before any readiness check.
+MANAGED_COMPOSE = os.environ.get("DARK_DEPLOYER_MANAGED_COMPOSE") == "1"
+CONTAINER_APP = "dashboard-app" if MANAGED_COMPOSE else "dark-app"
+CONTAINER_MYSQL = "dashboard-mysql" if MANAGED_COMPOSE else "dark-mysql"
 
 # Database credentials matching docker-compose.yml
 DB_CONFIG = {
@@ -221,7 +225,7 @@ def step_start_containers():
 
     compose_cmd = get_compose_cmd()
     run(f"{compose_cmd} up -d", cwd=PROJECT_DIR)
-    log_ok("Containers started (dark-app, dark-mysql, dark-redis)")
+    log_ok(f"Containers started ({CONTAINER_APP}, {CONTAINER_MYSQL}, dashboard-redis)")
 
 
 def step_wait_mysql():

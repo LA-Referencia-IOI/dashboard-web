@@ -37,9 +37,11 @@ function workerCard(name, process, work) {
         ? `${row('First pins: ready now', number(availability.ready_now))}
            ${row('First pins: waiting', number(availability.waiting))}
            ${row('Published: awaiting durability', number(work.maintenance_ready))}
-           ${row('Maintenance blocked by', work.maintenance_blocked_by || '—')}`
+           ${row('Maintenance blocked by', work.maintenance_blocked_by || '—')}
+           ${row('Availability pressure', work.availability_pressure || 'normal')}`
         : `${row('Ready now', number(work.ready_now))}
            ${row('Waiting', number(work.waiting))}
+           ${row('Oldest wait', work.oldest_wait_seconds ? `${Math.round(work.oldest_wait_seconds)} s` : '—')}
            ${row('Next action', when(work.next_action_at))}`;
     const statusText = process.stalled_suspected
         ? `No progress for ${number(process.no_progress_cycles)} attempted cycles; inspect dependency/error detail`
