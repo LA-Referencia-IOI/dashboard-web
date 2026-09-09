@@ -33,10 +33,15 @@ function workerCard(name, process, work) {
     const reasons = Object.entries(work.waiting_reasons || {}).map(([reason, count]) => `${reason}: ${number(count)}`).join('<br>') || '—';
     const stages = work.by_stage || {};
     const availability = stages.availability || {};
+    const replicationMetrics = process.replication_metrics || {};
     const replicationRows = name === 'replication'
-        ? `${row('First pins: ready now', number(availability.ready_now))}
-           ${row('First pins: waiting', number(availability.waiting))}
-           ${row('Published: awaiting durability', number(work.maintenance_ready))}
+        ? `${row('Minimum replicas: ready now', number(availability.ready_now))}
+           ${row('Minimum replicas: waiting', number(availability.waiting))}
+           ${row('Published below replica target', number(work.maintenance_ready))}
+           ${row('Promotions accepted (last cycle)', number(replicationMetrics.promotions_accepted))}
+           ${row('CIDs confirmed (last cycle)', number(replicationMetrics.confirmed_cids))}
+           ${row('CIDs pending (last cycle)', number(replicationMetrics.pending_cids))}
+           ${row('Batch latency', `${number(replicationMetrics.batch_latency_ms)} ms`)}
            ${row('Maintenance blocked by', work.maintenance_blocked_by || '—')}
            ${row('Availability pressure', work.availability_pressure || 'normal')}`
         : `${row('Ready now', number(work.ready_now))}
@@ -47,7 +52,7 @@ function workerCard(name, process, work) {
         ? `No progress for ${number(process.no_progress_cycles)} attempted cycles; inspect dependency/error detail`
         : (state === 'SLEEPING' || state === 'SLEEPING_UNTIL_DUE')
         ? (name === 'replication'
-            ? (work.maintenance_blocked_by ? `First-pin work has priority (${work.maintenance_blocked_by})` : `${number(work.maintenance_ready || 0)} published records awaiting durability`)
+            ? (work.maintenance_blocked_by ? `Minimum-replica work has priority (${work.maintenance_blocked_by})` : `${number(work.maintenance_ready || 0)} published records below the replica target`)
             : (work.ready_now ? `${number(work.ready_now)} ready; wakes in ${Math.ceil(process.wake_in_seconds || 0)} s` : `No ready work; wakes in ${Math.ceil(process.wake_in_seconds || 0)} s`))
         : state === 'PAUSED' ? `Paused: ${process.pause_reason || 'dependency unavailable'}`
         : state === 'RUNNING' ? 'Executing a worker cycle' : state;
@@ -61,7 +66,7 @@ function workerCard(name, process, work) {
         ${row('Permanent failures', number(work.failed))}
         <tr><th colspan="2" class="bg-dark text-white-50 small">Last cycle</th></tr>
         ${row('Finished', when(process.last_cycle_at))}
-        ${row('Observed / advanced / waiting / repaired / failed', `${number(cycle.observed)} / ${number(cycle.advanced)} / ${number(cycle.waiting)} / ${number(cycle.repaired)} / ${number(cycle.failed)}`)}
+        ${row(name === 'replication' ? 'Observed / advanced / waiting / repaired / transient deferred' : 'Observed / advanced / waiting / repaired / failed', `${number(cycle.observed)} / ${number(cycle.advanced)} / ${number(cycle.waiting)} / ${number(cycle.repaired)} / ${number(name === 'replication' ? cycle.transient_deferred : cycle.failed)}`)}
         ${row('Duration', cycle.duration_seconds === null || cycle.duration_seconds === undefined ? '—' : `${cycle.duration_seconds.toFixed(3)} s`)}
     </tbody></table></div></div></div>`;
 }
@@ -75,7 +80,7 @@ function render(data) {
     const cls = data.overall === 'ok' ? 'alert-success' : data.overall === 'degraded' ? 'alert-warning' : 'alert-danger';
     overall.className = `alert ${cls}`;
     overall.textContent = data.overall === 'ok'
-        ? 'Workers healthy. Waiting for a Cluster pin is normal; durability runs only when the critical pipeline is clear.'
+        ? 'Workers healthy. Waiting for the minimum replicas is normal; additional replicas are requested when the critical pipeline is clear.'
         : `Worker health: ${data.overall}`;
     const work = data.workload || {}, workers = data.workers || {};
     document.getElementById('workers').innerHTML = Object.entries(workers).map(([name, p]) => workerCard(name, p, work[name] || {ready_now:0,waiting:0,failed:0})).join('');
