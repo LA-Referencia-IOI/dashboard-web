@@ -176,7 +176,11 @@ return [
         /*
          Third party
         */
-        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        // ide-helper is a development dependency and is omitted by the
+        // production install; register it only when the package is present.
+        ...(class_exists(Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class)
+            ? [Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class]
+            : []),
     ],
 
     /*
