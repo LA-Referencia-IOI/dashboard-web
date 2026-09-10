@@ -15,10 +15,10 @@ class HttpsProtocol
      */
     public function handle($request, Closure $next)
     {
-        if (!$request->secure() && env('APP_ENV') === 'production') {
-            return redirect()->secure($request->getRequestUri(), 301);
-        }
-
+        // TLS terminates at the deployment's external reverse proxy. The
+        // application container is intentionally HTTP-only in every profile;
+        // redirecting here breaks local access and proxy deployments that do
+        // not forward the original HTTPS scheme.
         return $next($request);
     }
 }
