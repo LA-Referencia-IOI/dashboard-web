@@ -16,3 +16,4 @@ yarn-error.log
 /.vscode
 node_modules
 .devtime.json
+.DS_Store
