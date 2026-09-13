@@ -142,7 +142,9 @@ return [
     |
     */
 
-    'path' => '/',
+    // Match the public mount derived by the deployer, so a dashboard served
+    // under /admin does not leak its authentication cookie to the resolver.
+    'path' => env('SESSION_PATH', '/'),
 
     /*
     |--------------------------------------------------------------------------
