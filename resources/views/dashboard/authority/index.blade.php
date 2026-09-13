@@ -100,6 +100,10 @@
 
 @section('js')
 <script>
+    const authorityFundUrl = @json(route('authorities.fund', ['authority' => '__AUTHORITY__']));
+    const authorityApiDataUrl = @json(route('authorities.apiData', ['authority' => '__AUTHORITY__']));
+    const authorityUrl = function(template, uuid) { return template.replace('__AUTHORITY__', uuid); };
+
     $(document).ready(function() {
         $('.auth-naans').each(function() {
             let tdNaans = $(this);
@@ -148,7 +152,7 @@
                     });
 
                     $.ajax({
-                        url: '/dashboard/authority/' + uuid + '/fund',
+                        url: authorityUrl(authorityFundUrl, uuid),
                         type: 'POST',
                         data: {
                             _token: '{{ csrf_token() }}',
@@ -178,7 +182,7 @@
 
         function fetchApiData(uuid, tdNaans, tdBalance) {
             $.ajax({
-                url: '/dashboard/authority/' + uuid + '/api-data',
+                url: authorityUrl(authorityApiDataUrl, uuid),
                 type: 'GET',
                 success: function(response) {
                     if (response.error) {

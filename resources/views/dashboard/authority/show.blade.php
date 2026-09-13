@@ -204,6 +204,10 @@
     $(document).ready(function() {
         var isRegistered = {{ $authority->isRegistered() ? 'true' : 'false' }};
         var uuid = '{{ $authority->id }}';
+        var authorityApiDataUrl = @json(route('authorities.apiData', ['authority' => '__AUTHORITY__']));
+        var authorityAuthorizeNaanUrl = @json(route('authorities.authorizeNaan', ['authority' => '__AUTHORITY__']));
+        var authorityBalanceHistoryUrl = @json(route('authorities.balanceHistoryData', ['authority' => '__AUTHORITY__']));
+        var authorityUrl = function(template) { return template.replace('__AUTHORITY__', uuid); };
 
         function fetchWalletData() {
             $('#walletSpinner, #naanSpinner').show();
@@ -212,7 +216,7 @@
             }
 
             $.ajax({
-                url: '/dashboard/authority/' + uuid + '/api-data',
+                url: authorityUrl(authorityApiDataUrl),
                 type: 'GET',
                 success: function(response) {
                     $('#walletSpinner, #naanSpinner').hide();
@@ -275,7 +279,7 @@
                     });
 
                     $.ajax({
-                        url: '/dashboard/authority/' + uuid + '/authorize-naan',
+                        url: authorityUrl(authorityAuthorizeNaanUrl),
                         type: 'POST',
                         data: {
                             _token: '{{ csrf_token() }}',
@@ -302,7 +306,7 @@
         var balanceChart;
         function fetchChartData() {
             $.ajax({
-                url: '/dashboard/authority/' + uuid + '/balance-history',
+                url: authorityUrl(authorityBalanceHistoryUrl),
                 type: 'GET',
                 success: function(response) {
                     renderChart(response.labels, response.data);
