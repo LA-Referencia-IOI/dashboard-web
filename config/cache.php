@@ -27,7 +27,7 @@ return [
     | same cache driver to group types of items stored in your caches.
     |
     | Supported drivers: "apc", "array", "database", "file",
-    |         "memcached", "redis", "dynamodb", "octane", "null"
+    |         "memcached", "dynamodb", "octane", "null"
     |
     */
 
@@ -71,12 +71,6 @@ return [
                     'weight' => 100,
                 ],
             ],
-        ],
-
-        'redis' => [
-            'driver' => 'redis',
-            'connection' => 'cache',
-            'lock_connection' => 'default',
         ],
 
         'dynamodb' => [

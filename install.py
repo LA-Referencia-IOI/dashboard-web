@@ -225,7 +225,7 @@ def step_start_containers():
 
     compose_cmd = get_compose_cmd()
     run(f"{compose_cmd} up -d", cwd=PROJECT_DIR)
-    log_ok(f"Containers started ({CONTAINER_APP}, {CONTAINER_MYSQL}, dashboard-redis)")
+    log_ok(f"Containers started ({CONTAINER_APP}, {CONTAINER_MYSQL})")
 
 
 def step_wait_mysql():
