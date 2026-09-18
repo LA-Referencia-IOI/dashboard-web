@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Enums\UserType;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -86,6 +87,16 @@ class EventServiceProvider extends ServiceProvider
                 'text' => 'Server Tests',
                 'route' => 'tests.index',
             ]);
+            $grafanaUrl = trim((string) config('services.dark.grafana_url'));
+            $user = auth()->user();
+            if ($grafanaUrl !== '' && $user && (int) $user->profile === UserType::Administrator) {
+                $event->menu->add([
+                    'icon' => 'fas fa-chart-line',
+                    'text' => 'Infrastructure Monitoring',
+                    'url' => $grafanaUrl,
+                    'target' => '_blank',
+                ]);
+            }
             $event->menu->add('PROFILE');
 
             $event->menu->add([
