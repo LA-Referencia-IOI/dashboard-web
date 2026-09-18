@@ -6,6 +6,8 @@ return [
         'admin_api_url' => env('ADMIN_API_BASE_URL'),
         'resolver_api_url' => env('RESOLVER_BASE_URL'),
         'grafana_url' => env('GRAFANA_URL'),
+        'prometheus_url' => env('PROMETHEUS_URL'),
+        'block_explorer_url' => env('BLOCK_EXPLORER_URL'),
     ],
 
     /*

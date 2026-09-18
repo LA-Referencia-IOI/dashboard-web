@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Enums\UserType;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -257,7 +258,44 @@ class TestController extends Controller
             ['name' => 'IPFS Cluster API',   'env' => 'IPFS_CLUSTER_API_URL','url' => env('IPFS_CLUSTER_API_URL')],
         ];
 
-        return view($this->viewPath . 'api_health', compact('apis'));
+        $isAdministrator = auth()->check()
+            && (int) auth()->user()->profile === UserType::Administrator;
+
+        $observabilityLinks = [
+            [
+                'name' => 'Grafana',
+                'description' => 'Dashboards, history and infrastructure metrics.',
+                'url' => trim((string) config('services.dark.grafana_url')),
+                'icon' => 'fas fa-chart-line',
+                'color' => 'warning',
+                'admin_only' => true,
+            ],
+            [
+                'name' => 'Prometheus',
+                'description' => 'Metrics queries, scrape targets and active alerts.',
+                'url' => trim((string) config('services.dark.prometheus_url')),
+                'icon' => 'fas fa-fire-alt',
+                'color' => 'danger',
+                'admin_only' => true,
+            ],
+            [
+                'name' => 'Block Explorer',
+                'description' => 'Inspect blocks, transactions and blockchain activity.',
+                'url' => trim((string) config('services.dark.block_explorer_url')),
+                'icon' => 'fas fa-cubes',
+                'color' => 'info',
+                'admin_only' => false,
+            ],
+        ];
+
+        $observabilityLinks = array_values(array_filter(
+            $observabilityLinks,
+            function ($link) use ($isAdministrator) {
+                return !$link['admin_only'] || $isAdministrator;
+            }
+        ));
+
+        return view($this->viewPath . 'api_health', compact('apis', 'observabilityLinks'));
     }
 
     public function checkApis(Request $request)

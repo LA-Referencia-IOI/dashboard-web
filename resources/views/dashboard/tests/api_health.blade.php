@@ -1,13 +1,57 @@
 @extends('adminlte::page')
 
+@section('title', 'dARK Liveness')
+
 @section('content')
+    <div class="row pt-4">
+        <div class="col-12">
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-2">
+                <div>
+                    <h1 class="h3 mb-1">dARK Liveness</h1>
+                    <p class="text-muted mb-0">Live service checks and operational tools for the dARK platform.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        @foreach($observabilityLinks as $link)
+            <div class="col-lg-4 col-md-6 mb-3">
+                <div class="card card-outline card-{{ $link['color'] }} h-100 mb-0">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="text-{{ $link['color'] }} mr-3" aria-hidden="true">
+                                <i class="{{ $link['icon'] }} fa-2x"></i>
+                            </span>
+                            <h2 class="h5 mb-0">{{ $link['name'] }}</h2>
+                        </div>
+                        <p class="text-muted flex-grow-1">{{ $link['description'] }}</p>
+                        @if($link['url'] !== '')
+                            <a href="{{ $link['url'] }}"
+                               class="btn btn-outline-{{ $link['color'] }}"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                Open {{ $link['name'] }}
+                                <i class="fas fa-external-link-alt ml-1" aria-hidden="true"></i>
+                            </a>
+                        @else
+                            <button class="btn btn-outline-secondary" type="button" disabled>
+                                Not configured
+                            </button>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+
     <div class="row">
         <div class="col-md-12">
-            <div class="card mt-4">
+            <div class="card mt-3">
                 <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                    <h3 class="card-title mb-0"><i class="fas fa-heartbeat"></i> API Health Check</h3>
+                    <h3 class="card-title mb-0"><i class="fas fa-heartbeat"></i> Current Status</h3>
                     <button id="checkAllBtn" class="btn btn-sm btn-light">
-                        <i class="fas fa-sync-alt"></i> Check All
+                        <i class="fas fa-sync-alt"></i> Refresh Status
                     </button>
                 </div>
                 <div class="card-body p-0">
@@ -92,11 +136,11 @@
                     $('#msg-' + r.env).text(r.message);
                 });
 
-                btn.prop('disabled', false).html('<i class="fas fa-sync-alt"></i> Check All');
+                btn.prop('disabled', false).html('<i class="fas fa-sync-alt"></i> Refresh Status');
             },
             error: function(xhr, status, error) {
                 Swal.fire('Error', 'Failed to check APIs: ' + error, 'error');
-                btn.prop('disabled', false).html('<i class="fas fa-sync-alt"></i> Check All');
+                btn.prop('disabled', false).html('<i class="fas fa-sync-alt"></i> Refresh Status');
             }
         });
     }

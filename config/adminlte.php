@@ -269,7 +269,7 @@ return [
         //     'icon'  => 'fas fa-cog',
         // ],
         [
-            'text'  => "API's test",
+            'text'  => 'dARK Liveness',
             'url'   => 'dashboard/tests/api-health',
             'icon'  => 'fas fa-heartbeat',
         ],
