@@ -12,8 +12,8 @@ class LivenessPageTest extends TestCase
     public function test_administrator_receives_all_operational_links(): void
     {
         config([
-            'services.dark.grafana_url' => 'http://localhost:3000',
-            'services.dark.prometheus_url' => 'http://localhost:9090',
+            'services.dark.grafana_url' => 'http://localhost:3000/dashboards',
+            'services.dark.prometheus_url' => 'http://localhost:9090/targets',
             'services.dark.block_explorer_url' => 'http://localhost/explorer/',
         ]);
         $this->be($this->userWithProfile(UserType::Administrator));
@@ -26,16 +26,16 @@ class LivenessPageTest extends TestCase
             'Prometheus',
             'Block Explorer',
         ], $links->keys()->all());
-        $this->assertSame('http://localhost:3000', $links['Grafana']['url']);
-        $this->assertSame('http://localhost:9090', $links['Prometheus']['url']);
+        $this->assertSame('http://localhost:3000/dashboards', $links['Grafana']['url']);
+        $this->assertSame('http://localhost:9090/targets', $links['Prometheus']['url']);
         $this->assertSame('http://localhost/explorer/', $links['Block Explorer']['url']);
     }
 
     public function test_non_administrator_only_receives_block_explorer_link(): void
     {
         config([
-            'services.dark.grafana_url' => 'http://localhost:3000',
-            'services.dark.prometheus_url' => 'http://localhost:9090',
+            'services.dark.grafana_url' => 'http://localhost:3000/dashboards',
+            'services.dark.prometheus_url' => 'http://localhost:9090/targets',
             'services.dark.block_explorer_url' => 'http://localhost/explorer/',
         ]);
         $this->be($this->userWithProfile(UserType::User));
