@@ -47,11 +47,15 @@ Route::group(['middleware' => ['https.protocol']], function () {
         Route::post('authority/create', [AuthorityController::class, 'store'])->name('authorities.store');
         Route::get('authority/{authority}/edit', [AuthorityController::class, 'edit'])->name('authorities.edit');
         Route::put('authority/{authority}', [AuthorityController::class, 'update'])->name('authorities.update');
-        Route::delete('authority/destroy/{authority}', [AuthorityController::class, 'destroy'])->name('authorities.destroy');
-        Route::get('authority/{authority}/register', [AuthorityController::class, 'registerAuthority'])->name('authorities.register');
+        Route::post('authority/{authority}/deactivate', [AuthorityController::class, 'deactivate'])->name('authorities.deactivate');
+        Route::get('authority/{authority}/pids', [AuthorityController::class, 'pids'])->name('authorities.pids');
+        Route::post('authority/{authority}/transfer-pids', [AuthorityController::class, 'transferPids'])->name('authorities.transferPids');
+        Route::post('authority/{authority}/register', [AuthorityController::class, 'registerAuthority'])->name('authorities.register');
+        Route::put('authority/{authority}/client-key', [AuthorityController::class, 'saveClientKey'])->name('authorities.clientKey');
         Route::get('authority/{authority}/api-data', [AuthorityController::class, 'apiData'])->name('authorities.apiData');
         Route::post('authority/{authority}/fund', [AuthorityController::class, 'fund'])->name('authorities.fund');
         Route::post('authority/{authority}/authorize-naan', [AuthorityController::class, 'authorizeNaan'])->name('authorities.authorizeNaan');
+        Route::get('authority/{authority}/add-naans', [AuthorityController::class, 'addNaans'])->name('authorities.addNaans');
         Route::post('authority/{authority}/sync-naans', [AuthorityController::class, 'syncNaans'])->name('authorities.syncNaans');
         Route::get('authority/{authority}/balance-history', [AuthorityController::class, 'balanceHistoryData'])->name('authorities.balanceHistoryData');
         Route::get('authority/{authority}', [AuthorityController::class, 'show'])->name('authorities.show');

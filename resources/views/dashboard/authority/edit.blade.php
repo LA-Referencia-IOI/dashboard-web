@@ -1,10 +1,17 @@
 @extends('adminlte::page')
 
-@section('title', 'Edit Authority')
+@section('title', 'Edit Authority Details')
+
+@section('css')
+    @include('dashboard.authority.partials.design')
+@stop
 
 @section('content')
+<div class="authority-page">
+    <nav class="authority-breadcrumb"><a href="{{ route('authorities.show', $authority->id) }}">{{ $authority->name }}</a> <span class="mx-2">/</span> Edit details</nav>
+    <header class="authority-page-heading"><h1>Edit authority details</h1><p>Update the name and contact information for {{ $authority->name }}.</p></header>
     <div class="row">
-        <div class="col-md-6 col-sm-12">
+        <div class="col-lg-8 col-sm-12">
             @if (session('message'))
                 <div class="alert alert-{{ session('code') }} alert-dismissible">
                     <button type="button" class="close" data-dismiss="alert">×</button>
@@ -24,17 +31,17 @@
             @endif
 
             {{ Form::model($authority, ['route' => ['authorities.update', $authority->id], 'method' => 'PUT']) }}
-                <div class="box box-solid">
-                    <div class="box-header with-border">
-                        <h3 class="box-title" style="margin-top:10px;">
-                            <i class="fas fa-shield-alt mr-2"></i> Edit Authority
-                        </h3>
+                <div class="authority-panel">
+                    <div class="authority-panel-heading d-block">
+                        <h2>
+                            <i class="fas fa-shield-alt mr-2"></i> General information
+                        </h2>
                         <small class="text-muted">UUID: {{ $authority->id }}</small>
                     </div>
-                    <div class="box-body">
+                    <div class="authority-panel-body">
                         @include('dashboard.authority.partials.form')
                     </div>
-                    <div class="box-footer">
+                    <div class="authority-panel-footer">
                         {{ Form::submit('Save Changes', ['class' => 'btn btn-custom']) }}
                         <a href="{{ route('authorities.show', $authority->id) }}" class="btn btn-default ml-2">Cancel</a>
                     </div>
@@ -42,4 +49,5 @@
             {{ Form::close() }}
         </div>
     </div>
+</div>
 @stop

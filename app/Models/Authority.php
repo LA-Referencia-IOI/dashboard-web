@@ -12,10 +12,12 @@ class Authority extends Model
 
     public $incrementing = false;
     protected $keyType = 'string';
+    protected $hidden = ['creation_request_key'];
 
     protected $fillable = [
         'id',
         'name',
+        'client_public_key',
         'responsible',
         'email',
         'phone',

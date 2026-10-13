@@ -2,21 +2,14 @@
 
 @section('title', 'NAANs')
 
-@section('content_header')
-    <div class="row mb-2">
-        <div class="col-sm-6">
-            <h1 class="m-0">NAANs</h1>
-        </div>
-        <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="{{ route('home.index') }}">Home</a></li>
-                <li class="breadcrumb-item active">NAANs</li>
-            </ol>
-        </div>
-    </div>
+@section('css')
+    @include('dashboard.partials.registry-design')
 @stop
 
 @section('content')
+<div class="authority-page">
+    <nav class="authority-breadcrumb" aria-label="Breadcrumb"><a href="{{ route('home.index') }}">Home</a> <span class="mx-2">/</span> NAANs</nav>
+    <header class="authority-page-heading"><h1>NAAN registry</h1><p>Manage registered namespaces and their organization details.</p></header>
     <div class="row">
         <div class="col-12">
             @if (session('success'))
@@ -27,17 +20,16 @@
                 </div>
             @endif
 
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">List of NAANs</h3>
-                    <div class="card-tools">
-                        <a href="{{ route('naans.create') }}" class="btn btn-dark btn-sm">
-                            <i class="fas fa-plus"></i> New NAAN
-                        </a>
-                    </div>
+            <div class="authority-panel">
+                <div class="authority-panel-heading">
+                    <span class="authority-section-icon" aria-hidden="true"><i class="fas fa-hashtag"></i></span>
+                    <div><h2>Registered NAANs</h2><p>Namespaces available for assignment to authorities.</p></div>
+                </div>
+                <div class="authority-panel-body">
+                    <a href="{{ route('naans.create') }}" class="btn btn-primary"><i class="fas fa-plus mr-1"></i> New NAAN</a>
                 </div>
                 <!-- /.card-header -->
-                <div class="card-body table-responsive p-0">
+                <div class="table-responsive">
                     <table class="table table-hover text-nowrap">
                         <thead>
                             <tr>
@@ -52,10 +44,10 @@
                         <tbody>
                             @forelse ($naans as $naan)
                                 <tr>
-                                    <td>{{ $naan->naan }}</td>
+                                    <td><a href="{{ route('naans.edit', $naan->id) }}"><strong>{{ $naan->naan }}</strong></a></td>
                                     <td>{{ $naan->organization_name }}</td>
-                                    <td>{{ $naan->organization_acronym }}</td>
-                                    <td>{{ $naan->contact_name }}</td>
+                                    <td>{{ $naan->organization_acronym ?: '—' }}</td>
+                                    <td>{{ $naan->contact_name ?: '—' }}</td>
                                     <td>
                                         @if($naan->status == 'active')
                                             <span class="badge badge-success">Active</span>
@@ -64,13 +56,13 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{ route('naans.edit', $naan->id) }}" class="btn btn-sm btn-info">
+                                        <a href="{{ route('naans.edit', $naan->id) }}" class="btn btn-sm btn-outline-primary">
                                             <i class="fas fa-edit"></i> Edit
                                         </a>
                                         <form action="{{ route('naans.destroy', $naan->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Are you sure you want to delete this NAAN?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">
                                                 <i class="fas fa-trash"></i> Delete
                                             </button>
                                         </form>
@@ -78,7 +70,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="5" class="text-center">No NAANs found.</td>
+                                    <td colspan="6" class="text-center">No NAANs found.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -89,4 +81,5 @@
             <!-- /.card -->
         </div>
     </div>
+</div>
 @stop

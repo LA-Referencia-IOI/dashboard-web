@@ -13,12 +13,17 @@ class AuthorityRequest extends FormRequest
 
     public function rules()
     {
-        return [
+        $rules = [
             'name'        => 'required|max:255',
             'responsible' => 'required|max:255',
             'email'       => 'required|email|max:255',
             'phone'       => 'nullable|max:50',
         ];
+        if ($this->routeIs('authorities.store')) {
+            $rules['creation_token'] = ['required', 'string', 'max:2048'];
+            $rules['client_public_key'] = ['nullable', 'string', 'max:4096', new \App\Rules\Ed25519PublicKey];
+        }
+        return $rules;
     }
 
     public function attributes()

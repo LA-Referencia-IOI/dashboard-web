@@ -55,7 +55,7 @@ class TestController extends Controller
         $pollInterval = (int) env('POLL_INTERVAL_SECONDS', 2);
         $pollTimeout = (int) env('POLL_TIMEOUT_SECONDS', 90);
 
-        $minterHeaders = ['X-Authority-Id' => $authorityId];
+        $minterHeaders = ['X-DARK-Authority-Id' => $authorityId];
 
         $l1Metadata = [
             'title' => 'Distancias genéticas en poblaciones aborígenes de la Argentina',

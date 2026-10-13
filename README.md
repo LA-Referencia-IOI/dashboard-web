@@ -107,3 +107,68 @@ longer applies. The script retains a managed mode: with
 dependency/migration steps against deployer-managed containers. The v3
 pipeline does not invoke this script — dependency installation and migrations
 are handled by the `dashboard-migrate` service.
+## Authority public keys for Minter access
+
+Authority creation accepts an optional Ed25519 public key (OpenSSH
+`ssh-ed25519 …` or raw 32-byte base64). It is normalized and submitted to Admin
+with registration. If registration cannot be confirmed, the authority remains
+pending locally and its key is retained for a manual retry. Registration uses
+POST with CSRF protection.
+
+The authority detail page has a separate **Minter access** card. The current key
+and fingerprint are read from Admin/blockchain; an unavailable lookup is shown
+as unavailable, not as an absent key. Registered authorities can register or
+replace a key there. Contact edits cannot replace keys. A local copy is changed
+only after Admin confirms the replacement transaction. For pending authorities,
+the card can update the key to submit during registration.
+
+Apply migration `2026_10_10_000001_add_client_public_key_to_authorities` before
+using this interface. Admin must provide GET/PUT
+`/api/v1/admin/authority/{uuid}/client-key` and the contract must support the
+client-key registry. `services.dark.admin_api_url` configures these server-side
+calls. Client private keys remain on the client and are never requested here.
+
+### Authority navigation
+
+The authority list provides names, contacts, status, NAAN counts and balances,
+with one Open action. Each authority has a single page with Information,
+NAAN permissions, Minter access and Balance sections. Details appear at the top;
+NAANs and Minter access occupy the main column, with Balance in the side column.
+On small screens these sections stack. Add NAANs opens a separate selection page with the original registry table
+and multi-selection. Assignment returns to the authority. Only registered NAANs can be selected and authorized. The selection page
+uses an ordinary form without SweetAlert; the backend rejects unregistered
+NAAN IDs or numbers.
+Edit details belongs to Information; authorization belongs to Permissions;
+public key management belongs to Minter access; Add funds belongs to Balance.
+Funding uses an inline HTML form identifying the recipient and master wallet.
+It submits with CSRF protection and redirects to the authority; JSON callers
+retain the previous response format. Funding does not depend on SweetAlert.
+The local delete action is no longer offered in the list. The existing backend
+route remains; blockchain retirement requires a separate lifecycle change.
+
+Authority detail and selection pages use a shared local style partial inspired
+by Tabler's settings layout (https://preview.tabler.io/settings.html): explicit
+page and section headings, explanatory subtitles, neutral panels, blue actions
+and consistent spacing. Actions remain in the section body or footer.
+
+The NAAN registry list, creation and editing pages share the registry design
+partial with authorities. Page/section headings, action placement, tables and
+forms use the same local styles. NAAN form labels link to their inputs.
+
+### Authority creation retries
+
+Each New authority form carries an encrypted token bound to the signed-in user.
+The server stores its SHA-256 request key on the authority with a unique database
+constraint. Repeated or concurrent submissions reuse the existing authority and
+do not repeat its registration call. The key persists across restarts; historical
+rows have a null key. Separate New authority forms remain separate operations.
+Apply migration `2026_10_11_000001_add_creation_request_key_to_authorities`.
+The submit button disables while waiting and resets on browser Back navigation.
+If the original attempt stops after creating the local row, use the existing
+authority's registration action rather than submitting a new creation request.
+
+## Authority ownership and retirement
+
+Authority detail includes **PID ownership & retirement** and the current blockchain ownership count. **Manage PID ownership** opens a paginated on-chain inventory with sequential transfers to an active NAAN-authorized authority. Local Minter queues are not checked or modified by Admin. Partial batches keep confirmed transfers; retrying the same desired destination reconciles current owner state rather than a persisted request ID.
+
+**Deactivate authority** is available when no currently owned on-chain PIDs remain. Stop the authority’s assigned Minter activity and settle in-flight chain submissions first. Local historical records/reservations are not inventoried. Retirement retains the Dashboard row/history. The shared-PostgreSQL dependency and request-ID resume action have been removed. See deployer `docs/pid-ownership-transfer-design.md` for protocol and operational limitations.

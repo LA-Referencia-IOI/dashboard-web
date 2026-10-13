@@ -228,6 +228,7 @@ return [
         [
             'text'  => 'Authorities',
             'url'   => 'dashboard/authorities',
+            'active' => ['dashboard/authorities', 'dashboard/authority/*'],
             'icon'  => 'fas fa-shield-alt',
             'label' => '',
         ],

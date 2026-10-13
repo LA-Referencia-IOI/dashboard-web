@@ -1,9 +1,15 @@
 @extends('adminlte::page')
 
 @section('title', 'Authorities')
-@section('plugins.Sweetalert2', true)
+
+@section('css')
+    @include('dashboard.partials.registry-design')
+@stop
 
 @section('content')
+<div class="authority-page">
+    <nav class="authority-breadcrumb" aria-label="Breadcrumb"><a href="{{ route('home.index') }}">Home</a> <span class="mx-2">/</span> Authorities</nav>
+    <header class="authority-page-heading"><h1>Authorities</h1><p>Manage authority details, NAAN permissions and Minter access.</p></header>
     @if (session('message'))
         <div class="alert alert-{{ session('code') }} alert-dismissible">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
@@ -11,37 +17,31 @@
         </div>
     @endif
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="m-0">Authorities <span class="badge badge-secondary">{{ $total }}</span></h4>
-        <a href="{{ route('authorities.create') }}" class="btn btn-custom btn-sm">
-            <i class="fas fa-plus mr-1"></i> NEW AUTHORITY
-        </a>
-    </div>
-
-    <div class="box">
-        <div class="box-body no-padding">
+    <div class="authority-panel">
+        <div class="authority-panel-heading">
+            <span class="authority-section-icon" aria-hidden="true"><i class="fas fa-building"></i></span>
+            <div><h2>Registered authorities <span class="badge badge-light ml-2">{{ $total }}</span></h2><p>Open an authority to manage its permissions, public key and balance.</p></div>
+        </div>
+        <div class="authority-panel-body">
+            <a href="{{ route('authorities.create') }}" class="btn btn-primary"><i class="fas fa-plus mr-1"></i> New authority</a>
+        </div>
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead class="thead-light">
                         <tr>
-                            <th style="width:260px">UUID</th>
                             <th>Name</th>
                             <th>Responsible</th>
-                            <th>Email</th>
                             <th>NAANs</th>
                             <th>Wallet Balance</th>
                             <th>Status</th>
-                            <th>Created at</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($authorities as $authority)
                             <tr>
-                                <td><small class="text-muted">{{ $authority->id }}</small></td>
-                                <td><strong>{{ $authority->name }}</strong></td>
+                                <td><a href="{{ route('authorities.show', $authority->id) }}"><strong>{{ $authority->name }}</strong></a></td>
                                 <td>{{ $authority->responsible }}</td>
-                                <td>{{ $authority->email }}</td>
                                 <td class="auth-naans" data-uuid="{{ $authority->id }}">
                                     @if($authority->isRegistered())
                                         <i class="fas fa-spinner fa-spin text-muted"></i>
@@ -57,30 +57,13 @@
                                     @endif
                                 </td>
                                 <td>{!! $authority->getStatusBadge() !!}</td>
-                                <td>{{ $authority->created_at->format('d/m/Y') }}</td>
                                 <td>
-                                    @if($authority->isRegistered())
-                                        <button class="btn btn-success btn-sm btn-fund" data-uuid="{{ $authority->id }}" data-name="{{ $authority->name }}" title="Inject Funds">
-                                            <i class="fas fa-hand-holding-usd"></i>
-                                        </button>
-                                    @endif
-                                    <a href="{{ route('authorities.show', $authority->id) }}"
-                                       class="btn btn-secondary btn-sm" title="View">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                    <a href="{{ route('authorities.edit', $authority->id) }}"
-                                       class="btn btn-primary btn-sm" title="Edit">
-                                        <i class="fas fa-pencil-alt"></i>
-                                    </a>
-                                    <button class="btn btn-danger btn-sm" title="Delete"
-                                        onclick="confirmDelete('{{ $authority->id }}', '{{ route('authorities.destroy', $authority->id) }}')">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
+                                    <a href="{{ route('authorities.show', $authority->id) }}" class="btn btn-outline-primary btn-sm">Edit</a>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center text-muted py-4">
+                                <td colspan="6" class="text-center text-muted py-4">
                                     No authorities registered yet.
                                     <a href="{{ route('authorities.create') }}">Create the first one</a>.
                                 </td>
@@ -89,18 +72,15 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div class="box-footer clearfix">
+        <div class="authority-panel-footer">
             {{ $authorities->links() }}
         </div>
     </div>
-
-    @include('dashboard.partials.confirm-delete')
+</div>
 @stop
 
 @section('js')
 <script>
-    const authorityFundUrl = @json(route('authorities.fund', ['authority' => '__AUTHORITY__']));
     const authorityApiDataUrl = @json(route('authorities.apiData', ['authority' => '__AUTHORITY__']));
     const authorityUrl = function(template, uuid) { return template.replace('__AUTHORITY__', uuid); };
 
@@ -114,70 +94,6 @@
             if (tdNaans.find('.fa-spinner').length > 0) {
                 fetchApiData(uuid, tdNaans, tdBalance);
             }
-        });
-
-        // Funding Flow
-        $(document).on('click', '.btn-fund', function() {
-            let uuid = $(this).data('uuid');
-            let name = $(this).data('name');
-
-            Swal.fire({
-                title: 'Inject Funds',
-                html: '<div class="text-left"><label>Amount (in <strong>dark</strong>):</label>' +
-                      '<input id="swal-fund-amount" type="number" step="0.0001" min="0.0001" class="form-control" placeholder="0.05"></div>' +
-                      '<small class="text-muted mt-2 d-block text-left">Funds will be transferred from the Master Wallet.</small>',
-                icon: 'info',
-                showCancelButton: true,
-                confirmButtonText: 'Inject Funds',
-                confirmButtonColor: '#28a745',
-                onOpen: function(popup) {
-                    popup.querySelector('#swal-fund-amount').focus();
-                },
-                preConfirm: function() {
-                    let amount = Swal.getPopup().querySelector('#swal-fund-amount').value;
-                    if (!amount || amount <= 0) {
-                        Swal.showValidationMessage('Please enter a valid amount');
-                    }
-                    return amount;
-                }
-            }).then(function(result) {
-                if (result.value) {
-                    Swal.fire({
-                        title: 'Transferring...',
-                        text: 'Please wait while the transaction is mined on the blockchain.',
-                        allowOutsideClick: false,
-                        onBeforeOpen: () => {
-                            Swal.showLoading();
-                        }
-                    });
-
-                    $.ajax({
-                        url: authorityUrl(authorityFundUrl, uuid),
-                        type: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            amount: result.value
-                        },
-                        success: function(res) {
-                            if (res.success) {
-                                Swal.fire('Success!', res.message, 'success');
-                                
-                                // Refresh the balance
-                                let tdNaans = $('.auth-naans[data-uuid="' + uuid + '"]');
-                                let tdBalance = $('.auth-balance[data-uuid="' + uuid + '"]');
-                                tdBalance.html('<i class="fas fa-spinner fa-spin text-muted"></i>');
-                                fetchApiData(uuid, tdNaans, tdBalance);
-                            } else {
-                                Swal.fire('Error', res.message, 'error');
-                            }
-                        },
-                        error: function(xhr) {
-                            Swal.fire('Error', 'Failed to inject funds. Check the console.', 'error');
-                            console.error(xhr.responseText);
-                        }
-                    });
-                }
-            });
         });
 
         function fetchApiData(uuid, tdNaans, tdBalance) {
