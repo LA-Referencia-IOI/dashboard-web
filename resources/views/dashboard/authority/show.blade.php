@@ -5,6 +5,18 @@
 
 @section('css')
     @include('dashboard.authority.partials.design')
+    <style>
+        .authority-identifier { padding: 20px; margin-bottom: 24px; border: 1px solid #cbdcf1; border-radius: 8px; background: #f3f7fd; }
+        .authority-identifier label { display: block; margin-bottom: 10px; color: #305d92; font-weight: 700; }
+        .authority-identifier-controls { display: flex; align-items: center; gap: 12px; }
+        .authority-identifier-controls input { flex: 1; min-width: 0; width: 100%; border: 0; background: transparent; color: #203c60; font-family: monospace; font-size: 20px; font-weight: 600; }
+        .authority-identifier-controls .btn { flex-shrink: 0; }
+        #authority-copy-status:not(:empty) { display: block; margin-top: 10px; }
+        @media (max-width: 575px) {
+            .authority-identifier-controls { flex-direction: column; align-items: stretch; }
+            .authority-identifier-controls input { font-size: 15px; }
+        }
+    </style>
 @stop
 
 @section('content')
@@ -35,18 +47,22 @@
                 <div><h2>General information</h2><p>Contact details and identifiers for this authority.</p></div>
             </div>
         <div class="authority-panel-body">
+            <div class="authority-identifier">
+                <label for="authority-uuid">Authority UUID</label>
+                <div class="authority-identifier-controls">
+                    <input id="authority-uuid" type="text" value="{{ $authority->id }}" readonly spellcheck="false">
+                    <button id="copy-authority-uuid" type="button" class="btn btn-outline-primary"><i class="far fa-copy mr-2" aria-hidden="true"></i>Copy UUID</button>
+                </div>
+                <span id="authority-copy-status" class="small" role="status" aria-live="polite"></span>
+            </div>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <dl><dt>Responsible</dt><dd>{{ $authority->responsible }}</dd>
                     <dt>Email</dt><dd>{{ $authority->email }}</dd></dl>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <dl><dt>Phone</dt><dd>{{ $authority->phone ?? '—' }}</dd>
                     <dt>Created</dt><dd>{{ $authority->created_at->format('d/m/Y H:i') }}</dd></dl>
-                </div>
-                <div class="col-md-4">
-                    <dl><dt>UUID</dt><dd><code style="overflow-wrap:anywhere">{{ $authority->id }}</code></dd>
-                    </dl>
                 </div>
             </div>
             <a href="{{ route('authorities.edit', $authority->id) }}" class="btn btn-outline-primary btn-sm">Edit details</a>
@@ -60,9 +76,7 @@
         </div>
     </section>
 
-    <div class="row">
-        <div class="col-lg-8">
-            <section id="authority-permissions" class="authority-panel">
+    <section id="authority-permissions" class="authority-panel">
                 <div class="authority-panel-heading">
                 <span class="authority-section-icon" aria-hidden="true"><i class="fas fa-hashtag"></i></span>
                 <div><h2>NAAN permissions</h2><p>Manage the registered namespaces this authority can operate.</p></div>
@@ -82,12 +96,6 @@
                     <a href="{{ route('authorities.addNaans', $authority->id) }}" class="btn btn-outline-primary btn-sm">Add NAANs</a>
                 </div>
             </section>
-            <section id="authority-minter">
-                @include('dashboard.authority.partials.client-key')
-            </section>
-        </div>
-        <div class="col-lg-4">
-            @include('dashboard.authority.partials.lifecycle')
     <section id="authority-balance" class="authority-panel">
         <div class="authority-panel-heading">
                 <span class="authority-section-icon" aria-hidden="true"><i class="fas fa-wallet"></i></span>
@@ -131,12 +139,40 @@
             @endif
         </div>
     </section>
-        </div>
-    </div>
+    <section id="authority-minter">
+        @include('dashboard.authority.partials.client-key')
+    </section>
+    @include('dashboard.authority.partials.lifecycle')
 </div>
 @stop
 
 @section('js')
+<script>
+    document.getElementById('copy-authority-uuid').addEventListener('click', async function () {
+        const field = document.getElementById('authority-uuid');
+        const status = document.getElementById('authority-copy-status');
+        const button = this;
+        function fallbackCopy() {
+            field.focus();
+            field.select();
+            field.setSelectionRange(0, field.value.length);
+            return document.execCommand('copy');
+        }
+        button.disabled = true;
+        try {
+            let copied = false;
+            if (window.isSecureContext && navigator.clipboard && navigator.clipboard.writeText) {
+                try { await navigator.clipboard.writeText(field.value); copied = true; }
+                catch (error) { copied = fallbackCopy(); }
+            } else { copied = fallbackCopy(); }
+            status.textContent = copied ? 'UUID copied to clipboard.' : 'Select the UUID and copy it manually.';
+            if (copied) { button.focus(); }
+        } catch (error) {
+            field.focus(); field.select();
+            status.textContent = 'Select the UUID and copy it manually.';
+        } finally { button.disabled = false; }
+    });
+</script>
 <script>document.querySelectorAll('.authority-lifecycle-form').forEach(form => form.addEventListener('submit', () => { const button = form.querySelector('button[type="submit"]'); button.disabled = true; button.textContent = 'Deactivating…'; }));</script>
 <script>
     $(document).ready(function() {
