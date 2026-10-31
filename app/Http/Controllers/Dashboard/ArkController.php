@@ -109,7 +109,7 @@ class ArkController extends Controller
 
         $resolverUrl = env('RESOLVER_URL');
 
-        $targetUrl = $resolverUrl . '/ark:/${content}';
+        $targetUrl = $resolverUrl . '/ark:${content}';
 
         
 
