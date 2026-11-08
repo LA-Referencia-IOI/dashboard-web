@@ -1,5 +1,8 @@
 # dARK Dashboard Web
 
+New platform developer: follow [developer onboarding](https://github.com/LA-Referencia-IOI/dark-deployer/blob/main/docs/developer-onboarding.md)
+for the complete local stack, signed requests and component iteration.
+
 Laravel 8 + AdminLTE administration application of the dARK platform. It manages
 authorities, institutions, NAANs, ARK identifiers, accounts and wallets, the
 blockchain node configuration, and the metadata/replication worker overview. It
@@ -8,6 +11,10 @@ platform tests.
 
 See [architecture and operational boundaries](docs/architecture.md) for local
 state, upstream calls, authentication and the effects of the test page.
+
+For PHP, assets, isolated databases and tests, see
+[Dashboard development](docs/development.md). The managed runtime uses a staged
+committed source snapshot; edits to the original checkout need an explicit update.
 
 ## Stack
 
