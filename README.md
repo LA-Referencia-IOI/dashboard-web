@@ -6,6 +6,9 @@ blockchain node configuration, and the metadata/replication worker overview. It
 also hosts the platform liveness page ("dARK Liveness") and the end-to-end
 platform tests.
 
+See [architecture and operational boundaries](docs/architecture.md) for local
+state, upstream calls, authentication and the effects of the test page.
+
 ## Stack
 
 - PHP 8, deployed with the `ambientum/php:8.0-nginx` image (nginx + PHP-FPM)
@@ -20,7 +23,7 @@ platform tests.
 
 ## Deployment
 
-dashboard-web is deployed by the [dark-deployer](../../README.md) using the deployment v3 pipeline: an operator inventory (see [examples/operator-inventory/](../../examples/operator-inventory/)) is resolved, planned, and rendered into per-machine Docker Compose bundles, then applied with `./deploy.sh install` (locally) or `prepare`/`push`/`apply` (remote hosts). The runtime image (`ambientum/php:8.0-nginx`), the MySQL image and the component checkout branch (`main`) are pinned in `deployment_v3/catalog_data/dark-platform-baseline-v1.0.json`. There is no standalone docker-compose file in this component.
+dashboard-web is deployed by the [dark-deployer](https://github.com/LA-Referencia-IOI/dark-deployer) from an operator inventory (format `dark-operator-inventory` v3; see the [inventory reference](https://github.com/LA-Referencia-IOI/dark-deployer/blob/main/examples/operator-inventory/README.md)). The deployer resolves the inventory, renders one Docker Compose project per machine and applies it through guided operations (`./deploy.sh operation plan`, `apply`, `resume`; see the [deployer documentation](https://github.com/LA-Referencia-IOI/dark-deployer/blob/main/docs/deployer.md)). The Dashboard runs on `ambientum/php:8.0-nginx` with a MySQL 8.0 database; images and the source branch (default `main`) come from the catalog and `overrides.components`. Runtime environment variables are generated from the inventory, not edited by hand. There is no standalone docker-compose file in this component.
 
 The rendered application bundle contains three services for this component:
 
@@ -86,6 +89,22 @@ The administrator menu links the **dARK Liveness** page (route
   `PROMETHEUS_URL` and `BLOCK_EXPLORER_URL`; a link without a configured URL
   renders a disabled "Not configured" button.
 
+### Authentication and exposure
+
+The `dashboard/*` route group uses Laravel's `auth` middleware. User profiles
+control parts of the interface, but hiding a menu item does not itself enforce a
+server-side permission. For example, `AuthorityRequest::authorize()` returns
+true for an authenticated user and the authority route group has no separate
+role middleware. Restrict access to trusted users and enforce any additional
+role policy at a verified server-side boundary.
+
+The Admin API's optional mTLS gate defaults to disabled. The Dashboard's
+`AdminAuthorityApi` makes ordinary HTTP requests to its configured base URL and
+does not configure a client certificate. Enabling the Admin gate requires a
+compatible trusted TLS/proxy arrangement; the deployed Dashboard connection
+alone does not establish mTLS. The Dashboard trusts forwarded proxy headers,
+so only trusted proxies should be able to reach its application listener.
+
 ### Default credentials
 
 Created by the migrations/seeders run by `dashboard-migrate` (password
@@ -100,7 +119,7 @@ Created by the migrations/seeders run by `dashboard-migrate` (password
 ### Legacy installer
 
 `install.py` automated the previous docker-compose-based setup. That compose
-file was removed when the platform moved to deployment v3, so the standalone
+file was removed when deployment moved to the operator-inventory deployer, so the standalone
 flow (creating `.env` from `.env.example` and running `docker compose up`) no
 longer applies. The script retains a managed mode: with
 `DARK_DEPLOYER_MANAGED_COMPOSE=1` it skips container startup and performs its
